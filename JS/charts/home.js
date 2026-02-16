@@ -183,6 +183,8 @@ function renderHomeCumulativeRevenueChart(rows) {
           // alleen punten op boekingsdagen
           pointRadius: (c) => (data.pointsMeta[c.dataIndex]?.isBooking ? 6 : 0),
           pointHoverRadius: 8,
+          hitRadius: 14,
+          hoverRadius: 10,
           pointBackgroundColor: (c) => {
             const meta = data.pointsMeta[c.dataIndex];
             if (!meta?.isBooking) return "rgba(0,0,0,0)";
@@ -199,26 +201,47 @@ function renderHomeCumulativeRevenueChart(rows) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          mode: "index",
-          intersect: false,
+          enabled: true,
+
+          // ✅ precieze hover: alleen bij punten
+          mode: "nearest",
+          intersect: true,
+
+          // ✅ styling
+          backgroundColor: "rgba(11,18,37,0.95)",
+          borderColor: "rgba(255,255,255,0.10)",
+          borderWidth: 1,
+          cornerRadius: 10,
+          padding: 12,
+
+          titleColor: "#ffffff",
+          bodyColor: "#d1d5db",
+          titleFont: { size: 13, weight: "600" },
+          bodyFont: { size: 12 },
+
+          displayColors: false,
+
           callbacks: {
             title: (items) => {
               const meta = data.pointsMeta[items[0].dataIndex];
-              return meta ? meta.date : items[0].label;
+              return meta?.date ?? "";
             },
             label: (item) => {
               const meta = data.pointsMeta[item.dataIndex];
-              const lines = [`Cumulatief: ${fmtEUR(item.raw)}`];
+              if (!meta?.isBooking) return "";
 
-              if (meta?.isBooking) {
-                lines.unshift(`Omzet boeking: ${fmtEUR(meta.amount)}`);
-                lines.push(`Nachten: ${meta.nights}`);
-                if (meta.isOwner) lines.push("Type: Huiseigenaar");
-              }
+              const lines = [
+                `Omzet boeking: ${fmtEUR(meta.amount)}`,
+                `Cumulatief: ${fmtEUR(item.raw)}`,
+                `Nachten: ${meta.nights}`,
+              ];
+
+              if (meta.isOwner) lines.push("Type: Huiseigenaar");
               return lines;
             },
           },
         },
+
       },
       scales: {
         x: {

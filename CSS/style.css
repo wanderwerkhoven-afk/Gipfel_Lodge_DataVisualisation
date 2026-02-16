@@ -455,8 +455,8 @@ body {
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   border-radius: 12px;
-  background: rgba(0,0,0,.15);
-  padding: 10px;
+  background: rgba(11,18,37);
+  padding: 0px;
   margin: 10px 0;
   cursor: grab;
 
@@ -469,7 +469,6 @@ body {
   cursor: grabbing;
 }
 
-/* Sticky y-as labels (DOM) */
 .cum-y-axis{
   position: sticky;
   left: 0;
@@ -482,18 +481,21 @@ body {
   flex-direction: column;
   justify-content: space-between;
 
-  /* ✅ match chart plot-area: minder hoog onder + boven */
-  padding-top: 5px;     /* was 10px */
-  padding-bottom: 25px;  /* reserve voor x-as labels */
+  /* ✅ rechts uitlijnen */
+  align-items: flex-end;
+
+  padding-top: 5px;
+  padding-bottom: 25px;
   padding-left: 0px;
-  padding-right: 0px;
+  padding-right: 5px;
 
   font-size: 11px;
   color: #8b949e;
-
-  background: rgba(8, 12, 24, 0);
+  border-radius: 12px;
+  background: rgb(11,18,37);
   border-right: 1px solid rgba(255,255,255,0.06);
 }
+
 
 .cum-y-axis span{
   line-height: 1;
@@ -520,4 +522,49 @@ body {
   .chart-scroll{
     height: 380px;
   }
+}
+
+/* Hint / legend onder grafiek */
+.hint{
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  padding-left: 10px;
+  gap: 10px;
+
+  font-size: 14px;
+  color: #8b949e;
+  margin-top: 14px;
+  opacity: 0.9;
+}
+
+/* Tekst links */
+.hint-text{
+  white-space: nowrap;
+}
+
+/* Midden separator */
+.hint-separator{
+  opacity: 0.5;
+}
+
+/* Legend rechts */
+.hint-legend{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* De stip */
+.dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Oranje stip */
+.dot-orange{
+  background-color: #ff8a2a;
 }
