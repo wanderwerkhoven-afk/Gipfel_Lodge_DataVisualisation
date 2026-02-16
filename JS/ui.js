@@ -112,6 +112,19 @@ function renderHomePage() {
  * ============================================================ */
 
 function setupYearSelects(years = getYears()) {
+  // ✅ HOME (Seizoensinzichten) dropdown
+  wireCustomYearSelect({
+    containerId: "yearSelectContainer",
+    displayId: "selectedYearDisplay",
+    optionsId: "yearOptions",
+    hiddenId: "yearValue",
+    years,
+    get: () => state.currentYear,
+    set: (y) => (state.currentYear = y),
+    onChange: () => renderActivePage(),
+  });
+
+  // ✅ CUMULATIEF dropdown (met ALL)
   wireCustomYearSelect({
     containerId: "cumulativeYearSelectContainer",
     displayId: "cumulativeYearDisplay",
@@ -122,19 +135,8 @@ function setupYearSelects(years = getYears()) {
     set: (y) => (state.cumulativeYear = y),
     onChange: () => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL"),
   });
-
-
-  wireCustomYearSelect({
-    containerId: "cumulativeYearSelectContainer",
-    displayId: "cumulativeYearDisplay",
-    optionsId: "cumulativeYearOptions",
-    hiddenId: "cumulativeYearValue",
-    years,
-    get: () => state.cumulativeYear ?? state.currentYear,
-    set: (y) => (state.cumulativeYear = y),
-    onChange: () => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? state.currentYear),
-  });
 }
+
 
 function wireCustomYearSelect({
   containerId,
@@ -145,7 +147,9 @@ function wireCustomYearSelect({
   get,
   set,
   onChange,
-}) {
+}) 
+
+{
   const container = document.getElementById(containerId);
   const display = document.getElementById(displayId);
   const options = document.getElementById(optionsId);
@@ -216,14 +220,6 @@ function bindCustomSelectToggles() {
       c.querySelector(".select-options")?.classList.remove("show");
     });
   });
-
-  window.addEventListener("resize", () => {
-    if (document.getElementById("home-page")?.classList.contains("active")) {
-      const y = state.cumulativeYear ?? state.currentYear;
-      if (state.rawRows.length) renderHomeCumulativeRevenueChartForYear(y);
-    }
-  });
-
 }
 
 /* ============================================================

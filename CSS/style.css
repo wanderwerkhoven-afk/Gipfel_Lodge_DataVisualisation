@@ -448,92 +448,76 @@ body {
 
 /* --- 8. CUMULATIEVE GRAFIEK SCROLL SETTINGS --- */
 
-/* Wrapper: flex zodat sticky y-axis links kan staan + scrollende chart rechts */
 .chart-scroll{
   position: relative;
-  display: flex;
-  align-items: stretch;
-
-  height: 400px;                 /* vaste hoogte, anders canvas = 0px */
+  height: 400px;                 /* vaste hoogte */
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-
   border-radius: 12px;
   background: rgba(0,0,0,.15);
   padding: 10px;
   margin: 10px 0;
-
   cursor: grab;
+
+  /* ✅ nodig voor sticky y-as + scrollende chart */
+  display: flex;
+  align-items: stretch;
 }
 
 .chart-scroll:active{
   cursor: grabbing;
 }
 
-/* Sticky y-axis links */
-.cum-axis{
+/* Sticky y-as labels (DOM) */
+.cum-y-axis{
   position: sticky;
   left: 0;
   z-index: 10;
 
-  /* ✅ width wordt door JS gezet */
-  width: auto;
-  flex: 0 0 auto;
+  width: 45px;
+  flex: 0 0 45px;
 
-  background: rgba(8, 12, 24, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  /* ✅ match chart plot-area: minder hoog onder + boven */
+  padding-top: 5px;     /* was 10px */
+  padding-bottom: 25px;  /* reserve voor x-as labels */
+  padding-left: 0px;
+  padding-right: 0px;
+
+  font-size: 11px;
+  color: #8b949e;
+
+  background: rgba(8, 12, 24, 0);
   border-right: 1px solid rgba(255,255,255,0.06);
-  padding-right: 8px;
 }
 
-.cum-axis canvas{
-  display: block;
-  /* ✅ width/height worden door JS gezet */
+.cum-y-axis span{
+  line-height: 1;
+  white-space: nowrap;
 }
 
 
-/* Scrollende chart inhoud rechts */
+/* Scrollende chart-inhoud */
 .chart-scroll__inner{
   height: 100%;
-  min-width: 1000px;   /* wordt door JS vergroot op basis van aantal dagen */
+  min-width: 100px;            /* wordt door JS vergroot */
   flex: 1 1 auto;
 }
 
-/* Main cumulatieve canvas */
+/* Cumulatieve chart canvas */
 #chartCumulative{
   width: 100% !important;
   height: 100% !important;
   display: block;
 }
 
-/* Aanpassing voor landschapsmodus op mobiel/tablet */
+/* Landschapsmodus */
 @media (orientation: landscape){
   .chart-scroll{
     height: 380px;
   }
-}
-
-/* Kleine instructie tekst onder de grafiek */
-.hint{
-  font-size: 11px;
-  color: #8b949e;
-  text-align: center;
-  margin-top: 8px;
-  opacity: 0.8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-/* Scrollbar styling (Chrome/Safari) */
-.chart-scroll::-webkit-scrollbar{
-  height: 4px;
-}
-.chart-scroll::-webkit-scrollbar-track{
-  background: rgba(255, 255, 255, 0.05);
-}
-.chart-scroll::-webkit-scrollbar-thumb{
-  background: var(--accent);
-  border-radius: 10px;
 }

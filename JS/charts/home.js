@@ -142,12 +142,17 @@ export function renderHomeRevenueChart() {
  * HOME: Cumulatieve omzet (LINE, stepped)
  * ============================================================ */
 
-export function renderHomeCumulativeRevenueChartForYear(year) {
+export function renderHomeCumulativeRevenueChartForYear(yearOrAll) {
   if (!state.rawRows || state.rawRows.length === 0) return;
 
-  const rows = getRowsForYear(year);
+  const rows =
+    yearOrAll === "ALL" || yearOrAll == null
+      ? state.rawRows
+      : getRowsForYear(yearOrAll);
+
   renderHomeCumulativeRevenueChart(rows);
 }
+
 
 function renderHomeCumulativeRevenueChart(rows) {
   const canvas = document.getElementById("chartCumulative");
@@ -176,8 +181,8 @@ function renderHomeCumulativeRevenueChart(rows) {
           tension: 0,
 
           // alleen punten op boekingsdagen
-          pointRadius: (c) => (data.pointsMeta[c.dataIndex]?.isBooking ? 7 : 0),
-          pointHoverRadius: 10,
+          pointRadius: (c) => (data.pointsMeta[c.dataIndex]?.isBooking ? 6 : 0),
+          pointHoverRadius: 8,
           pointBackgroundColor: (c) => {
             const meta = data.pointsMeta[c.dataIndex];
             if (!meta?.isBooking) return "rgba(0,0,0,0)";
@@ -220,21 +225,26 @@ function renderHomeCumulativeRevenueChart(rows) {
           type: "time",
           time: { unit: "month", displayFormats: { month: "MMM yyyy" } },
           grid: { color: "rgba(255,255,255,0.05)" },
-          ticks: { color: "#8b949e", font: { size: 11 } },
+          ticks: { color: "#8b949e", font: { size: 13 } },
         },
         y: {
           beginAtZero: true,
           grid: { color: "rgba(255,255,255,0.05)" },
-          ticks: {
-            color: "#8b949e",
-            font: { size: 11 },
-            callback: (v) => "€" + Number(v).toLocaleString("nl-NL"),
-          },
+
+          // ✅ we verbergen de y ticks in de chart zelf
+          ticks: { display: false },
+          border: { display: false },
         },
       },
     },
   });
+
+  // ✅ NA layout: sticky y-as labels (DOM) bijwerken
+  requestAnimationFrame(() => {
+    renderStickyYAxisLabelsFromChart(state.charts.homeCumulativeRevenue);
+  });
 }
+
 
 /* ============================================================
  * Helpers (Home)
@@ -256,10 +266,29 @@ function fmtEUR(n) {
   return val.toLocaleString("nl-NL", { style: "currency", currency: "EUR" });
 }
 
+function renderStickyYAxisLabelsFromChart(chart) {
+  const wrap = document.getElementById("cumYAxis");
+  if (!wrap || !chart?.scales?.y) return;
+
+  const yScale = chart.scales.y;
+
+  // ✅ omkeren: boven = max, onder = 0
+  const ticks = [...(yScale.ticks || [])].reverse();
+
+  wrap.innerHTML = "";
+  ticks.forEach((t) => {
+    const span = document.createElement("span");
+    span.textContent = "€" + Number(t.value).toLocaleString("nl-NL");
+    wrap.appendChild(span);
+  });
+}
+
+
+
 function setScrollableChartWidth(pointsCount) {
   const inner = document.getElementById("cumScrollInner");
   if (!inner) return;
-  inner.style.minWidth = Math.max(1000, pointsCount * 14) + "px";
+  inner.style.minWidth = Math.max(1000, pointsCount * 5) + "px";
 }
 
 function aggCumulativeDaily(rows) {
