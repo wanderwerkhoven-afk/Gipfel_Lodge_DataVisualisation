@@ -8,12 +8,13 @@
   <link rel="stylesheet" href="./CSS/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Excel reader -->
+  <!-- Excel reader / Chart library -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 </head>
 
-<body> 
+<body>
 
 <!-- ============================================================
      PAGE: HOME
@@ -21,194 +22,278 @@
 
 <main id="home-page" class="page active">
 
+  <header class="top-bar">
+    <div class="header-flex">
+      <div class="header-titles">
+        <h1>Gipfel Lodge</h1>
+        <p class="subtitle">Data overzichtelijk gemaakt</p>
+      </div>
 
-    <header class="top-bar">
-        <div class="header-flex">
-            <div class="header-titles">
-                <h1>Gipfel Lodge</h1>
-                <p class="subtitle">Data overzichtelijk gemaakt</p>
+      <div class="topbar__controls">
+        <label class="action-btn" for="fileInputHome">
+          <i class="fa-solid fa-file-import"></i>
+          <input id="fileInputHome" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== KPI-CARDS ====== -->
+  <section class="cards-grid">
+    <div class="kpi-card">
+      <span class="label">Boekingen</span>
+      <span id="kpiBookings" class="value">—</span>
+    </div>
+    <div class="kpi-card">
+      <span class="label">Nachten geboekt</span>
+      <span id="kpiNights" class="value">—</span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">Eigen boekingen</span>
+      <span id="kpiOwnerBookings" class="value">—</span>
+    </div>
+    <div class="kpi-card">
+      <span class="label">Nachten zelf geboekt</span>
+      <span id="kpiOwnerNights" class="value">—</span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">% al geboekt (jaar)</span>
+      <span id="kpiOccupancyPct" class="value">—</span>
+    </div>
+    <div class="kpi-card">
+      <span class="label">Nachten ongeboekt</span>
+      <span id="kpiNightsFree" class="value">—</span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">Omzet (Bruto)</span>
+      <span id="kpiGrossRevenue" class="value">—</span>
+    </div>
+    <div class="kpi-card">
+      <span class="label">Gem. bruto / nacht</span>
+      <span id="kpiGrossRevPerNight" class="value">—</span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">Omzet (Netto)</span>
+      <span id="kpiNetRevenue" class="value">—</span>
+    </div>
+    <div class="kpi-card">
+      <span class="label">Gem. netto / nacht</span>
+      <span id="kpiNetRevPerNight" class="value">—</span>
+    </div>
+  </section>
+
+  <!-- ====== SEIZOENSINZICHTEN ====== -->
+  <section class="content-section">
+    <div class="chart-panel">
+      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 class="panel-title" style="margin: 0;">Seizoensinzichten</h3>
+
+        <div class="year-select-container">
+          <div class="custom-select" id="yearSelectContainer">
+            <div class="select-trigger">
+              <span id="selectedYearDisplay">—</span>
+              <i class="fa-solid fa-chevron-down"></i>
             </div>
-            
-            <div class="topbar__controls">
-                <label class="action-btn" for="fileInput">
-                    <i class="fa-solid fa-file-import"></i>
-                    <input id="fileInput" type="file" accept=".xlsx,.xls" hidden />
-                </label>
+            <div class="select-options" id="yearOptions"></div>
+            <input type="hidden" id="yearValue" value="">
+          </div>
+        </div>
+      </div>
+
+      <div class="season-filter">
+        <button class="filter-btn active" data-season="all">Jaar</button>
+        <button class="filter-btn" data-season="winter">Winter</button>
+        <button class="filter-btn" data-season="spring">Lente</button>
+        <button class="filter-btn" data-season="summer">Zomer</button>
+        <button class="filter-btn" data-season="autumn">Herfst</button>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="chartHomeRevenue"></canvas>
+      </div>
+
+      <div class="mode-toggle">
+        <button id="btnGross" class="toggle-btn active">Bruto</button>
+        <button id="btnNet" class="toggle-btn">Netto</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CUMULATIEVE OMZET ====== -->
+  <section class="content-section">
+    <div class="chart-panel">
+
+      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 class="panel-title" style="margin: 0;">Overzicht boekingen</h3>
+
+        <div class="year-select-container">
+          <div class="custom-select" id="cumulativeYearSelectContainer">
+            <div class="select-trigger">
+              <span id="cumulativeYearDisplay">—</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="select-options" id="cumulativeYearOptions"></div>
+            <input type="hidden" id="cumulativeYearValue" value="">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel__body">
+        <div class="chart-scroll" id="cumScrollWrapper">
+            <div class="cum-axis">
+                <canvas id="chartCumulativeAxis"></canvas>
+            </div>
+
+            <div class="chart-scroll__inner" id="cumScrollInner">
+                <canvas id="chartCumulative"></canvas>
             </div>
         </div>
-    </header>
 
-    <!-- ======   KPI-CARDS   ====== -->
-    <section class="cards-grid">
-        <div class="kpi-card">
-            <span class="label">Boekingen</span>
-            <span id="kpiBookings" class="value">—</span>
-        </div>
-        <div class="kpi-card">
-            <span class="label">Nachten geboekt</span>
-            <span id="kpiNights" class="value">—</span>
-        </div>
 
-        <div class="kpi-card">
-            <span class="label">Eigen boekingen</span>
-            <span id="kpiOwnerBookings" class="value">—</span>
+        <div class="hint">
+          Scroll horizontaal voor details •
+          <span class="marker-orange">●</span> Oranje = huiseigenaar
         </div>
-        <div class="kpi-card">
-            <span class="label">Nachten zelf geboekt</span>
-            <span id="kpiOwnerNights" class="value">—</span>
-        </div>
+      </div>
 
-        <div class="kpi-card">
-            <span class="label">% al geboekt (jaar)</span>
-            <span id="kpiOccupancyPct" class="value">—</span>
-        </div>
-        <div class="kpi-card">
-            <span class="label">Nachten ongeboekt</span>
-            <span id="kpiNightsFree" class="value">—</span>
-        </div>
-        
+    </div>
+  </section>
 
-        <div class="kpi-card">
-            <span class="label">Omzet (Bruto)</span>
-            <span id="kpiGrossRevenue" class="value">—</span>
-        </div>
-        <div class="kpi-card">
-            <span class="label">Gem. bruto / nacht</span>
-            <span id="kpiGrossRevPerNight" class="value">—</span>
-        </div>
-
-        <div class="kpi-card">
-            <span class="label">Omzet (Netto)</span>
-            <span id="kpiNetRevenue" class="value">—</span>
-        </div>
-        <div class="kpi-card">
-            <span class="label">Gem. netto / nacht</span>
-            <span id="kpiNetRevPerNight" class="value">—</span>
-        </div>
-    </section>
-
-    <div class="container"></div>
+  <div class="container"></div>
 </main>
 
 <!-- ============================================================
      PAGE: BEZETTING
      ============================================================ -->
 
-
 <main id="occupancy-page" class="page">
-    <header class="top-bar">
-        <div class="header-flex">
-            <button class="back-btn" onclick="navigateTo('home')"><i class="fa-solid fa-chevron-left"></i></button>
-            <h1>Bezetting</h1>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="panel">
-            <h3 class="panel-title">Vrije nachten per week</h3>
-            <canvas id="chartFreeWeeks"></canvas>
-        </div>
-        <div class="panel">
-            <h3 class="panel-title">Gaps (Vrije periodes)</h3>
-            <div id="gapsWrap" class="table-wrap"></div>
-        </div>
+  <header class="top-bar">
+    <div class="header-flex">
+      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
+      <h1>Bezetting</h1>
     </div>
-</main>
+  </header>
 
-<main id="revenue-page" class="page">
-    <header class="top-bar">
-        <div class="header-flex">
-            <button class="back-btn" onclick="navigateTo('home')"><i class="fa-solid fa-chevron-left"></i></button>
-            <h1>Omzet & Prijs</h1>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="panel">
-            <h3 class="panel-title">Omzet per kanaal</h3>
-            <canvas id="chartRevenueChannel"></canvas>
-        </div>
+  <div class="container">
+    <div class="panel">
+      <h3 class="panel-title">Vrije nachten per week</h3>
+      <canvas id="chartFreeWeeks"></canvas>
     </div>
-</main>
-
-<main id="behavior-page" class="page">
-    <header class="top-bar">
-        <div class="header-flex">
-            <button class="back-btn" onclick="navigateTo('home')"><i class="fa-solid fa-chevron-left"></i></button>
-            <h1>Gasten Gedrag</h1>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="panel">
-            <h3 class="panel-title">Lead Time (Dagen voor aankomst)</h3>
-            <canvas id="chartLeadTime"></canvas>
-        </div>
-        <div class="panel">
-            <h3 class="panel-title">Gezinsverdeling</h3>
-            <canvas id="chartGuestPie"></canvas>
-        </div>
+    <div class="panel">
+      <h3 class="panel-title">Gaps (Vrije periodes)</h3>
+      <div id="gapsWrap" class="table-wrap"></div>
     </div>
-</main>
-
-<main id="data-page" class="page">
-    <header class="top-bar">
-        <div class="header-flex">
-            <button class="back-btn" onclick="navigateTo('home')"><i class="fa-solid fa-chevron-left"></i></button>
-            <h1>Data Management</h1>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="panel upload-zone">
-            <h3 class="panel-title">Nieuwe data inladen</h3>
-            <label class="upload-btn-full" for="fileInput">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>Selecteer Excel Bestand</span>
-                <input id="fileInput" type="file" accept=".xlsx,.xls,.csv" hidden />
-            </label>
-        </div>
-
-        <div class="panel">
-            <h3 class="panel-title">Systeem Log</h3>
-            <pre id="log" class="log">Wachten op bestand...</pre>
-        </div>
-
-        <div id="tableWrap" class="table-wrap"></div>
-    </div>
+  </div>
 </main>
 
 <!-- ============================================================
-     3  BOTTOM NAVIGATION BAR
+     PAGE: OMZET
+     ============================================================ -->
+
+<main id="revenue-page" class="page">
+  <header class="top-bar">
+    <div class="header-flex">
+      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
+      <h1>Omzet & Prijs</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="panel">
+      <h3 class="panel-title">Omzet per kanaal</h3>
+      <canvas id="chartRevenueChannel"></canvas>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================
+     PAGE: GEDRAG
+     ============================================================ -->
+
+<main id="behavior-page" class="page">
+  <header class="top-bar">
+    <div class="header-flex">
+      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
+      <h1>Gasten Gedrag</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="panel">
+      <h3 class="panel-title">Lead Time (Dagen voor aankomst)</h3>
+      <canvas id="chartLeadTime"></canvas>
+    </div>
+    <div class="panel">
+      <h3 class="panel-title">Gezinsverdeling</h3>
+      <canvas id="chartGuestPie"></canvas>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================
+     PAGE: DATA
+     ============================================================ -->
+
+<main id="data-page" class="page">
+  <header class="top-bar">
+    <div class="header-flex">
+      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
+      <h1>Data Management</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="panel upload-zone">
+      <h3 class="panel-title">Nieuwe data inladen</h3>
+      <label class="upload-btn-full" for="fileInputData">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <span>Selecteer Excel Bestand</span>
+        <input id="fileInputData" class="excel-upload" type="file" accept=".xlsx,.xls,.csv" hidden />
+      </label>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">Systeem Log</h3>
+      <pre id="log" class="log">Wachten op bestand...</pre>
+    </div>
+
+    <div id="tableWrap" class="table-wrap"></div>
+  </div>
+</main>
+
+<!-- ============================================================
+     BOTTOM NAVIGATION BAR
      ============================================================ -->
 
 <nav class="bottom-nav">
-    <div class="nav-item active" id="nav-home" onclick="navigateTo('home')">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-    </div>
-    <div class="nav-item" id="nav-occupancy" onclick="navigateTo('occupancy')">
-        <i class="fa-solid fa-calendar-days"></i>
-        <span>Bezetting</span>
-    </div>
-    <div class="nav-item" id="nav-revenue" onclick="navigateTo('revenue')">
-        <i class="fa-solid fa-euro-sign"></i>
-        <span>Omzet</span>
-    </div>
-    <div class="nav-item" id="nav-behavior" onclick="navigateTo('behavior')">
-        <i class="fa-solid fa-chart-pie"></i>
-        <span>Gedrag</span>
-    </div>
-    <div class="nav-item" id="nav-data" onclick="navigateTo('data')">
-        <i class="fa-solid fa-database"></i>
-        <span>Data</span>
-    </div>
+  <div class="nav-item active" id="nav-home" data-nav="home">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </div>
+  <div class="nav-item" id="nav-occupancy" data-nav="occupancy">
+    <i class="fa-solid fa-calendar-days"></i>
+    <span>Bezetting</span>
+  </div>
+  <div class="nav-item" id="nav-revenue" data-nav="revenue">
+    <i class="fa-solid fa-euro-sign"></i>
+    <span>Omzet</span>
+  </div>
+  <div class="nav-item" id="nav-behavior" data-nav="behavior">
+    <i class="fa-solid fa-chart-pie"></i>
+    <span>Gedrag</span>
+  </div>
+  <div class="nav-item" id="nav-data" data-nav="data">
+    <i class="fa-solid fa-database"></i>
+    <span>Data</span>
+  </div>
 </nav>
 
-
-
-
-<script src="./JS/app.js"></script>
+<!-- Entry point (ES Module) -->
+<script type="module" src="./JS/ui.js"></script>
 
 </body>
 </html>

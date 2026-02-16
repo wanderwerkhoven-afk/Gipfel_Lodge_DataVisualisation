@@ -133,7 +133,7 @@ body {
 .top-bar {
     padding: 40px 20px 24px 20px; /* Iets meer ruimte onderaan voor ademruimte */
     background: var(--bg);
-    position: sticky; /* Blijft bovenin staan tijdens scrollen indien gewenst */
+    position: relative; /* Blijft bovenin staan tijdens scrollen indien gewenst */
     top: 0;
     z-index: 100;
 }
@@ -250,4 +250,290 @@ body {
 
 .kpi-card:nth-child(even) {
     border-left: 2px solid #22c55e; /* Groen voor de rechterkolom */
+}
+
+
+
+
+
+
+
+
+.content-section {
+    width: 100%;
+    margin-top: 10px; /* Ruimte tussen de KPI-grid en de grafiek */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Ruimte tussen panelen als je er later meer toevoegt */
+}
+
+/* Zorg dat het paneel binnen de section altijd de volle breedte pakt */
+.chart-panel {
+    background-color: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px; /* Ruimere padding voor ademruimte */
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px; /* Meer afstand naar de seizoensknoppen */
+}
+
+/* Titel boven de grafiek */
+.panel-title {
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.panel-title i {
+    color: var(--accent); /* Kleur voor het icoontje */
+}
+
+/* Seizoens Filter (Segmented Control) */
+.season-filter {
+    display: flex;
+    gap: auto;
+    background: var(--bg); /* Donkere achtergrond voor contrast */
+    padding: 4px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    padding: 2px;
+}
+
+.filter-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 10px;
+    white-space: nowrap; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+    background: var(--panel-light);
+    color: var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.custom-select {
+    position: relative;
+    width: 90px;
+    user-select: none;
+}
+
+.select-trigger {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.select-trigger:hover {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.select-options {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #1a1d21; /* Donkere paneel kleur */
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 1000;
+    display: none; /* Standaard dicht */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.select-options.show {
+    display: block;
+    animation: fadeInDown 0.2s ease;
+}
+
+.option {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.option:hover {
+    background: var(--accent);
+    color: white;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Container waar de canvas in leeft */
+.chart-container {
+    position: relative;
+    height: 300px; /* Hoogte van de grafiek */
+    width: 100%;
+    margin-bottom: 30px; /* Ruimte tussen grafiek en knoppen */
+    padding-left: 5px; 
+}
+
+/* Bruto/Netto Toggle rechtsonder */
+.mode-toggle {
+    display: flex;
+    justify-content: center; /* Centreer de knoppen voor een nette look */
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    padding: 4px;
+    width: fit-content;
+    margin: 0 auto; /* Horizontaal centreren in het paneel */
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 24px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn.active {
+    background: var(--accent); /* De blauwe kleur */
+    color: white;
+}
+
+/* Mobiele aanpassing: op heel kleine schermen de knoppen scrollbaar maken */
+@media (max-width: 400px) {
+    .season-filter {
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+    .filter-btn {
+        padding: 8px 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* --- 8. CUMULATIEVE GRAFIEK SCROLL SETTINGS --- */
+
+/* Wrapper: flex zodat sticky y-axis links kan staan + scrollende chart rechts */
+.chart-scroll{
+  position: relative;
+  display: flex;
+  align-items: stretch;
+
+  height: 400px;                 /* vaste hoogte, anders canvas = 0px */
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  border-radius: 12px;
+  background: rgba(0,0,0,.15);
+  padding: 10px;
+  margin: 10px 0;
+
+  cursor: grab;
+}
+
+.chart-scroll:active{
+  cursor: grabbing;
+}
+
+/* Sticky y-axis links */
+.cum-axis{
+  position: sticky;
+  left: 0;
+  z-index: 10;
+
+  /* ✅ width wordt door JS gezet */
+  width: auto;
+  flex: 0 0 auto;
+
+  background: rgba(8, 12, 24, 0.95);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  padding-right: 8px;
+}
+
+.cum-axis canvas{
+  display: block;
+  /* ✅ width/height worden door JS gezet */
+}
+
+
+/* Scrollende chart inhoud rechts */
+.chart-scroll__inner{
+  height: 100%;
+  min-width: 1000px;   /* wordt door JS vergroot op basis van aantal dagen */
+  flex: 1 1 auto;
+}
+
+/* Main cumulatieve canvas */
+#chartCumulative{
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Aanpassing voor landschapsmodus op mobiel/tablet */
+@media (orientation: landscape){
+  .chart-scroll{
+    height: 380px;
+  }
+}
+
+/* Kleine instructie tekst onder de grafiek */
+.hint{
+  font-size: 11px;
+  color: #8b949e;
+  text-align: center;
+  margin-top: 8px;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Scrollbar styling (Chrome/Safari) */
+.chart-scroll::-webkit-scrollbar{
+  height: 4px;
+}
+.chart-scroll::-webkit-scrollbar-track{
+  background: rgba(255, 255, 255, 0.05);
+}
+.chart-scroll::-webkit-scrollbar-thumb{
+  background: var(--accent);
+  border-radius: 10px;
 }
