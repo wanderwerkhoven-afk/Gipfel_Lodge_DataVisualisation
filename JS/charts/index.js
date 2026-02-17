@@ -2,12 +2,12 @@
 
 //  HOME  //
 export { 
-        renderHomeKPIs, 
+        renderHomeKPIsForYear,
         renderHomeRevenueChart, 
         renderHomeCumulativeRevenueChartForYear,
         renderHomeBookingCarousel
-
         } from "./home.js";
+
 
 //  OMZET  //
 export { 

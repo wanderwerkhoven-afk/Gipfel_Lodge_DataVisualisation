@@ -45,6 +45,24 @@
   </header>
 
   <!-- ====== KPI-CARDS ====== -->
+  <div class="kpi-header">
+    <div class="kpi-header__left">
+      <h3 class="kpi-header__title">Overzicht</h3>
+      <p class="kpi-header__subtitle">Kies een jaar</p>
+    </div>
+
+    <div class="year-select-container year-select-container--kpi">
+      <div class="custom-select" id="yearSelectContainerKpi">
+        <div class="select-trigger">
+          <span id="selectedYearDisplayKpi">—</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div class="select-options" id="yearOptionsKpi"></div>
+        <input type="hidden" id="yearValueKpi" value="">
+      </div>
+    </div>
+  </div>
+
   <section class="cards-grid">
     <div class="kpi-card">
       <span class="label">Boekingen</span>

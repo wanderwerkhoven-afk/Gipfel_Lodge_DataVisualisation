@@ -21,32 +21,45 @@ import { getRowsForYear } from "../data.js";
  * HOME KPI CARDS
  * ============================================================ */
 
-export function renderHomeKPIs(allRows) {
+export function renderHomeKPIsForYear(yearOrAll) {
+  if (!state.rawRows || state.rawRows.length === 0) return;
+
+  const rows =
+    yearOrAll === "ALL" || yearOrAll == null
+      ? state.rawRows
+      : getRowsForYear(yearOrAll);
+
+  renderHomeKPIs(rows);
+}
+
+function renderHomeKPIs(allRows) {
   if (!allRows || allRows.length === 0) return;
 
   const platformRows = allRows.filter((r) => !r.__owner);
-  const ownerRows = allRows.filter((r) => r.__owner);
+  const ownerRows    = allRows.filter((r) => r.__owner);
 
-  const bookings = platformRows.length;
+  const bookings      = platformRows.length;
   const ownerBookings = ownerRows.length;
 
-  const nights = platformRows.reduce((s, r) => s + (r.__nights || 0), 0);
+  const nights      = platformRows.reduce((s, r) => s + (r.__nights || 0), 0);
   const ownerNights = ownerRows.reduce((s, r) => s + (r.__nights || 0), 0);
 
   const totalOccupied = nights + ownerNights;
 
+  // ALL -> kan meerdere jaren bevatten, jaarselect -> meestal 1 jaar
   const yearsInData = Math.max(1, getUniqueYearsCount(allRows));
-  const totalDays = yearsInData * CONFIG.DAYS_IN_YEAR;
+  const totalDays   = yearsInData * CONFIG.DAYS_IN_YEAR;
 
   const occupancyPct = totalDays > 0 ? totalOccupied / totalDays : 0;
 
   const grossRevenue = platformRows.reduce((s, r) => s + (r.__gross || 0), 0);
-  const netRevenue = platformRows.reduce((s, r) => s + (r.__net || 0), 0);
+  const netRevenue   = platformRows.reduce((s, r) => s + (r.__net || 0), 0);
 
   setText("kpiBookings", bookings);
   setText("kpiNights", nights);
   setText("kpiOwnerBookings", ownerBookings);
   setText("kpiOwnerNights", ownerNights);
+
   setText("kpiNightsFree", Math.max(0, totalDays - totalOccupied));
   setText("kpiOccupancyPct", (occupancyPct * 100).toFixed(1) + "%");
 
@@ -56,6 +69,8 @@ export function renderHomeKPIs(allRows) {
   setText("kpiNetRevenue", fmtEUR(netRevenue));
   setText("kpiNetRevPerNight", fmtEUR(nights > 0 ? netRevenue / nights : 0));
 }
+
+
 
 
 

@@ -4,7 +4,7 @@ import { bindFileUploads, getYears } from "./data.js";
 
 // ✅ Charts per pagina (barrel exports)
 import {
-  renderHomeKPIs,
+  renderHomeKPIsForYear,
   renderHomeBookingCarousel,
   renderHomeRevenueChart,
   renderHomeCumulativeRevenueChartForYear,
@@ -13,6 +13,7 @@ import {
   renderGedragCharts,
   renderDataVisCharts,
 } from "./charts/index.js";
+
 
 document.addEventListener("DOMContentLoaded", () => {
   // 1) Navigatie (bottom nav + back buttons)
@@ -101,13 +102,17 @@ function renderActivePage() {
 }
 
 function renderHomePage() {
-  renderHomeKPIs(state.rawRows);
+  // KPI dropdown stuurt dit aan (met ALL support)
+  const kpiYear = state.kpiYear ?? "ALL";
+  renderHomeKPIsForYear(kpiYear);
+
   renderHomeBookingCarousel(state.rawRows);
   renderHomeRevenueChart();
 
   const y = state.cumulativeYear ?? state.currentYear;
   if (y != null) renderHomeCumulativeRevenueChartForYear(y);
 }
+
 
 /* ============================================================
  * YEAR SELECTS (CUSTOM)
@@ -136,6 +141,18 @@ function setupYearSelects(years = getYears()) {
     get: () => state.cumulativeYear ?? "ALL",
     set: (y) => (state.cumulativeYear = y),
     onChange: () => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL"),
+  });
+
+  // ✅ KPI dropdown (met ALL)
+  wireCustomYearSelect({
+    containerId: "yearSelectContainerKpi",
+    displayId: "selectedYearDisplayKpi",
+    optionsId: "yearOptionsKpi",
+    hiddenId: "yearValueKpi",
+    years: ["ALL", ...years],
+    get: () => state.kpiYear ?? "ALL",
+    set: (y) => (state.kpiYear = y),
+    onChange: () => renderHomeKPIsForYear(state.kpiYear ?? "ALL"),
   });
 }
 

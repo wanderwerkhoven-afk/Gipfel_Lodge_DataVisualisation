@@ -12,6 +12,7 @@ export const CONFIG = {
 
 export const state = {
   rawRows: [],
+  kpiYear: "ALL",
   currentYear: new Date().getFullYear(),
   cumulativeYear: null,
   currentSeason: "all",
