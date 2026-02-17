@@ -5,6 +5,7 @@ import { bindFileUploads, getYears } from "./data.js";
 // ✅ Charts per pagina (barrel exports)
 import {
   renderHomeKPIs,
+  renderHomeBookingCarousel,
   renderHomeRevenueChart,
   renderHomeCumulativeRevenueChartForYear,
   // placeholders voor later:
@@ -101,6 +102,7 @@ function renderActivePage() {
 
 function renderHomePage() {
   renderHomeKPIs(state.rawRows);
+  renderHomeBookingCarousel(state.rawRows);
   renderHomeRevenueChart();
 
   const y = state.cumulativeYear ?? state.currentYear;

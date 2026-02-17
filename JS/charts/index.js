@@ -4,7 +4,8 @@
 export { 
         renderHomeKPIs, 
         renderHomeRevenueChart, 
-        renderHomeCumulativeRevenueChartForYear
+        renderHomeCumulativeRevenueChartForYear,
+        renderHomeBookingCarousel
 
         } from "./home.js";
 
