@@ -102,25 +102,19 @@
         <!-- booking slides worden hier dynamisch door JS ingevoegd -->
       </div>
 
-      <!-- Desktop navigatie (optioneel) -->
-      <button
-        class="booking-carousel__nav booking-carousel__nav--prev"
-        id="bookingPrevBtn"
-        aria-label="Vorige boeking">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-
-      <button
-        class="booking-carousel__nav booking-carousel__nav--next"
-        id="bookingNextBtn"
-        aria-label="Volgende boeking">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-
-      <!-- Dots indicator -->
-      <div class="booking-carousel__dots" id="bookingCarouselDots"></div>
+      
 
     </div>
+
+    <!-- Dots indicator -->
+    <div class="booking-scrollbar" id="bookingScrollbar" aria-label="Booking pager">
+      <div class="booking-scrollbar__rail">
+        <div class="booking-scrollbar__ticks" id="bookingTicks"></div>
+        <div class="booking-scrollbar__knob" id="bookingKnob"></div>
+      </div>
+    </div>
+
+
   </section>
 
 

@@ -62,14 +62,23 @@ export function renderHomeKPIs(allRows) {
 
 /* ============================================================
  * HOME: Booking Cards Carousel (swipeable: verleden / nu / toekomst)
+ * + Pager: rail + ticks + knob (platgeslagen draaiknop)
  * ============================================================ */
 
 export function renderHomeBookingCarousel(allRows) {
-  const carousel = document.getElementById("bookingCarousel");
-  const track = document.getElementById("bookingCarouselTrack");
-  const dotsWrap = document.getElementById("bookingCarouselDots");
-  const prevBtn = document.getElementById("bookingPrevBtn");
-  const nextBtn = document.getElementById("bookingNextBtn");
+  // --- DOM refs ---
+  const carousel  = document.getElementById("bookingCarousel");
+  const track     = document.getElementById("bookingCarouselTrack");
+
+  // (oude dots blijven bestaan, maar worden vervangen door knob/ticks)
+  const dotsWrap  = document.getElementById("bookingCarouselDots");
+
+  const prevBtn   = document.getElementById("bookingPrevBtn");
+  const nextBtn   = document.getElementById("bookingNextBtn");
+
+  // nieuwe pager elementen
+  const knob      = document.getElementById("bookingKnob");
+  const ticksWrap = document.getElementById("bookingTicks");
 
   if (!carousel || !track) return;
 
@@ -78,7 +87,9 @@ export function renderHomeBookingCarousel(allRows) {
     return;
   }
 
+  // ------------------------------------------------------------
   // Helpers
+  // ------------------------------------------------------------
   const get = (row, keys, fallback = null) => {
     for (const k of keys) {
       if (row && row[k] != null && row[k] !== "") return row[k];
@@ -117,12 +128,14 @@ export function renderHomeBookingCarousel(allRows) {
     return String(v).replace(/[^\d+]/g, "");
   };
 
+  // ------------------------------------------------------------
   // 1) Normalize rows (matchend met jouw Excel headers)
+  // ------------------------------------------------------------
   const rows = allRows
     .map((r) => {
       const aankomst = coerceDate(get(r, ["__aankomst", "Aankomst"]));
-      const vertrek = coerceDate(get(r, ["__vertrek", "Vertrek"]));
-      const nights = Number(get(r, ["__nights", "Nachten"], 0)) || 0;
+      const vertrek  = coerceDate(get(r, ["__vertrek", "Vertrek"]));
+      const nights   = Number(get(r, ["__nights", "Nachten"], 0)) || 0;
 
       const guest = String(get(r, ["__guest", "__gast", "Gast", "Naam"], "Onbekende gast"));
       const owner = !!get(r, ["__owner"], false);
@@ -133,7 +146,7 @@ export function renderHomeBookingCarousel(allRows) {
         : (owner ? "Huiseigenaar" : "");
 
       const adults = Number(get(r, ["__adults", "Volw.", "Volwassenen"], 0)) || 0;
-      const kids = Number(get(r, ["__kids", "Knd.", "Kinderen"], 0)) || 0;
+      const kids   = Number(get(r, ["__kids", "Knd.", "Kinderen"], 0)) || 0;
       const babies = Number(get(r, ["__babies", "Bab.", "Baby"], 0)) || 0;
 
       const phone = normalizePhone(get(r, ["__phone", "Telefoon", "Phone", "Tel"], ""));
@@ -144,7 +157,7 @@ export function renderHomeBookingCarousel(allRows) {
         .toUpperCase();
 
       const gross = Number(get(r, ["__gross", "Inkomsten", "Bruto", "Gross"], 0)) || 0;
-      const net = Number(get(r, ["__net", "Netto", "Net"], 0)) || 0;
+      const net   = Number(get(r, ["__net", "Netto", "Net"], 0)) || 0;
 
       return {
         aankomst,
@@ -171,23 +184,58 @@ export function renderHomeBookingCarousel(allRows) {
     return;
   }
 
+  // ------------------------------------------------------------
   // 2) start index: NU (als aanwezig), anders eerst VOLGENDE
-  const now = startOfDay(new Date());
+  // ------------------------------------------------------------
+  const now        = startOfDay(new Date());
   const currentIdx = rows.findIndex((r) => r.aankomst <= now && now < r.vertrek);
-  const nextIdx = rows.findIndex((r) => r.aankomst > now);
+  const nextIdx    = rows.findIndex((r) => r.aankomst > now);
   const startIndex = currentIdx !== -1 ? currentIdx : (nextIdx !== -1 ? nextIdx : 0);
 
-  // helpers voor dots & scroll
+  // ------------------------------------------------------------
+  // 2b) Pager (dots/knob) helpers
+  // ------------------------------------------------------------
+
+  // (oude dots helper blijft bestaan; wordt nog aangeroepen maar is optioneel)
   const setActiveDot = (idx) => {
     if (!dotsWrap) return;
     [...dotsWrap.children].forEach((d, i) => d.classList.toggle("is-active", i === idx));
   };
 
+  const updateKnob = (idx) => {
+    if (!knob) return;
+
+    const rail = knob.closest(".booking-scrollbar__rail");
+    if (!rail) return;
+
+    const railRect = rail.getBoundingClientRect();
+    const padding = 14; // moet matchen met CSS ticks padding
+    const usable = Math.max(0, railRect.width - padding * 2);
+
+    const maxIdx = Math.max(1, rows.length - 1);
+    const t = idx / maxIdx; // 0..1
+    const x = padding + usable * t;
+
+    knob.style.left = `${x}px`;
+  };
+
+  // ------------------------------------------------------------
+  // 2c) Scroll helpers
+  // ------------------------------------------------------------
   const scrollToIndex = (idx, smooth = true) => {
     const slides = track.querySelectorAll(".booking-slide");
     if (!slides[idx]) return;
-    slides[idx].scrollIntoView({ behavior: smooth ? "smooth" : "auto", inline: "center", block: "nearest" });
-    setActiveDot(idx);
+
+    // inline: "start" past beter bij jouw full-page swipe CSS (100vw slides)
+    slides[idx].scrollIntoView({
+      behavior: smooth ? "smooth" : "auto",
+      inline: "start",
+      block: "nearest",
+    });
+
+    // update pagers
+    setActiveDot(idx);  // dots blijven werken als je ze nog gebruikt
+    updateKnob(idx);    // nieuwe knob
   };
 
   const getClosestIndex = () => {
@@ -213,21 +261,35 @@ export function renderHomeBookingCarousel(allRows) {
     return bestIdx;
   };
 
+  // ------------------------------------------------------------
   // 3) render
+  // ------------------------------------------------------------
   track.innerHTML = "";
+
+  // dots: blijven bestaan, maar mogen leeg blijven als je overgaat op knob
   if (dotsWrap) dotsWrap.innerHTML = "";
 
+  // ticks bouwen voor knob-rail
+  if (ticksWrap) {
+    ticksWrap.innerHTML = "";
+    rows.forEach(() => {
+      const t = document.createElement("div");
+      t.className = "booking-tick";
+      ticksWrap.appendChild(t);
+    });
+  }
+
   rows.forEach((picked, idx) => {
-    const isNow = picked.aankomst <= now && now < picked.vertrek;
+    const isNow  = picked.aankomst <= now && now < picked.vertrek;
     const isNext = !isNow && picked.aankomst > now;
 
-    const statusText = isNow ? "NU" : (isNext ? "VOLGENDE" : "VERLEDEN");
+    const statusText  = isNow ? "NU" : (isNext ? "VOLGENDE" : "VERLEDEN");
     const statusClass = isNow ? "badge--now" : (isNext ? "badge--next" : "badge--muted");
 
     // breakdown: alleen >0
     const breakdownParts = [];
     if ((picked.adults || 0) > 0) breakdownParts.push(`${picked.adults} volwassenen`);
-    if ((picked.kids || 0) > 0) breakdownParts.push(`${picked.kids} kinderen`);
+    if ((picked.kids   || 0) > 0) breakdownParts.push(`${picked.kids} kinderen`);
     if ((picked.babies || 0) > 0) breakdownParts.push(`${picked.babies} baby`);
     const breakdown = breakdownParts.length ? `(${breakdownParts.join(", ")})` : "—";
 
@@ -309,6 +371,7 @@ export function renderHomeBookingCarousel(allRows) {
 
     track.appendChild(slide);
 
+    // oude dots blijven werken als je ze nog gebruikt (optioneel)
     if (dotsWrap) {
       const dot = document.createElement("div");
       dot.className = "booking-dot" + (idx === startIndex ? " is-active" : "");
@@ -317,21 +380,125 @@ export function renderHomeBookingCarousel(allRows) {
     }
   });
 
+  // ------------------------------------------------------------
   // 4) show + scroll to start
+  // ------------------------------------------------------------
   carousel.style.display = "block";
-  requestAnimationFrame(() => scrollToIndex(startIndex, false));
+  requestAnimationFrame(() => {
+    scrollToIndex(startIndex, false);
+    updateKnob(startIndex);
+  });
 
+  // ------------------------------------------------------------
   // 5) nav buttons (desktop)
+  // ------------------------------------------------------------
   if (prevBtn) prevBtn.onclick = () => scrollToIndex(Math.max(0, getClosestIndex() - 1));
   if (nextBtn) nextBtn.onclick = () => scrollToIndex(Math.min(rows.length - 1, getClosestIndex() + 1));
 
-  // 6) update dots on swipe/scroll
+  // ------------------------------------------------------------
+  // 6) update pager on swipe/scroll
+  // ------------------------------------------------------------
   let raf = null;
   track.addEventListener("scroll", () => {
     if (raf) cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => setActiveDot(getClosestIndex()));
+    raf = requestAnimationFrame(() => {
+      const idx = getClosestIndex();
+      setActiveDot(idx);   // blijft veilig (als dotsWrap bestaat)
+      updateKnob(idx);     // nieuwe knob
+    });
   });
+
+    // ------------------------------------------------------------
+  // 7) Draggable pager knob (slepen = naar page snappen)
+  // ------------------------------------------------------------
+  const rail = knob ? knob.closest(".booking-scrollbar__rail") : null;
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+  const indexFromClientX = (clientX) => {
+    if (!rail) return 0;
+
+    const rect = rail.getBoundingClientRect();
+    const padding = 14; // moet matchen met CSS ticks padding
+    const usable = Math.max(1, rect.width - padding * 2);
+
+    const x = clamp(clientX - rect.left - padding, 0, usable);
+    const t = x / usable; // 0..1
+
+    const maxIdx = Math.max(1, rows.length - 1);
+    return Math.round(t * maxIdx);
+  };
+
+  let isDragging = false;
+  let dragRaf = null;
+  let lastIdx = startIndex;
+
+  const onPointerMove = (e) => {
+    if (!isDragging) return;
+
+    const idx = indexFromClientX(e.clientX);
+    lastIdx = idx;
+
+    // Update knob soepel tijdens slepen (zonder elke pixel te scrollen)
+    if (dragRaf) cancelAnimationFrame(dragRaf);
+    dragRaf = requestAnimationFrame(() => updateKnob(idx));
+  };
+
+  const onPointerUp = (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    // release capture (veilig)
+    try {
+      if (knob && e?.pointerId != null) knob.releasePointerCapture(e.pointerId);
+    } catch (_) {}
+
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+    window.removeEventListener("pointercancel", onPointerUp);
+
+    scrollToIndex(lastIdx, true);
+  };
+
+    const startDrag = (e) => {
+    if (!rail || !knob) return;
+
+    isDragging = true;
+
+    // ✅ super belangrijk: pointer capture zodat je de knob "vast" houdt
+    try {
+      knob.setPointerCapture(e.pointerId);
+    } catch (_) {}
+
+    // voorkom dat de pagina scrollt tijdens drag
+    e.preventDefault();
+
+    lastIdx = indexFromClientX(e.clientX);
+    updateKnob(lastIdx);
+
+    window.addEventListener("pointermove", onPointerMove, { passive: false });
+    window.addEventListener("pointerup", onPointerUp, { passive: false });
+    window.addEventListener("pointercancel", onPointerUp, { passive: false });
+  };
+
+  // Slepen op knob
+  if (knob) {
+    knob.addEventListener("pointerdown", startDrag, { passive: false });
+  }
+
+  // Klik/tap op rail = spring naar page
+  if (rail) {
+    rail.addEventListener("pointerdown", (e) => {
+      // ✅ belangrijk: als je op de knob (of iets erin) klikt, niet jumpen
+      if (e.target.closest && e.target.closest("#bookingKnob")) return;
+
+      const idx = indexFromClientX(e.clientX);
+      scrollToIndex(idx, true);
+    }, { passive: true });
+  }
+
 }
+
 
 /* ============================================================
  * HOME: Omzet per maand (BAR)
