@@ -217,6 +217,7 @@
   </section>
 
   <div class="container"></div>
+
 </main>
 
 <!-- ============================================================
@@ -224,24 +225,84 @@
      ============================================================ -->
 
 <main id="occupancy-page" class="page">
+
   <header class="top-bar">
     <div class="header-flex">
-      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
-      <h1>Bezetting</h1>
+      <div class="header-titles">
+        <h1>Bezetting & Gebruik</h1>
+        <p class="subtitle">Data overzichtelijk gemaakt</p>
+      </div>
+
+      <div class="topbar__controls">
+        <label class="action-btn" for="fileInputHome">
+          <i class="fa-solid fa-file-import"></i>
+          <input id="fileInputHome" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
+        </label>
+      </div>
     </div>
   </header>
 
   <div class="container">
-    <div class="panel">
-      <h3 class="panel-title">Vrije nachten per week</h3>
-      <canvas id="chartFreeWeeks"></canvas>
+
+    <!-- ====== KPI-HEADER (zoals Home) ====== -->
+    <div class="kpi-header">
+      <div class="kpi-header__left">
+        <h3 class="kpi-header__title">Bezettingskalender</h3>
+        <p class="kpi-header__subtitle">Swipe door de maanden</p>
+      </div>
     </div>
+
+    <!-- ====== Kalender panel ====== -->
     <div class="panel">
-      <h3 class="panel-title">Gaps (Vrije periodes)</h3>
-      <div id="gapsWrap" class="table-wrap"></div>
+      <!-- Swipeable month carousel -->
+      <div id="occCalendarCarousel" class="occ-carousel booking-carousel">
+        <div id="occCalendarTrack" class="booking-carousel__track"></div>
+      </div>
+
+      <!-- Legend UNDER calendar -->
+      <div class="occ-legend">
+        <div class="occ-legend__item">
+          <span class="dot dot-platform"></span>
+          <span>Platform</span>
+        </div>
+        <div class="occ-legend__item">
+          <span class="dot dot-owner"></span>
+          <span>Eigen gebruik</span>
+        </div>
+      </div>
+
+      <div id="occTooltip" class="occ-tooltip" style="display:none;"></div>
     </div>
+
+    <!-- ====== horizontale spatie ====== -->
+    <div class="divider-horizontal"></div>
+
+    <!-- ====== KPI-HEADER (zoals Home) ====== -->
+    <div class="kpi-header">
+      <div class="kpi-header__left">
+        <h3 class="kpi-header__title">Weekoverzicht</h3>
+        <p class="kpi-header__subtitle">Elke week = 7 nachten (platform vs eigen vs vrij)</p>
+      </div>
+    </div>
+
+    <!-- ====== Week chart (zelfde feel als chart-panel) ====== -->
+    <section class="content-section">
+      <div class="chart-panel">
+        <div class="chart-container" style="height:260px;">
+          <canvas id="chartWeekStack"></canvas>
+        </div>
+      </div>
+    </section>
+
   </div>
+
+  <div class="divider-horizontal"></div>
+
 </main>
+
+
+
+
 
 <!-- ============================================================
      PAGE: OMZET

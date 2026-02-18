@@ -31,6 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4) Filters / toggles (alleen actief wanneer page zichtbaar is, maar binden kan altijd)
   bindSeasonButtons();
   bindModeButtons();
+
+  // 5) Bezetting --> kalender 
+  bindOccupancyToggles();
+
 });
 
 /* ============================================================
@@ -119,6 +123,19 @@ function renderHomePage() {
  * ============================================================ */
 
 function setupYearSelects(years = getYears()) {
+
+  // ✅ KPI dropdown (met ALL)
+  wireCustomYearSelect({
+    containerId: "yearSelectContainerKpi",
+    displayId: "selectedYearDisplayKpi",
+    optionsId: "yearOptionsKpi",
+    hiddenId: "yearValueKpi",
+    years: ["ALL", ...years],
+    get: () => state.kpiYear ?? "ALL",
+    set: (y) => (state.kpiYear = y),
+    onChange: () => renderHomeKPIsForYear(state.kpiYear ?? "ALL"),
+  });
+
   // ✅ HOME (Seizoensinzichten) dropdown
   wireCustomYearSelect({
     containerId: "yearSelectContainer",
@@ -143,19 +160,7 @@ function setupYearSelects(years = getYears()) {
     onChange: () => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL"),
   });
 
-  // ✅ KPI dropdown (met ALL)
-  wireCustomYearSelect({
-    containerId: "yearSelectContainerKpi",
-    displayId: "selectedYearDisplayKpi",
-    optionsId: "yearOptionsKpi",
-    hiddenId: "yearValueKpi",
-    years: ["ALL", ...years],
-    get: () => state.kpiYear ?? "ALL",
-    set: (y) => (state.kpiYear = y),
-    onChange: () => renderHomeKPIsForYear(state.kpiYear ?? "ALL"),
-  });
 }
-
 
 function wireCustomYearSelect({
   containerId,
@@ -281,4 +286,23 @@ function bindModeButtons() {
     if (getActivePageId() === "home") renderHomePage();
     else renderActivePage();
   });
+
+function bindOccupancyToggles() {
+  const tPlatform = document.getElementById("togglePlatform");
+  const tOwner = document.getElementById("toggleOwner");
+
+  if (tPlatform) {
+    tPlatform.addEventListener("change", () => {
+      state.showPlatform = !!tPlatform.checked;
+      renderActivePage();
+    });
+  }
+  if (tOwner) {
+    tOwner.addEventListener("change", () => {
+      state.showOwner = !!tOwner.checked;
+      renderActivePage();
+    });
+  }
+}
+
 }

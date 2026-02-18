@@ -11,18 +11,31 @@ export const CONFIG = {
 };
 
 export const state = {
+  // ===== bestaande velden =====
   rawRows: [],
   kpiYear: "ALL",
   currentYear: new Date().getFullYear(),
   cumulativeYear: null,
   currentSeason: "all",
-  currentMode: "gross", // "gross" | "net"
+  currentMode: "gross",
+
   charts: {
     homeBar: null,
     cumulative: null,
+
+    // ⬇️ nieuw
+    weekStack: null,
   },
+
+  // ===== NIEUW: occupancy page =====
+  occupancyYear: new Date().getFullYear(),
+  occupancyMonth: new Date().getMonth(), // 0..11
+  showPlatform: true,
+  showOwner: true,
 };
 
 export function setState(patch) {
   Object.assign(state, patch);
 }
+
+
