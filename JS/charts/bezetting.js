@@ -3,25 +3,59 @@ import { state } from "../state.js";
 
 /**
  * Entry: render occupancy page
- * - Swipeable month carousel (12 months)
- * - Week stacked bar (0..7)
+ * - Year dropdown is handled in ui.js via wireCustomYearSelect()
+ * - Here we only read state.occupancyYear ("ALL" or "2026") and render charts
  */
 export function renderBezettingCharts() {
   if (!state.rawRows || !state.rawRows.length) return;
 
   // defaults
-  if (state.occupancyYear == null) state.occupancyYear = state.currentYear ?? new Date().getFullYear();
+  if (state.occupancyYear == null) state.occupancyYear = "ALL";
   if (state.occupancyMonth == null) state.occupancyMonth = new Date().getMonth();
   if (state.showPlatform == null) state.showPlatform = true;
   if (state.showOwner == null) state.showOwner = true;
 
-  const bookings = normalizeBookings(state.rawRows).filter((b) => intersectsYear(b, state.occupancyYear));
+  // normalize once
+  const allBookings = normalizeBookings(state.rawRows);
+
+  // viewYear: if ALL -> use currentYear (or this year), else selected year
+  let yearsToRender;
+
+  if (state.occupancyYear === "ALL") {
+    yearsToRender = Array.from(
+      new Set(
+        allBookings.flatMap((b) => [
+          b.start.getFullYear(),
+          b.end.getFullYear(),
+        ])
+      )
+    )
+      .filter(Number.isFinite)
+      .sort((a, b) => a - b);
+  } else {
+    yearsToRender = [Number(state.occupancyYear)];
+  }
+
+  const bookingsForView = allBookings.filter((b) =>
+    yearsToRender.some((y) => intersectsYear(b, y))
+  );
+
+  // ⬇️ belangrijk
+  renderCalendarCarousel(bookingsForView, yearsToRender);
+  renderWeekStack(bookingsForView, yearsToRender);
+
+
+  // clamp in case something weird gets into the state
+  const safeViewYear = Number.isFinite(viewYear) ? viewYear : new Date().getFullYear();
+
+  // filter to view year window
+  const bookingsForYear = allBookings.filter((b) => intersectsYear(b, safeViewYear));
 
   // 1) Calendar carousel (12 months)
-  renderCalendarCarousel(bookings, state.occupancyYear);
+  renderCalendarCarousel(bookingsForYear, safeViewYear);
 
   // 2) Week stacked chart
-  renderWeekStack(bookings, state.occupancyYear);
+  renderWeekStack(bookingsForYear, safeViewYear);
 }
 
 /* =========================================================
@@ -65,7 +99,13 @@ function isOwnerBooking(r) {
   return b.includes("huiseigenaar") || inc === "-" || inc === "" || inc === "—";
 }
 
-function renderCalendarCarousel(bookings, year) {
+/* =========================================================
+   1) CALENDAR CAROUSEL (12 months)
+   ========================================================= */
+
+let occCarouselBound = false;
+
+function renderCalendarCarousel(bookings, years) {
   const carousel = document.getElementById("occCalendarCarousel");
   const track = document.getElementById("occCalendarTrack");
   const tooltip = document.getElementById("occTooltip");
@@ -74,82 +114,115 @@ function renderCalendarCarousel(bookings, year) {
   const showPlatform = !!state.showPlatform;
   const showOwner = !!state.showOwner;
 
-  const yearStart = startOfDay(new Date(year, 0, 1));
-  const yearEnd = startOfDay(new Date(year + 1, 0, 1));
-
+  // ✅ Filter ALLEEN op toggles (niet op jaar)
   const filtered = bookings.filter((b) => {
     if (b.type === "platform" && !showPlatform) return false;
     if (b.type === "owner" && !showOwner) return false;
-    return b.start < yearEnd && b.end > yearStart;
+    return true;
   });
 
   track.innerHTML = "";
 
-  for (let m = 0; m < 12; m++) {
-    const slide = document.createElement("div");
-    slide.className = "occ-month-slide";
+  // ✅ Zorg dat years echt een array is (en gesorteerd)
+  const yearList = Array.isArray(years) ? [...years] : [Number(years)];
+  yearList.sort((a, b) => a - b);
 
-    const card = document.createElement("div");
-    card.className = "occ-month-card";
+  let slideIndex = 0;
 
-    // ✅ nav buttons in corners
-    const nav = document.createElement("div");
-    nav.className = "occ-card-nav";
-    nav.innerHTML = `
-      <button class="occ-nav-btn" data-dir="-1" aria-label="Vorige maand">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      <button class="occ-nav-btn" data-dir="1" aria-label="Volgende maand">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    `;
-    card.appendChild(nav);
+  yearList.forEach((year) => {
+    for (let m = 0; m < 12; m++) {
+      const slide = document.createElement("div");
+      slide.className = "occ-month-slide";
+      slide.dataset.slideIndex = String(slideIndex);
 
-    // ✅ bind listeners NOW (elements exist)
-    nav.querySelectorAll(".occ-nav-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      const card = document.createElement("div");
+      card.className = "occ-month-card";
 
-        const dir = Number(btn.dataset.dir || "0");
-        const cur = clamp(Number(state.occupancyMonth ?? 0), 0, 11);
-        const next = clamp(cur + dir, 0, 11);
+      // nav buttons (corners)
+      const nav = document.createElement("div");
+      nav.className = "occ-card-nav";
+      nav.innerHTML = `
+        <button class="occ-nav-btn" data-dir="-1" aria-label="Vorige maand">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="occ-nav-btn" data-dir="1" aria-label="Volgende maand">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      `;
+      card.appendChild(nav);
 
-        state.occupancyMonth = next;
-        carousel.scrollTo({ left: carousel.clientWidth * next, behavior: "smooth" });
+      // bind nav buttons
+      nav.querySelectorAll(".occ-nav-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const dir = Number(btn.dataset.dir || "0");
+          const totalSlides = yearList.length * 12;
+
+          const cur = clamp(
+            Number(state.occupancySlideIndex ?? 0),
+            0,
+            totalSlides - 1
+          );
+
+          const next = clamp(cur + dir, 0, totalSlides - 1);
+          state.occupancySlideIndex = next;
+
+          carousel.scrollTo({
+            left: carousel.clientWidth * next,
+            behavior: "smooth",
+          });
+        });
       });
-    });
 
-    const title = document.createElement("div");
-    title.className = "occ-month-title";
-    title.textContent = new Date(year, m, 1).toLocaleDateString("nl-NL", {
-      month: "long",
-      year: "numeric",
-    });
+      // title
+      const title = document.createElement("div");
+      title.className = "occ-month-title";
+      title.textContent = new Date(year, m, 1).toLocaleDateString("nl-NL", {
+        month: "long",
+        year: "numeric",
+      });
 
-    const grid = document.createElement("div");
-    grid.className = "occ-month-grid";
-    grid.dataset.month = String(m);
+      // grid
+      const grid = document.createElement("div");
+      grid.className = "occ-month-grid";
+      grid.dataset.year = String(year);
+      grid.dataset.month = String(m);
 
-    card.appendChild(title);
-    card.appendChild(grid);
-    slide.appendChild(card);
-    track.appendChild(slide);
+      card.appendChild(title);
+      card.appendChild(grid);
+      slide.appendChild(card);
+      track.appendChild(slide);
 
-    renderSingleMonthGrid(grid, filtered, year, m, tooltip);
-  }
+      // ✅ render met jaar+maand (bookings al toggle-filtered)
+      renderSingleMonthGrid(grid, filtered, year, m, tooltip);
 
-  // ✅ scroll to current month
-  const activeMonth = clamp(Number(state.occupancyMonth ?? new Date().getMonth()), 0, 11);
-  requestAnimationFrame(() => {
-    carousel.scrollLeft = carousel.clientWidth * activeMonth;
+      slideIndex++;
+    }
   });
 
-  bindCarouselSyncOnce(carousel);
+  // ✅ scroll naar juiste slideIndex (niet alleen maand 0-11)
+  const totalSlides = yearList.length * 12;
+
+  if (state.occupancySlideIndex == null) {
+    // default: huidige maand van eerste jaar (of 0)
+    state.occupancySlideIndex = clamp(new Date().getMonth(), 0, totalSlides - 1);
+  }
+
+  const activeSlide = clamp(Number(state.occupancySlideIndex), 0, totalSlides - 1);
+
+  requestAnimationFrame(() => {
+    carousel.scrollLeft = carousel.clientWidth * activeSlide;
+  });
+
+  bindCarouselSyncOnce(carousel, totalSlides);
 }
 
 
 function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
+  gridEl.innerHTML = "";
+
   // DOW header
   const dows = ["MA", "DI", "WO", "DO", "VR", "ZA", "ZO"];
   dows.forEach((t) => {
@@ -171,7 +244,7 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
   // Map: dateKey -> cell element
   const cellByKey = new Map();
 
-  // Render day cells (squares already handled in CSS)
+  // Render day cells
   days.forEach((day) => {
     const cell = document.createElement("div");
     cell.className = "occ-month-cell";
@@ -183,7 +256,6 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
     cell.appendChild(dayLabel);
 
     gridEl.appendChild(cell);
-
     cellByKey.set(dayKey(day), cell);
   });
 
@@ -193,14 +265,14 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
 
   const visibleBookings = bookings.filter((b) => b.start < gridEndEx && b.end > gridStartDay);
 
-  // Helper to add a fill layer into a cell
+  // helper to add a fill layer into a cell
   function addFill(cell, kind, type, booking) {
     if (!cell) return;
+
     const div = document.createElement("div");
     div.className = `occ-fill ${kind} ${type}`; // kind: full/half-left/half-right, type: platform/owner
-    div.dataset.tooltip = "1";
 
-    // Tooltip on the fill (hover/tap)
+    // tooltip on fill
     div.style.pointerEvents = "auto";
     div.addEventListener("mouseenter", (e) => showTooltip(e, booking, tooltip));
     div.addEventListener("mousemove", (e) => moveTooltip(e, tooltip));
@@ -212,35 +284,36 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
       else hideTooltip(tooltip);
     });
 
-    cell.insertBefore(div, cell.firstChild); // behind day number
+    // behind day number
+    cell.insertBefore(div, cell.firstChild);
   }
 
-  // For correct “half splitting” on same day, we can add both halves.
+  // Fill logic:
+  // - Aankomstdag = half-right
+  // - Vertrekdag  = half-left (checkout day)
+  // - All nights in between = full
   visibleBookings.forEach((b) => {
     const typeClass = b.type === "owner" ? "owner" : "platform";
 
-    // clip booking to grid
     const s = b.start < gridStartDay ? gridStartDay : b.start;
     const e = b.end > gridEndEx ? gridEndEx : b.end;
-
     if (e <= s) return;
 
-    // Aankomstdag = half-right
+    // aankomst half-right
     addFill(cellByKey.get(dayKey(s)), "half-right", typeClass, b);
 
-    // Vertrekdag = half-left (checkout day)
-    // e is exclusive; checkout day is e itself (at start of day)
+    // vertrek half-left (checkout day = e)
     addFill(cellByKey.get(dayKey(e)), "half-left", typeClass, b);
 
-    // Nachten ertussen = full days
+    // full days between
     const nights = diffDays(s, e);
     for (let i = 1; i < nights; i++) {
-      const day = addDays(s, i);
-      addFill(cellByKey.get(dayKey(day)), "full", typeClass, b);
+      const d = addDays(s, i);
+      addFill(cellByKey.get(dayKey(d)), "full", typeClass, b);
     }
   });
 
-  // click outside hides tooltip
+  // click outside hides tooltip (per month render; once)
   if (tooltip) {
     document.addEventListener(
       "click",
@@ -255,12 +328,11 @@ function dayKey(d) {
   return `${x.getFullYear()}-${pad2(x.getMonth() + 1)}-${pad2(x.getDate())}`;
 }
 
-
 /* =========================================================
-   Carousel sync + pager (booking-cards style)
+   Carousel sync (update state.occupancyMonth)
    ========================================================= */
 
-function bindCarouselSyncOnce(carousel) {
+function bindCarouselSyncOnce(carousel, totalSlides) {
   if (occCarouselBound) return;
   occCarouselBound = true;
 
@@ -268,15 +340,13 @@ function bindCarouselSyncOnce(carousel) {
     "scroll",
     () => {
       const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
-      const monthIdx = clamp(idx, 0, 11);
-
-      if (monthIdx !== state.occupancyMonth) {
-        state.occupancyMonth = monthIdx;
-      }
+      const slideIdx = clamp(idx, 0, (totalSlides ?? 12) - 1);
+      state.occupancySlideIndex = slideIdx;
     },
     { passive: true }
   );
 }
+
 
 /* =========================================================
    2) WEEK STACKED BAR (0..7)
@@ -296,9 +366,6 @@ function renderWeekStack(bookings, year) {
 
   const platformNights = weeks.map(() => 0);
   const ownerNights = weeks.map(() => 0);
-
-  const yearStart = startOfDay(new Date(year, 0, 1));
-  const yearEnd = startOfDay(new Date(year + 1, 0, 1));
 
   bookings.forEach((b) => {
     if (b.type === "platform" && !showPlatform) return;
@@ -331,14 +398,14 @@ function renderWeekStack(bookings, year) {
         {
           label: "Platform (nachten)",
           data: platformNights,
-          backgroundColor: "#e11d48",
+          backgroundColor: "#2563eb", // blauw
           stack: "nights",
           borderRadius: 6,
         },
         {
           label: "Eigen gebruik (nachten)",
           data: ownerNights,
-          backgroundColor: "#2563eb",
+          backgroundColor: "#f59e0b", // oranje
           stack: "nights",
           borderRadius: 6,
         },
@@ -430,7 +497,7 @@ function parseNLDate(v) {
   const s = String(v).trim();
   if (!s) return null;
 
-  const datePart = s.split(" ")[0]; // "13-01-2026"
+  const datePart = s.split(" ")[0];
   const m = datePart.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
   if (m) {
     const dd = Number(m[1]);
@@ -491,10 +558,6 @@ function diffDays(a, b) {
   const A = startOfDay(a).getTime();
   const B = startOfDay(b).getTime();
   return Math.max(0, Math.round((B - A) / 86400000));
-}
-
-function sameDay(a, b) {
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
 function fmtDateNL(d) {

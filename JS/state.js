@@ -11,7 +11,6 @@ export const CONFIG = {
 };
 
 export const state = {
-  // ===== bestaande velden =====
   rawRows: [],
   kpiYear: "ALL",
   currentYear: new Date().getFullYear(),
@@ -22,14 +21,12 @@ export const state = {
   charts: {
     homeBar: null,
     cumulative: null,
-
-    // ⬇️ nieuw
-    weekStack: null,
+    weekStack: null, // ✅ bezetting week chart
   },
 
-  // ===== NIEUW: occupancy page =====
-  occupancyYear: new Date().getFullYear(),
-  occupancyMonth: new Date().getMonth(), // 0..11
+  // ✅ occupancy page
+  occupancyYear: "ALL",
+  occupancyMonth: null,
   showPlatform: true,
   showOwner: true,
 };
@@ -37,5 +34,3 @@ export const state = {
 export function setState(patch) {
   Object.assign(state, patch);
 }
-
-

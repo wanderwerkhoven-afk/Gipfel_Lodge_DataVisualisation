@@ -160,6 +160,22 @@ function setupYearSelects(years = getYears()) {
     onChange: () => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL"),
   });
 
+  // ✅ OCCUPANCY dropdown (met ALL)
+  wireCustomYearSelect({
+    containerId: "occYearSelectContainer",
+    displayId: "occSelectedYear",
+    optionsId: "occYearOptions",
+    hiddenId: "occYearValue",
+    years: ["ALL", ...years],
+    get: () => state.occupancyYear ?? "ALL",
+    set: (y) => (state.occupancyYear = y),
+    onChange: () => {
+      // alleen opnieuw tekenen als je op bezetting zit,
+      // anders blijft het light
+      if (getActivePageId() === "occupancy") renderActivePage();
+    },
+  });
+
 }
 
 function wireCustomYearSelect({

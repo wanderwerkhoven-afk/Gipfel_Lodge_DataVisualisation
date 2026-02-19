@@ -1,20 +1,21 @@
-
-
 :root {
   /* Achtergrond & Panels */
   --bg: #050a18;           /* Extreem diep blauw (bijna zwart, maar warmer) */
   --panel: #0d152b;        /* Marineblauw voor kaarten en navigatie */
   --panel-light: #161f3d;  /* Voor actieve items of hover-states */
-  
+
   /* Tekst */
   --text: #ffffff;         /* Puur wit voor titels */
   --text-muted: #94a3b8;   /* Zacht blauwgrijs voor secundaire info */
-  
+
   /* Accentkleuren */
   --accent: #3b82f6;       /* Helder blauw voor knoppen en icons */
   --border: rgba(255, 255, 255, 0.08);
-  
+
   --radius: 16px;
+
+  /* ✅ 1 bron van waarheid voor links/rechts padding */
+  --page-pad: 20px;
 }
 
 body {
@@ -22,12 +23,14 @@ body {
   background-color: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  /* Voorkom dat de tekst grijs lijkt op donkere achtergronden */
   -webkit-font-smoothing: antialiased;
 }
 
-.divider-horizontal {
-    padding: 20px; /* Ruimte coodje */
+/* ✅ echte divider (ipv padding spacer) */
+.divider-horizontal{
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0;
 }
 
 /*-- ======================================================================
@@ -36,13 +39,13 @@ body {
        ###     ###     ########     ###       ###     ########
        ####    ###   ############   ###       ###   ############
        #####   ###   ###      ###   ###       ###   ###      ###
-       ### ##  ###   ###      ###   ###       ###   ###      
+       ### ##  ###   ###      ###   ###       ###   ###
        ###  ## ###   ############    ###     ###    ###   ######
        ###   #####   ############     ###   ###     ###   ######
        ###    ####   ###      ###      ### ###      ###      ###
        ###     ###   ###      ###       #####       ####    ####    ####
        ###     ###   ###      ###        ###         ##########     ####
-    
+
      ======================================================================
      ====================================================================== */
 
@@ -54,64 +57,61 @@ body {
 
 /* Zorg dat de container goed staat zodat de nav niet over de content valt */
 .container {
-    padding: 20px;
-    padding-bottom: 60px; /* Ruimte voor de navigatiebalk */
+  padding: var(--page-pad);
+  padding-bottom: 60px; /* Ruimte voor de navigatiebalk */
 }
 
 /* Verberg pagina's die niet actief zijn */
 .page {
-    display: none;
+  display: none;
 }
 
 /* Toon de actieve pagina */
 .page.active {
-    display: block !important;
+  display: block !important;
 }
 
 /* --- Bottom Navigation Styling --- */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 75px;
-    background: var(--panel); /* De donkerblauwe kleur */
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid var(--border);
-    z-index: 1000;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  background: var(--panel); /* De donkerblauwe kleur */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  z-index: 1000;
 }
 
 .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--text-muted); /* Grijsachtig wit */
-    cursor: pointer;
-    transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted); /* Grijsachtig wit */
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nav-item i {
-    font-size: 20px;
-    margin-bottom: 4px;
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 
 .nav-item span {
-    font-size: 11px;
+  font-size: 11px;
 }
 
 /* Styling voor de actieve knop in de navigatiebalk */
 .nav-item.active {
-    color: #007bff; /* Of jouw specifieke accentkleur */
+  color: #007bff; /* Of jouw specifieke accentkleur */
 }
 
 .nav-item.active i {
-    transform: translateY(-3px); /* Geeft een 'geklikt' effect */
-    transition: transform 0.2s;
+  transform: translateY(-3px); /* Geeft een 'geklikt' effect */
+  transition: transform 0.2s;
 }
-
-
-
 
 /*-- ======================================================================
      ======================================================================
@@ -124,10 +124,9 @@ body {
        ###     ###    ###       ###    ###    ###    ###    ###
        ###     ###    #############    ###    ###    ###    ############   ####
        ###     ###      #########      ###    ###    ###    ############   ####
-     
+
      ======================================================================
      ====================================================================== */
-
 
 /*-- ======================================================================
      1.1 HOME HEADER
@@ -135,32 +134,32 @@ body {
 
 /* De Header / Top Bar */
 .top-bar {
-    padding: 32px 20px 12px 20px; /* Iets meer ruimte onderaan voor ademruimte */
-    background: var(--bg);
-    position: relative; /* Blijft bovenin staan tijdens scrollen indien gewenst */
-    top: 0;
-    z-index: 100;
+  padding: 32px var(--page-pad) 12px var(--page-pad);
+  background: var(--bg);
+  position: relative; /* Blijft bovenin staan tijdens scrollen indien gewenst */
+  top: 0;
+  z-index: 100;
 }
 
 .header-flex {
-    display: flex;
-    justify-content: space-between; /* Titel links, knop rechts */
-    align-items: center; /* Verticaal uitlijnen in het midden voor betere balans */
+  display: flex;
+  justify-content: space-between; /* Titel links, knop rechts */
+  align-items: center; /* Verticaal uitlijnen in het midden voor betere balans */
 }
 
 .header-titles h1 {
-    font-size: 28px;
-    margin: 0;
-    font-weight: 800;
-    letter-spacing: -0.8px; /* Iets strakker voor die moderne 'look' */
-    color: var(--text);
+  font-size: 28px;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.8px; /* Iets strakker voor die moderne 'look' */
+  color: var(--text);
 }
 
 .subtitle {
-    color: var(--text-muted);
-    margin: 4px 0 0 0;
-    font-size: 14px;
-    font-weight: 400;
+  color: var(--text-muted);
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 /*-- ======================================================================
@@ -169,35 +168,35 @@ body {
 
 /* De Excel knop rechtsboven (Gevormd als label) */
 .action-btn {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--accent);
-    width: 48px;  /* Iets groter voor betere 'tap' op mobiel */
-    height: 48px;
-    border-radius: 15px; /* Iets ronder voor modernere feel */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Soepelere animatie */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  width: 48px;  /* Iets groter voor betere 'tap' op mobiel */
+  height: 48px;
+  border-radius: 15px; /* Iets ronder voor modernere feel */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Soepelere animatie */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .action-btn:hover {
-    background: var(--panel-light);
-    border-color: var(--accent);
-    transform: translateY(-2px); /* Subtiele lift in plaats van alleen schalen */
-    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2); /* Accent schaduw bij hover */
+  background: var(--panel-light);
+  border-color: var(--accent);
+  transform: translateY(-2px); /* Subtiele lift in plaats van alleen schalen */
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2); /* Accent schaduw bij hover */
 }
 
 .action-btn:active {
-    transform: scale(0.95); /* 'Indruk' effect als je erop klikt */
+  transform: scale(0.95); /* 'Indruk' effect als je erop klikt */
 }
 
 /* Zorg dat de input in de label echt verborgen is */
 .action-btn input[type="file"] {
-    display: none;
+  display: none;
 }
 
 /*-- ======================================================================
@@ -212,7 +211,7 @@ body {
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  padding: 0px 22px;
+  padding: 0;              /* ✅ uitlijning volgt container */
   gap: 14px;
   margin: 6px 0 14px;
 }
@@ -278,63 +277,60 @@ body {
   color: #fff;
 }
 
-
 .cards-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Houdt de 2 kolommen layout */
-    gap: 12px;
-    padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Houdt de 2 kolommen layout */
+  gap: 12px;
+  padding: 20px;
 }
 
 .kpi-card {
-    background-color: var(--panel); /* Gebruikt je diepblauwe variabele */
-    border: 1px solid var(--border);
-    border-radius: 12px; /* Iets minder rond voor een serieuzere look */
-    padding: 14px 16px; /* Minder padding maakt het compacter */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: background 0.2s ease;
+  background-color: var(--panel); /* Gebruikt je diepblauwe variabele */
+  border: 1px solid var(--border);
+  border-radius: 12px; /* Iets minder rond voor een serieuzere look */
+  padding: 14px 16px; /* Minder padding maakt het compacter */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: background 0.2s ease;
 }
 
 .kpi-card:hover {
-    background-color: var(--panel-light);
+  background-color: var(--panel-light);
 }
 
 .kpi-card .label {
-    color: var(--text-muted);
-    font-size: 12px; /* Kleiner en subtieler */
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
+  color: var(--text-muted);
+  font-size: 12px; /* Kleiner en subtieler */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
 }
 
 .kpi-card .value {
-    color: var(--text);
-    font-size: 25px; /* Iets kleiner getal voor een betere balans */
-    font-weight: 700;
-    margin: 0; /* Weg met de extra ruimte van het strepje */
-    font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--text);
+  font-size: 25px; /* Iets kleiner getal voor een betere balans */
+  font-weight: 700;
+  margin: 0; /* Weg met de extra ruimte van het strepje */
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 
 /* We verwijderen de ::after (het witte strepje) */
 .kpi-card .value::after {
-    display: none;
+  display: none;
 }
 
 /* Optioneel: Een heel klein gekleurd randje aan de zijkant voor herkenbaarheid */
 .kpi-card:nth-child(odd) {
-    border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
 }
 
 .kpi-card:nth-child(even) {
-    border-left: 2px solid #22c55e; /* Groen voor de rechterkolom */
+  border-left: 2px solid #22c55e; /* Groen voor de rechterkolom */
 }
 
-
-
 /* ============================================================
-   Booking Card (v2) 
+   Booking Card (v2)
    ============================================================ */
 
 .booking-card--v2{
@@ -508,7 +504,6 @@ body {
   text-shadow: 0 10px 26px rgba(0,0,0,0.55);
 }
 
-
 /* ============================================================
    Booking Carousel — paged: 1 card per scherm (100vw)
    ============================================================ */
@@ -518,53 +513,42 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
 
-  /* 1 swipe = 1 scherm */
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 
-  /* scrollbar verbergen (optioneel) */
   scrollbar-width: none; /* Firefox */
 }
 .booking-carousel::-webkit-scrollbar{ display:none; }
 
-/* Track: alleen een horizontale rij, GEEN overflow hier */
 .booking-carousel__track{
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 
-  gap: 0;                 /* paged = geen gap */
-  padding: 0;             /* padding zit in de slide */
+  gap: 0;
+  padding: 0;
 
-  overflow: visible;      /* belangrijk: geen extra scroll container */
+  overflow: visible;
 }
 
-/* Elke slide is precies 1 viewport breed */
 .booking-slide{
   flex: 0 0 100%;
-  width: 100vw;           /* exacte schermbreedte */
+  width: 100vw;
   scroll-snap-align: start;
   scroll-snap-stop: always;
 
-  /* dit is de "container" per pagina */
-  padding: 14px;          /* ✅ jouw gewenste ruimte rondom de card */
+  padding: 14px;
   box-sizing: border-box;
 
-  /* centreer de card in de pagina */
   display: flex;
   justify-content: center;
 }
 
-/* Card: vaste max breedte, maar altijd netjes binnen */
 .booking-slide .booking-card--v2{
   width: 100%;
-  max-width: 420px;       /* jouw cardbreedte */
+  max-width: 420px;
   margin: 0;
 }
-
-/* ============================================================
-   Booking Carousel — Dots indicator
-   ============================================================ */
 
 /* ============================================================
    Booking pager — rail + knob (premium)
@@ -590,10 +574,9 @@ body {
 
   overflow: hidden;
 
-  touch-action: pan-x; /* alleen horizontaal */
+  touch-action: pan-x;
 }
 
-/* Tick marks */
 .booking-scrollbar__ticks{
   position:absolute;
   inset: 0;
@@ -612,12 +595,11 @@ body {
   background: rgba(255,255,255,0.12);
 }
 
-/* Knob */
 .booking-scrollbar__knob{
   position:absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  left: 14px; /* wordt door JS gezet */
+  left: 14px;
 
   width: 34px;
   height: 14px;
@@ -629,7 +611,7 @@ body {
     0 10px 22px rgba(34,197,94,0.25),
     0 10px 22px rgba(96,165,250,0.25);
 
-  transition: left 180ms ease; /* soepel, maar niet te traag */
+  transition: left 180ms ease;
   cursor: grab;
   pointer-events: auto;
 }
@@ -638,8 +620,6 @@ body {
   cursor: grabbing;
 }
 
-
-/* Optioneel: meer "draaiknop" feel op desktop */
 @media (hover:hover){
   .booking-scrollbar__rail:hover .booking-scrollbar__knob{
     height: 15px;
@@ -647,205 +627,185 @@ body {
   }
 }
 
-
-
-
-
-
-
 /* --- Omzet seizoenen/jaar chart --- */
 .content-section {
-    width: 100%;
-    margin-top: 10px; /* Ruimte tussen de KPI-grid en de grafiek */
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Ruimte tussen panelen als je er later meer toevoegt */
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* Zorg dat het paneel binnen de section altijd de volle breedte pakt */
 .chart-panel {
-    background-color: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px; /* Ruimere padding voor ademruimte */
-    margin: 20px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px; /* Meer afstand naar de seizoensknoppen */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
-/* Titel boven de grafiek */
 .panel-title {
-    font-size: 20px;
-    letter-spacing: 1px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .panel-title i {
-    color: var(--accent); /* Kleur voor het icoontje */
+  color: var(--accent);
 }
 
-/* Seizoens Filter (Segmented Control) */
 .season-filter {
-    display: flex;
-    gap: auto;
-    background: var(--bg); /* Donkere achtergrond voor contrast */
-    padding: 4px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    padding: 2px;
+  display: flex;
+  gap: auto;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  padding: 2px;
 }
 
 .filter-btn {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: 10px;
-    white-space: nowrap; 
-    cursor: pointer;
-    transition: all 0.2s ease;
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .filter-btn.active {
-    background: var(--panel-light);
-    color: var(--accent);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  background: var(--panel-light);
+  color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .custom-select {
-    position: relative;
-    width: 90px;
-    user-select: none;
+  position: relative;
+  width: 90px;
+  user-select: none;
 }
 
 .select-trigger {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
-    padding: 10px 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .select-trigger:hover {
-    border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .select-options {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    background: #1a1d21; /* Donkere paneel kleur */
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    z-index: 1000;
-    display: none; /* Standaard dicht */
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #1a1d21;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
 .select-options.show {
-    display: block;
-    animation: fadeInDown 0.2s ease;
+  display: block;
+  animation: fadeInDown 0.2s ease;
 }
 
 .option {
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: background 0.2s;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .option:hover {
-    background: var(--accent);
-    color: white;
+  background: var(--accent);
+  color: white;
 }
 
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Container waar de canvas in leeft */
 .chart-container {
-    position: relative;
-    height: 300px; /* Hoogte van de grafiek */
-    width: 100%;
-    margin-bottom: 30px; /* Ruimte tussen grafiek en knoppen */
-    padding-left: 5px; 
+  position: relative;
+  height: 300px;
+  width: 100%;
+  margin-bottom: 30px;
+  padding-left: 5px;
 }
 
-/* Bruto/Netto Toggle rechtsonder */
 .mode-toggle {
-    display: flex;
-    justify-content: center; /* Centreer de knoppen voor een nette look */
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--border);
-    border-radius: 25px;
-    padding: 4px;
-    width: fit-content;
-    margin: 0 auto; /* Horizontaal centreren in het paneel */
+  display: flex;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  padding: 4px;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .toggle-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 8px 24px;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 20px;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 24px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
 }
 
 .toggle-btn.active {
-    background: var(--accent); /* De blauwe kleur */
-    color: white;
+  background: var(--accent);
+  color: white;
 }
 
-/* Mobiele aanpassing: op heel kleine schermen de knoppen scrollbaar maken */
 @media (max-width: 400px) {
-    .season-filter {
-        overflow-x: auto;
-        justify-content: flex-start;
-    }
-    .filter-btn {
-        padding: 8px 12px;
-    }
+  .season-filter {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  .filter-btn {
+    padding: 8px 12px;
+  }
 }
-
-
-
-
-
-
-
-
 
 /* --- 8. CUMULATIEVE GRAFIEK SCROLL SETTINGS --- */
 
 .chart-scroll{
   position: relative;
-  height: 400px;                 /* vaste hoogte */
+  height: 400px;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -855,7 +815,6 @@ body {
   margin: 10px 0;
   cursor: grab;
 
-  /* ✅ nodig voor sticky y-as + scrollende chart */
   display: flex;
   align-items: stretch;
 }
@@ -876,7 +835,6 @@ body {
   flex-direction: column;
   justify-content: space-between;
 
-  /* ✅ rechts uitlijnen */
   align-items: flex-end;
 
   padding-top: 5px;
@@ -891,35 +849,29 @@ body {
   border-right: 1px solid rgba(255,255,255,0.06);
 }
 
-
 .cum-y-axis span{
   line-height: 1;
   white-space: nowrap;
 }
 
-
-/* Scrollende chart-inhoud */
 .chart-scroll__inner{
   height: 100%;
-  min-width: 100px;            /* wordt door JS vergroot */
+  min-width: 100px;
   flex: 1 1 auto;
 }
 
-/* Cumulatieve chart canvas */
 #chartCumulative{
   width: 100% !important;
   height: 100% !important;
   display: block;
 }
 
-/* Landschapsmodus */
 @media (orientation: landscape){
   .chart-scroll{
     height: 380px;
   }
 }
 
-/* Hint / legend onder grafiek */
 .hint{
   display: flex;
   align-items: left;
@@ -933,17 +885,14 @@ body {
   opacity: 0.9;
 }
 
-/* Tekst links */
 .hint-text{
   white-space: nowrap;
 }
 
-/* Midden separator */
 .hint-separator{
   opacity: 0.5;
 }
 
-/* Legend rechts */
 .hint-legend{
   display: flex;
   align-items: center;
@@ -951,7 +900,6 @@ body {
   white-space: nowrap;
 }
 
-/* De stip */
 .dot{
   width: 8px;
   height: 8px;
@@ -959,12 +907,9 @@ body {
   display: inline-block;
 }
 
-/* Oranje stip */
 .dot-orange{
   background-color: #ff8a2a;
 }
-
-
 
 /*-- ======================================================================
      ======================================================================
@@ -977,12 +922,71 @@ body {
        ###     ###    ###              ####          ###                 ####
        ###########    ############    ###########    ############        ####      ####
        #########      ############    ###########    ############        ####      ####
-     
+
      ======================================================================
      ====================================================================== */
 
-
 /* ===== OCCUPANCY PAGE ===== */
+
+/* scoped variables (alleen voor bezetting-sectie) */
+:root{
+  --occ-platform: #2563eb;
+  --occ-owner: #f59e0b;
+
+  --occ-tooltip-bg: rgba(20,20,24,0.95);
+  --occ-tooltip-border: rgba(255,255,255,0.12);
+  --occ-tooltip-shadow: 0 18px 60px rgba(0,0,0,0.45);
+  --occ-tooltip-radius: 12px;
+
+  --occ-carousel-mt: 6px;
+  --occ-slide-pad: 12px 14px 6px;
+
+  --occ-card-maxw: 520px;
+  --occ-card-radius: 16px;
+  --occ-card-pad: 12px;
+  --occ-card-bg: rgba(255,255,255,0.03);
+  --occ-card-border: rgba(255,255,255,0.08);
+
+  --occ-title-size: 18px;
+  --occ-title-weight: 900;
+  --occ-title-margin: 12px 0 20px;
+
+  --occ-grid-gap: 6px;
+  --occ-dow-size: 12px;
+  --occ-dow-color: rgba(255,255,255,0.55);
+  --occ-dow-pad: 6px 0;
+
+  --occ-cell-radius: 12px;
+  --occ-cell-border: rgba(255,255,255,0.10);
+  --occ-cell-bg: rgba(255,255,255,0.02);
+  --occ-cell-pad: 6px;
+  --occ-outside-opacity: 0.15;
+
+  --occ-day-size: 13px;
+  --occ-day-weight: 800;
+  --occ-day-color: #fff;
+
+  --occ-fill-radius: 5px;
+  --occ-fill-opacity: 0.95;
+  --occ-half-gap: 3px;
+
+  --occ-legend-gap: 16px;
+  --occ-legend-mt: 10px;
+  --occ-legend-mb: 2px;
+  --occ-legend-color: rgba(255,255,255,0.72);
+  --occ-legend-size: 15px;
+  --occ-legend-item-pad: 6px 10px;
+  --occ-legend-item-border: rgba(255,255,255,0.08);
+  --occ-legend-item-bg: rgba(255,255,255,0.03);
+
+  --occ-nav-size: 34px;
+  --occ-nav-border: rgba(255,255,255,0.10);
+  --occ-nav-bg: rgba(255,255,255,0.04);
+  --occ-nav-color: rgba(255,255,255,0.85);
+  --occ-nav-top: 10px;
+  --occ-nav-inset: 10px;
+}
+
 .page-head{
   display:flex;
   justify-content:space-between;
@@ -990,6 +994,7 @@ body {
   gap:14px;
   margin: 6px 0 14px;
 }
+
 .page-head__right{
   display:flex;
   align-items:center;
@@ -1006,7 +1011,7 @@ body {
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  padding: 0px 22px;
+  padding: 0;              /* ✅ uitlijning volgt container */
   gap: 14px;
   margin: 6px 0 14px;
 }
@@ -1017,6 +1022,7 @@ body {
   gap:10px;
   align-items:center;
 }
+
 .chip{
   display:flex;
   align-items:center;
@@ -1027,6 +1033,7 @@ body {
   font-size:13px;
   user-select:none;
 }
+
 .chip input{ accent-color: #fff; }
 
 .dot{
@@ -1035,8 +1042,9 @@ body {
   border-radius:50%;
   display:inline-block;
 }
-.dot-platform{ background:#2563eb; } /* blauw */
-.dot-owner{ background:#f59e0b; }    /* oranje */
+
+.dot-platform{ background: var(--occ-platform); }
+.dot-owner{ background: var(--occ-owner); }
 
 /* Tooltip */
 .occ-tooltip{
@@ -1044,14 +1052,15 @@ body {
   z-index:9999;
   max-width:280px;
   padding:10px 12px;
-  border-radius:12px;
-  background: rgba(20,20,24,0.95);
-  border:1px solid rgba(255,255,255,0.12);
+  border-radius: var(--occ-tooltip-radius);
+  background: var(--occ-tooltip-bg);
+  border:1px solid var(--occ-tooltip-border);
   color:#fff;
   font-size:12.5px;
   pointer-events:none;
-  box-shadow:0 18px 60px rgba(0,0,0,0.45);
+  box-shadow: var(--occ-tooltip-shadow);
 }
+
 .occ-tooltip strong{
   font-size:13px;
   display:block;
@@ -1063,7 +1072,7 @@ body {
    =========================================================== */
 
 #occCalendarCarousel{
-  margin-top: 6px;
+  margin-top: var(--occ-carousel-mt);
 }
 
 .occ-month-slide{
@@ -1071,7 +1080,7 @@ body {
   width: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  padding: 12px 14px 6px;
+  padding: var(--occ-slide-pad);
   box-sizing: border-box;
   display:flex;
   justify-content:center;
@@ -1079,18 +1088,19 @@ body {
 
 .occ-month-card{
   width:100%;
-  max-width:520px;
-  border-radius:16px;
-  padding:12px;
-  background: rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
+  max-width: var(--occ-card-maxw);
+  border-radius: var(--occ-card-radius);
+  padding: var(--occ-card-pad);
+  background: var(--occ-card-bg);
+  border:1px solid var(--occ-card-border);
+  position: relative;
 }
 
 .occ-month-title{
-  font-weight:900;
-  font-size:18px;
+  font-weight: var(--occ-title-weight);
+  font-size: var(--occ-title-size);
   text-align:center;
-  margin:12px 0 20px;
+  margin: var(--occ-title-margin);
 }
 
 /* ===========================================================
@@ -1100,39 +1110,38 @@ body {
 .occ-month-grid{
   display:grid;
   grid-template-columns: repeat(7, 1fr);
-  gap:6px;
+  gap: var(--occ-grid-gap);
 }
 
 .occ-month-dow{
-  font-size:12px;
-  color: rgba(255,255,255,0.55);
+  font-size: var(--occ-dow-size);
+  color: var(--occ-dow-color);
   text-align:center;
-  padding:6px 0;
+  padding: var(--occ-dow-pad);
 }
 
 /* Day cell = SQUARE */
 .occ-month-cell{
   position:relative;
-  aspect-ratio: 1 / 1;        /* ✅ vierkant */
-  border:1px solid rgba(255,255,255,0.10);
-  border-radius:12px;
-  padding:6px;
+  aspect-ratio: 1 / 1;
+  border:1px solid var(--occ-cell-border);
+  border-radius: var(--occ-cell-radius);
+  padding: var(--occ-cell-pad);
   overflow:hidden;
-  background: rgba(255,255,255,0.02);
+  background: var(--occ-cell-bg);
 }
 
 .occ-month-cell.is-outside{
-  opacity:0.15;
+  opacity: var(--occ-outside-opacity);
 }
 
-/* Day number always on top */
 .occ-month-day{
   position:relative;
   z-index:2;
-  font-size:13px;
-  font-weight:800;
+  font-size: var(--occ-day-size);
+  font-weight: var(--occ-day-weight);
   text-align:center;
-  color:#fff;
+  color: var(--occ-day-color);
 }
 
 /* ===========================================================
@@ -1145,67 +1154,64 @@ body {
   right:0px;
   top:0px;
   bottom:0px;
-  border-radius:5px;
-  opacity:0.95;
+  border-radius: var(--occ-fill-radius);
+  opacity: var(--occ-fill-opacity);
   pointer-events:auto;
 }
 
-/* full day */
 .occ-fill.full{}
 
-/* half day with 2px gap */
 .occ-fill.half-left{
-  right: calc(50% + 3px);   /* 2px gap */
-}
-.occ-fill.half-right{
-  left: calc(50% + 3px);
+  right: calc(50% + var(--occ-half-gap));
 }
 
-/* colors */
-.occ-fill.platform{ background:#2563eb; } /* blauw */
-.occ-fill.owner{ background:#f59e0b; }    /* oranje */
+.occ-fill.half-right{
+  left: calc(50% + var(--occ-half-gap));
+}
+
+.occ-fill.platform{ background: var(--occ-platform); }
+.occ-fill.owner{ background: var(--occ-owner); }
 
 /* Legend under calendar */
 .occ-legend{
   display:flex;
   justify-content:center;
-  gap:16px;
-  margin-top: 10px;
-  margin-bottom: 2px;
-  color: rgba(255,255,255,0.72);
-  font-size: 15px;
+  gap: var(--occ-legend-gap);
+  margin-top: var(--occ-legend-mt);
+  margin-bottom: var(--occ-legend-mb);
+  color: var(--occ-legend-color);
+  font-size: var(--occ-legend-size);
 }
+
 .occ-legend__item{
   display:flex;
   align-items:center;
   gap:8px;
-  padding: 6px 10px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
+  padding: var(--occ-legend-item-pad);
+  border: 1px solid var(--occ-legend-item-border);
+  background: var(--occ-legend-item-bg);
   border-radius: 999px;
 }
 
 /* Subtle round nav arrows inside month card */
-.occ-month-card{ position: relative; }
-
 .occ-card-nav{
   position:absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
+  top: var(--occ-nav-top);
+  left: var(--occ-nav-inset);
+  right: var(--occ-nav-inset);
   display:flex;
   justify-content:space-between;
-  pointer-events:none; /* only buttons clickable */
+  pointer-events:none;
 }
 
 .occ-nav-btn{
   pointer-events:auto;
-  width: 34px;
-  height: 34px;
+  width: var(--occ-nav-size);
+  height: var(--occ-nav-size);
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.85);
+  border: 1px solid var(--occ-nav-border);
+  background: var(--occ-nav-bg);
+  color: var(--occ-nav-color);
   display:grid;
   place-items:center;
   cursor:pointer;
@@ -1215,4 +1221,3 @@ body {
 .occ-nav-btn:active{
   transform: scale(0.96);
 }
-
