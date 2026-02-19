@@ -1,12 +1,17 @@
 // ./JS/charts/bezetting.js
 import { state } from "../state.js";
+import { loadPricingYear } from "../data.js";
 
 /**
  * Entry: render occupancy page
  * - Year dropdown is handled in ui.js via wireCustomYearSelect()
  * - Here we only read state.occupancyYear ("ALL" or "2026") and render charts
+ *
+ * Pricing:
+ * - JSON files expected at: /JSON/pricing_2026.json, /JSON/pricing_2027.json, ...
+ * - We cache per year so "ALL" works across multiple years.
  */
-export function renderBezettingCharts() {
+export async function renderBezettingCharts() {
   if (!state.rawRows || !state.rawRows.length) return;
 
   // defaults
@@ -22,10 +27,7 @@ export function renderBezettingCharts() {
   if (state.occupancyYear === "ALL") {
     yearsToRender = Array.from(
       new Set(
-        allBookings.flatMap(b => [
-          b.start.getFullYear(),
-          b.end.getFullYear()
-        ])
+        allBookings.flatMap((b) => [b.start.getFullYear(), b.end.getFullYear()])
       )
     ).sort((a, b) => a - b);
   } else {
@@ -33,15 +35,51 @@ export function renderBezettingCharts() {
   }
 
   // Boekingen die in die jaren vallen
-  const bookingsForView = allBookings.filter(b =>
-    yearsToRender.some(y => intersectsYear(b, y))
+  const bookingsForView = allBookings.filter((b) =>
+    yearsToRender.some((y) => intersectsYear(b, y))
   );
 
+  // ✅ Preload pricing (per year) zodat tooltip meteen prijzen kan tonen
+  await preloadPricingForYears(yearsToRender);
 
   // Render
   renderCalendarCarousel(bookingsForView, yearsToRender);
 }
 
+/* =========================================================
+   Pricing cache (per year)
+   ========================================================= */
+
+const pricingCache = new Map(); // year -> Map(dateISO -> pricingRecord)
+
+async function preloadPricingForYears(yearList) {
+  const years = Array.isArray(yearList) ? yearList : [Number(yearList)];
+  const jobs = years.map(async (y) => {
+    if (!Number.isFinite(Number(y))) return;
+
+    const year = Number(y);
+    if (pricingCache.has(year)) return;
+
+    try {
+      const rows = await loadPricingYear(year); // fetch /JSON/pricing_${year}.json
+      const map = new Map(rows.map((r) => [String(r.datum), r]));
+      pricingCache.set(year, map);
+    } catch (err) {
+      console.warn(`Pricing ontbreekt of faalt voor jaar ${year}`, err);
+      pricingCache.set(year, new Map()); // lege map zodat we niet blijven refetchen
+    }
+  });
+
+  await Promise.all(jobs);
+}
+
+function getPricingByISO(iso) {
+  if (!iso) return null;
+  const year = Number(String(iso).slice(0, 4));
+  const map = pricingCache.get(year);
+  if (!map) return null;
+  return map.get(iso) ?? null;
+}
 
 /* =========================================================
    Booking normalization
@@ -54,12 +92,17 @@ function normalizeBookings(rows) {
       const end = parseNLDate(r.__vertrek ?? r["Vertrek"]);
       if (!start || !end) return null;
 
-      const nights = Number(r["Nachten"] ?? r.__nachten ?? diffDays(start, end)) || diffDays(start, end);
+      const nights =
+        Number(r["Nachten"] ?? r.__nachten ?? diffDays(start, end)) ||
+        diffDays(start, end);
+
       const income = parseMoney(r["Inkomsten"]);
 
       const bookingLabel = String(r["Boeking"] ?? "").trim();
       const guest = String(r["Gast"] ?? "").trim();
-      const channel = bookingLabel.includes("|") ? bookingLabel.split("|")[1].trim() : bookingLabel;
+      const channel = bookingLabel.includes("|")
+        ? bookingLabel.split("|")[1].trim()
+        : bookingLabel;
 
       const type = isOwnerBooking(r) ? "owner" : "platform";
 
@@ -191,7 +234,7 @@ function renderCalendarCarousel(bookings, years) {
   const totalSlides = yearList.length * 12;
 
   if (state.occupancySlideIndex == null) {
-    // default: huidige maand van eerste jaar (of 0)
+    // default: huidige maand (binnen totalSlides)
     state.occupancySlideIndex = clamp(new Date().getMonth(), 0, totalSlides - 1);
   }
 
@@ -203,7 +246,6 @@ function renderCalendarCarousel(bookings, years) {
 
   bindCarouselSyncOnce(carousel, totalSlides);
 }
-
 
 function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
   gridEl.innerHTML = "";
@@ -240,6 +282,13 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
     dayLabel.textContent = String(day.getDate());
     cell.appendChild(dayLabel);
 
+    // ✅ Hover op dag (ook zonder booking) -> laat pricing zien
+    if (tooltip) {
+      cell.addEventListener("mouseenter", (e) => showDayTooltip(e, day, tooltip));
+      cell.addEventListener("mousemove", (e) => moveTooltip(e, tooltip));
+      cell.addEventListener("mouseleave", () => hideTooltip(tooltip));
+    }
+
     gridEl.appendChild(cell);
     cellByKey.set(dayKey(day), cell);
   });
@@ -251,21 +300,21 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
   const visibleBookings = bookings.filter((b) => b.start < gridEndEx && b.end > gridStartDay);
 
   // helper to add a fill layer into a cell
-  function addFill(cell, kind, type, booking) {
+  function addFill(cell, kind, type, booking, dayISO) {
     if (!cell) return;
 
     const div = document.createElement("div");
     div.className = `occ-fill ${kind} ${type}`; // kind: full/half-left/half-right, type: platform/owner
 
-    // tooltip on fill
+    // tooltip on fill (booking + pricing van die dag)
     div.style.pointerEvents = "auto";
-    div.addEventListener("mouseenter", (e) => showTooltip(e, booking, tooltip));
+    div.addEventListener("mouseenter", (e) => showBookingTooltip(e, booking, dayISO, tooltip));
     div.addEventListener("mousemove", (e) => moveTooltip(e, tooltip));
     div.addEventListener("mouseleave", () => hideTooltip(tooltip));
     div.addEventListener("click", (e) => {
       e.stopPropagation();
       if (!tooltip) return;
-      if (tooltip.style.display === "none") showTooltip(e, booking, tooltip);
+      if (tooltip.style.display === "none") showBookingTooltip(e, booking, dayISO, tooltip);
       else hideTooltip(tooltip);
     });
 
@@ -285,36 +334,32 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
     if (e <= s) return;
 
     // aankomst half-right
-    addFill(cellByKey.get(dayKey(s)), "half-right", typeClass, b);
+    addFill(cellByKey.get(dayKey(s)), "half-right", typeClass, b, dayKey(s));
 
     // vertrek half-left (checkout day = e)
-    addFill(cellByKey.get(dayKey(e)), "half-left", typeClass, b);
+    addFill(cellByKey.get(dayKey(e)), "half-left", typeClass, b, dayKey(e));
 
     // full days between
     const nights = diffDays(s, e);
     for (let i = 1; i < nights; i++) {
       const d = addDays(s, i);
-      addFill(cellByKey.get(dayKey(d)), "full", typeClass, b);
+      addFill(cellByKey.get(dayKey(d)), "full", typeClass, b, dayKey(d));
     }
   });
 
   // click outside hides tooltip (per month render; once)
   if (tooltip) {
-    document.addEventListener(
-      "click",
-      () => hideTooltip(tooltip),
-      { once: true }
-    );
+    document.addEventListener("click", () => hideTooltip(tooltip), { once: true });
   }
 }
 
 function dayKey(d) {
-  const x = startOfDay(d);
-  return `${x.getFullYear()}-${pad2(x.getMonth() + 1)}-${pad2(x.getDate())}`;
+  // ✅ local-safe ISO (geen timezone shift)
+  return toISODateLocal(d);
 }
 
 /* =========================================================
-   Carousel sync (update state.occupancyMonth)
+   Carousel sync (update state.occupancySlideIndex)
    ========================================================= */
 
 function bindCarouselSyncOnce(carousel, totalSlides) {
@@ -333,24 +378,60 @@ function bindCarouselSyncOnce(carousel, totalSlides) {
 }
 
 /* =========================================================
-   Tooltip helpers
+   Tooltip helpers (BOOKING + DAY)
    ========================================================= */
 
-function showTooltip(e, b, tooltipEl) {
+function showBookingTooltip(e, b, dayISO, tooltipEl) {
   if (!tooltipEl) return;
 
   const perNight = b.income && b.nights ? b.income / b.nights : null;
+  const p = getPricingByISO(dayISO);
 
   tooltipEl.innerHTML = `
     <strong>${escapeHtml(b.guest || "Onbekende gast")}</strong>
+
     <div><b>Type:</b> ${b.type === "owner" ? "Eigen gebruik" : escapeHtml(b.channel || "Platform")}</div>
     <div><b>Periode:</b> ${fmtDateNL(b.start)} – ${fmtDateNL(b.end)}</div>
     <div><b>Nachten:</b> ${b.nights}</div>
     <div><b>€ / nacht:</b> ${perNight != null ? euro(perNight) : "—"}</div>
+
+    ${p ? pricingBlockHTML(p) : `<div style="opacity:.7;margin-top:6px;">Geen prijsdata voor ${escapeHtml(dayISO)}</div>`}
   `;
 
   tooltipEl.style.display = "block";
   moveTooltip(e, tooltipEl);
+}
+
+function showDayTooltip(e, dayDate, tooltipEl) {
+  if (!tooltipEl) return;
+
+  const iso = toISODateLocal(dayDate);
+  const p = getPricingByISO(iso);
+
+  tooltipEl.innerHTML = `
+    <strong>${fmtDateNL(dayDate)}</strong>
+    ${p ? pricingBlockHTML(p) : `<div style="opacity:.7;margin-top:6px;">Geen prijsdata</div>`}
+  `;
+
+  tooltipEl.style.display = "block";
+  moveTooltip(e, tooltipEl);
+}
+
+function pricingBlockHTML(p) {
+  // p = { datum, seizoen, min_nachten_boeken, dagprijs, weekprijs, ... }
+  const seizoen = p.seizoen ?? "—";
+  const minN = p.min_nachten_boeken ?? p.minNights ?? "—";
+  const dayP = p.dagprijs ?? p.day_price ?? p.dayPrice;
+  const weekP = p.weekprijs ?? p.week_price ?? p.weekPrice;
+
+  return `
+    <div style="margin-top:8px;">
+      <div><b>Seizoen:</b> ${escapeHtml(String(seizoen))}</div>
+      <div><b>Min. nachten:</b> ${escapeHtml(String(minN))}</div>
+      <div><b>Dagprijs:</b> ${dayP != null ? euro(dayP) : "—"}</div>
+      <div><b>Weekprijs:</b> ${weekP != null ? euro(weekP) : "—"}</div>
+    </div>
+  `;
 }
 
 function moveTooltip(e, tooltipEl) {
@@ -407,9 +488,10 @@ function parseMoney(v) {
 
 function euro(x) {
   try {
-    return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(x);
+    return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(Number(x));
   } catch {
-    return `€${Math.round(x * 100) / 100}`;
+    const n = Number(x);
+    return Number.isFinite(n) ? `€${Math.round(n * 100) / 100}` : "—";
   }
 }
 
@@ -471,4 +553,13 @@ function escapeHtml(str) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+// ✅ Local-safe ISO formatter (voorkomt timezone “day shift”)
+function toISODateLocal(d) {
+  const x = new Date(d);
+  const y = x.getFullYear();
+  const m = String(x.getMonth() + 1).padStart(2, "0");
+  const day = String(x.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }

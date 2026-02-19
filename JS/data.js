@@ -1,6 +1,10 @@
 // ./JS/data.js
 import { CONFIG, state, setState } from "./state.js";
 
+/* ============================================================
+ * 1) FILE UPLOAD (Excel -> state.rawRows)
+ * ============================================================ */
+
 export function bindFileUploads(selector, onLoaded) {
   document.querySelectorAll(selector).forEach((input) => {
     input.addEventListener("change", (e) => handleFileUpload(e, onLoaded));
@@ -28,6 +32,9 @@ function handleFileUpload(event, onLoaded) {
       if (state.cumulativeYear == null || !years.includes(state.cumulativeYear)) {
         state.cumulativeYear = state.currentYear;
       }
+      if (state.occupancyYear == null || !years.includes(state.occupancyYear)) {
+        state.occupancyYear = "ALL"; // of years[0], net wat jij wilt
+      }
     }
 
     onLoaded?.({ rows: normalized, years });
@@ -36,6 +43,10 @@ function handleFileUpload(event, onLoaded) {
   reader.readAsArrayBuffer(file);
   event.target.value = ""; // re-upload same file allowed
 }
+
+/* ============================================================
+ * 2) ROW HELPERS (filter / normalize)
+ * ============================================================ */
 
 export function getYears(rows = state.rawRows) {
   return [...new Set(rows.map((r) => r.__aankomst.getFullYear()))].sort((a, b) => b - a);
@@ -66,7 +77,46 @@ export function normalizeRows(rows) {
     .filter(Boolean);
 }
 
-// ---- helpers (later kun je dit naar utils/* verplaatsen)
+/* ============================================================
+ * 3) PRICING (JSON “database” per jaar)
+ * ============================================================ */
+
+export async function loadPricingYear(year) {
+  const res = await fetch(`/JSON/pricing_${year}.json`);
+  if (!res.ok) throw new Error(`Pricing file ontbreekt: pricing_${year}.json`);
+  return res.json();
+}
+
+/**
+ * Zorgt dat state.pricingByDate gevuld is voor het gevraagde jaar.
+ * - cached per jaar (pricingYearLoaded)
+ * - safe fallback: {} als file ontbreekt
+ */
+export async function ensurePricingLoadedForYear(year) {
+  if (
+    state.pricingYearLoaded === year &&
+    state.pricingByDate &&
+    Object.keys(state.pricingByDate).length
+  ) {
+    return;
+  }
+
+  try {
+    const rows = await loadPricingYear(year);
+
+    state.pricingByDate = Object.fromEntries(rows.map((r) => [r.datum, r]));
+    state.pricingYearLoaded = year;
+  } catch (err) {
+    console.warn(`Geen pricing voor jaar ${year}`, err);
+    state.pricingByDate = {};
+    state.pricingYearLoaded = year;
+  }
+}
+
+/* ============================================================
+ * 4) INTERNAL HELPERS (later naar utils)
+ * ============================================================ */
+
 function isOwnerBooking(row) {
   const inc = row["Inkomsten"];
   if (typeof inc === "string" && inc.trim() === "-") return true;

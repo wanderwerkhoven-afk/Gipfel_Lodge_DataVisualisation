@@ -1115,6 +1115,24 @@ body {
   margin-bottom:6px;
 }
 
+.occ-tooltip .tt-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:6px;
+  font-size:13px;
+  opacity:.95;
+}
+
+.occ-tooltip .tt-label{
+  opacity:.7;
+}
+
+.occ-tooltip .tt-title{
+  font-weight:600;
+  margin-bottom:8px;
+}
+
 /* ===========================================================
    SWIPEABLE MONTH CAROUSEL
    =========================================================== */
