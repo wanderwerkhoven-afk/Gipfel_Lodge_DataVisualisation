@@ -21,7 +21,6 @@ export const state = {
   charts: {
     homeBar: null,
     cumulative: null,
-    weekStack: null, // ✅ bezetting week chart
   },
 
   // ✅ occupancy page

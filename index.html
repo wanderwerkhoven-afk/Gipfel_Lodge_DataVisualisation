@@ -54,7 +54,7 @@
     </div>
 
     <div class="year-select-container">
-      <div class="custom-select" id="yearSelectContainerKpi">
+      <div class="custom-select-kpi" id="yearSelectContainerKpi">
         <div class="select-trigger">
           <span id="selectedYearDisplayKpi">—</span>
           <i class="fa-solid fa-chevron-down"></i>
@@ -62,7 +62,7 @@
         <div class="select-options" id="yearOptionsKpi"></div>
         <input type="hidden" id="yearValueKpi" value="">
       </div>
-    </div>   
+    </div>
   </div>
 
   <section class="cards-grid">
@@ -145,7 +145,7 @@
         <h3 class="panel-title" style="margin: 0;">Seizoensinzichten</h3>
 
         <div class="year-select-container">
-          <div class="custom-select" id="yearSelectContainer">
+          <div class="custom-select-seizoen" id="yearSelectContainer">
             <div class="select-trigger">
               <span id="selectedYearDisplay">—</span>
               <i class="fa-solid fa-chevron-down"></i>
@@ -248,21 +248,21 @@
 
     <!-- ====== KPI-HEADER (zoals Home) + YEAR DROPDOWN ====== -->
     <div class="kalender-header">
-      <div class="kalender__left">
+      <div class="kalender-header__left">
         <h3 class="kalender__title">Bezettingskalender</h3>
         <p class="kalender__subtitle">Swipe door de maanden</p>
       </div>
 
       <div class="year-select-container">
-        <div class="custom-select" id="occYearSelectContainer">
+        <div class="custom-select-calender" id="occYearSelectContainer">
           <div class="select-trigger">
-            <span id="occSelectedYear">—</span>
+            <span id="occSelectedYear"></span>
             <i class="fa-solid fa-chevron-down"></i>
           </div>
           <div class="select-options" id="occYearOptions"></div>
           <input type="hidden" id="occYearValue" value="">
         </div>
-      </div>   
+      </div>
     </div>
 
     <!-- ====== Kalender panel (ongewijzigd) ====== -->
@@ -284,27 +284,6 @@
 
       <div id="occTooltip" class="occ-tooltip" style="display:none;"></div>
     </div>
-
-    <div class="divider-horizontal"></div>
-
-    <!-- ====== KPI-HEADER (zoals Home) ====== -->
-    <div class="kpi-header">
-      <div class="kpi-header__left">
-        <h3 class="kpi-header__title">Weekoverzicht</h3>
-        <p class="kpi-header__subtitle">Elke week = 7 nachten (platform vs eigen vs vrij)</p>
-      </div>
-    </div>
-
-    <!-- ====== Week chart ====== -->
-    <section class="content-section">
-      <div class="chart-panel">
-        <div class="chart-container" style="height:260px;">
-          <canvas id="chartWeekStack"></canvas>
-        </div>
-      </div>
-    </section>
-
-  </div>
 
   <div class="divider-horizontal"></div>
 

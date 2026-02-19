@@ -15,48 +15,33 @@ export function renderBezettingCharts() {
   if (state.showPlatform == null) state.showPlatform = true;
   if (state.showOwner == null) state.showOwner = true;
 
-  // normalize once
   const allBookings = normalizeBookings(state.rawRows);
 
-  // viewYear: if ALL -> use currentYear (or this year), else selected year
+  // Welke jaren tonen we in de kalender
   let yearsToRender;
-
   if (state.occupancyYear === "ALL") {
     yearsToRender = Array.from(
       new Set(
-        allBookings.flatMap((b) => [
+        allBookings.flatMap(b => [
           b.start.getFullYear(),
-          b.end.getFullYear(),
+          b.end.getFullYear()
         ])
       )
-    )
-      .filter(Number.isFinite)
-      .sort((a, b) => a - b);
+    ).sort((a, b) => a - b);
   } else {
     yearsToRender = [Number(state.occupancyYear)];
   }
 
-  const bookingsForView = allBookings.filter((b) =>
-    yearsToRender.some((y) => intersectsYear(b, y))
+  // Boekingen die in die jaren vallen
+  const bookingsForView = allBookings.filter(b =>
+    yearsToRender.some(y => intersectsYear(b, y))
   );
 
-  // ⬇️ belangrijk
+
+  // Render
   renderCalendarCarousel(bookingsForView, yearsToRender);
-  renderWeekStack(bookingsForView, yearsToRender);
-
-
-  // clamp in case something weird gets into the state
-  const safeViewYear = Number.isFinite(viewYear) ? viewYear : new Date().getFullYear();
-
-  // filter to view year window
-  const bookingsForYear = allBookings.filter((b) => intersectsYear(b, safeViewYear));
-
-  // 1) Calendar carousel (12 months)
-  renderCalendarCarousel(bookingsForYear, safeViewYear);
-
-  // 2) Week stacked chart
-  renderWeekStack(bookingsForYear, safeViewYear);
 }
+
 
 /* =========================================================
    Booking normalization
@@ -347,112 +332,6 @@ function bindCarouselSyncOnce(carousel, totalSlides) {
   );
 }
 
-
-/* =========================================================
-   2) WEEK STACKED BAR (0..7)
-   ========================================================= */
-
-function renderWeekStack(bookings, year) {
-  const canvas = document.getElementById("chartWeekStack");
-  if (!canvas) return;
-
-  const showPlatform = !!state.showPlatform;
-  const showOwner = !!state.showOwner;
-
-  if (state.charts?.weekStack) state.charts.weekStack.destroy();
-
-  const weeks = buildISOWeeksOfYear(year);
-  const labels = weeks.map((w) => `${year}-W${pad2(w.week)}`);
-
-  const platformNights = weeks.map(() => 0);
-  const ownerNights = weeks.map(() => 0);
-
-  bookings.forEach((b) => {
-    if (b.type === "platform" && !showPlatform) return;
-    if (b.type === "owner" && !showOwner) return;
-
-    const s = b.start < yearStart ? yearStart : b.start;
-    const e = b.end > yearEnd ? yearEnd : b.end;
-    if (e <= s) return;
-
-    const nights = diffDays(s, e);
-    for (let i = 0; i < nights; i++) {
-      const nightDate = addDays(s, i);
-      const wk = isoWeekNumber(nightDate);
-      const idx = weeks.findIndex((x) => x.week === wk);
-      if (idx === -1) continue;
-      if (b.type === "owner") ownerNights[idx] += 1;
-      else platformNights[idx] += 1;
-    }
-  });
-
-  const occupied = platformNights.map((v, i) => v + ownerNights[i]);
-  const freeNights = occupied.map((v) => Math.max(0, 7 - v));
-
-  const ctx = canvas.getContext("2d");
-  state.charts.weekStack = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Platform (nachten)",
-          data: platformNights,
-          backgroundColor: "#2563eb", // blauw
-          stack: "nights",
-          borderRadius: 6,
-        },
-        {
-          label: "Eigen gebruik (nachten)",
-          data: ownerNights,
-          backgroundColor: "#f59e0b", // oranje
-          stack: "nights",
-          borderRadius: 6,
-        },
-        {
-          label: "Vrij (nachten)",
-          data: freeNights,
-          backgroundColor: "rgba(255,255,255,0.18)",
-          stack: "nights",
-          borderRadius: 6,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: true, labels: { color: "rgba(255,255,255,0.7)" } },
-        tooltip: {
-          callbacks: {
-            title: (items) => items?.[0]?.label ?? "",
-            afterTitle: (items) => {
-              const i = items?.[0]?.dataIndex ?? 0;
-              const occ = occupied[i] ?? 0;
-              const pct = Math.round((occ / 7) * 100);
-              return `Bezet: ${occ}/7 (${pct}%)`;
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          stacked: true,
-          grid: { display: false },
-          ticks: { color: "rgba(255,255,255,0.55)", maxRotation: 55, minRotation: 55 },
-        },
-        y: {
-          stacked: true,
-          beginAtZero: true,
-          max: 7,
-          ticks: { stepSize: 1, color: "rgba(255,255,255,0.55)" },
-          grid: { color: "rgba(255,255,255,0.08)" },
-        },
-      },
-    },
-  });
-}
-
 /* =========================================================
    Tooltip helpers
    ========================================================= */
@@ -592,36 +471,4 @@ function escapeHtml(str) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-
-/* ================= ISO week helpers ================= */
-
-function isoWeekNumber(date) {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-  return weekNo;
-}
-
-function buildISOWeeksOfYear(year) {
-  const jan4 = new Date(year, 0, 4);
-  let start = startOfWeekMonday(jan4);
-
-  const weeks = [];
-  for (let i = 0; i < 54; i++) {
-    const wkStart = new Date(start);
-    const wkEndEx = addDays(wkStart, 7);
-
-    const thu = addDays(wkStart, 3);
-    if (thu.getFullYear() === year) {
-      weeks.push({ week: isoWeekNumber(wkStart), start: wkStart, endExclusive: wkEndEx });
-    }
-
-    start = wkEndEx;
-    if (wkStart.getFullYear() > year + 1) break;
-  }
-
-  weeks.sort((a, b) => a.week - b.week);
-  return weeks;
 }

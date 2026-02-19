@@ -211,7 +211,7 @@ body {
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  padding: 0;              /* ✅ uitlijning volgt container */
+  padding: 0px 0px 0px 20px;             /* ✅ uitlijning volgt container */
   gap: 14px;
   margin: 6px 0 14px;
 }
@@ -228,6 +228,13 @@ body {
   margin: 6px 0 0;
   font-size: 12px;
   color: rgba(255,255,255,0.55);
+}
+
+.custom-select-kpi {
+  position: relative;
+  padding: 0 14px 0 0px;
+  width: 90px;
+  user-select: none;
 }
 
 /* hergebruik je custom-select maar kleiner */
@@ -695,8 +702,9 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-.custom-select {
+.custom-select-seizoen {
   position: relative;
+  padding: 0 0px 0 0px;
   width: 90px;
   user-select: none;
 }
@@ -932,7 +940,7 @@ body {
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  padding: 0;              /* ✅ uitlijning volgt container */
+  padding: 0px 0px 0px 20px;              /* ✅ uitlijning volgt container */
   gap: 14px;
   margin: 6px 0 14px;
 }
@@ -950,6 +958,23 @@ body {
   font-size: 12px;
   color: rgba(255,255,255,0.55);
 }
+
+.custom-select-calender {
+  position: relative;
+  padding: 0 14px 0 0px;
+  width: 90px;
+  user-select: none;
+}
+
+/*-- 
+       %%%%%%%    %%%%%    %%       %%%%%%%  %%%   %%  %%%%%%%   %%%%%%%  %%%%%%%
+      %%         %%   %%   %%       %%       %%%%  %%  %%    %%  %%       %%    %%
+      %%        %%%%%%%%%  %%       %%%%%%   %% %% %%  %%    %%  %%%%%%   %%%%%%%
+      %%        %%     %%  %%       %%%      %%  %%%%  %%    %%  %%       %%    %%
+       %%%%%%%  %%     %%  %%%%%%%  %%%%%%%  %%   %%%  %%%%%%%   %%%%%%%  %%     %%
+--*/
+
+
 
 /* scoped variables (alleen voor bezetting-sectie) */
 :root{
@@ -1244,3 +1269,4 @@ body {
 .occ-nav-btn:active{
   transform: scale(0.96);
 }
+
