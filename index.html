@@ -53,7 +53,7 @@
       <p class="kpi-header__subtitle">Kies een jaar</p>
     </div>
 
-    <div class="year-select-container year-select-container--kpi">
+    <div class="year-select-container">
       <div class="custom-select" id="yearSelectContainerKpi">
         <div class="select-trigger">
           <span id="selectedYearDisplayKpi">—</span>
@@ -62,7 +62,7 @@
         <div class="select-options" id="yearOptionsKpi"></div>
         <input type="hidden" id="yearValueKpi" value="">
       </div>
-    </div>
+    </div>   
   </div>
 
   <section class="cards-grid">
@@ -247,22 +247,22 @@
   <div class="container">
 
     <!-- ====== KPI-HEADER (zoals Home) + YEAR DROPDOWN ====== -->
-    <div class="kpi-header">
-      <div class="kpi-header__left">
-        <h3 class="kpi-header__title">Bezettingskalender</h3>
-        <p class="kpi-header__subtitle">Swipe door de maanden</p>
+    <div class="kalender-header">
+      <div class="kalender__left">
+        <h3 class="kalender__title">Bezettingskalender</h3>
+        <p class="kalender__subtitle">Swipe door de maanden</p>
       </div>
 
-      <div class="year-select-container year-select-container--kpi occ-year-select">
+      <div class="year-select-container">
         <div class="custom-select" id="occYearSelectContainer">
           <div class="select-trigger">
-            <span id="occSelectedYear">ALL</span>
+            <span id="occSelectedYear">—</span>
             <i class="fa-solid fa-chevron-down"></i>
           </div>
           <div class="select-options" id="occYearOptions"></div>
-          <input type="hidden" id="occYearValue" value="ALL">
+          <input type="hidden" id="occYearValue" value="">
         </div>
-      </div>
+      </div>   
     </div>
 
     <!-- ====== Kalender panel (ongewijzigd) ====== -->
