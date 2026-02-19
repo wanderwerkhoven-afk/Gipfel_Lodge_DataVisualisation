@@ -286,9 +286,9 @@ body {
 
 .cards-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Houdt de 2 kolommen layout */
-  gap: 12px;
-  padding: 20px;
+  grid-template-columns: repeat(2, 1fr); /* altijd even breed */
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .kpi-card {
