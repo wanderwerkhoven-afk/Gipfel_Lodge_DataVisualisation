@@ -55,19 +55,24 @@ function renderHomeKPIs(allRows) {
   const grossRevenue = platformRows.reduce((s, r) => s + (r.__gross || 0), 0);
   const netRevenue   = platformRows.reduce((s, r) => s + (r.__net || 0), 0);
 
-  setText("kpiBookings", bookings);
-  setText("kpiNights", nights);
-  setText("kpiOwnerBookings", ownerBookings);
-  setText("kpiOwnerNights", ownerNights);
+ // ints
+setCountUp("kpiBookings", bookings, { formatter: (v) => String(Math.round(v)) });
+setCountUp("kpiNights", nights, { formatter: (v) => String(Math.round(v)) });
+setCountUp("kpiOwnerBookings", ownerBookings, { formatter: (v) => String(Math.round(v)) });
+setCountUp("kpiOwnerNights", ownerNights, { formatter: (v) => String(Math.round(v)) });
 
-  setText("kpiNightsFree", Math.max(0, totalDays - totalOccupied));
-  setText("kpiOccupancyPct", (occupancyPct * 100).toFixed(1) + "%");
+setCountUp("kpiNightsFree", Math.max(0, totalDays - totalOccupied), {formatter: (v) => String(Math.round(v)),});
 
-  setText("kpiGrossRevenue", fmtEUR(grossRevenue));
-  setText("kpiGrossRevPerNight", fmtEUR(nights > 0 ? grossRevenue / nights : 0));
+// percentage (1 decimaal)
+setCountUp("kpiOccupancyPct", occupancyPct * 100, {formatter: (v) => `${v.toFixed(1)}%`,});
 
-  setText("kpiNetRevenue", fmtEUR(netRevenue));
-  setText("kpiNetRevPerNight", fmtEUR(nights > 0 ? netRevenue / nights : 0));
+// euro’s (met jouw fmtEUR)
+setCountUp("kpiGrossRevenue", grossRevenue, {formatter: (v) => fmtEUR(v),});
+setCountUp("kpiGrossRevPerNight", nights > 0 ? grossRevenue / nights : 0, {formatter: (v) => fmtEUR(v),});
+
+setCountUp("kpiNetRevenue", netRevenue, {formatter: (v) => fmtEUR(v),});
+setCountUp("kpiNetRevPerNight", nights > 0 ? netRevenue / nights : 0, {formatter: (v) => fmtEUR(v),});
+
 }
 
 
@@ -734,10 +739,46 @@ function getUniqueYearsCount(rows) {
   return years.size || 1;
 }
 
-function setText(id, value) {
+function setCountUp(id, targetNumber, {
+  duration = 2000,
+  formatter = (v) => String(Math.round(v)),
+  fromOnFirst = 0,              // 👈 nieuw: startwaarde bij eerste keer
+} = {}) {
   const el = document.getElementById(id);
-  if (el) el.textContent = String(value);
+  if (!el) return;
+
+  const to = Number(targetNumber ?? 0);
+  if (!Number.isFinite(to)) {
+    el.textContent = formatter(0);
+    el.dataset.prevValue = "0";
+    return;
+  }
+
+  // 👇 als er nog geen prevValue is (bijv. na upload), start dan vanaf 0 en ANIMEER
+  const hasPrev = el.dataset.prevValue != null && el.dataset.prevValue !== "";
+  const from = hasPrev ? Number(el.dataset.prevValue) : Number(fromOnFirst);
+
+  // fallback als from onbruikbaar is
+  const safeFrom = Number.isFinite(from) ? from : 0;
+
+  const start = performance.now();
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / duration);
+    const k = easeOutCubic(t);
+    const val = safeFrom + (to - safeFrom) * k;
+
+    el.textContent = formatter(val);
+
+    if (t < 1) requestAnimationFrame(tick);
+    else el.dataset.prevValue = String(to);
+  };
+
+  requestAnimationFrame(tick);
 }
+
+
 
 function fmtEUR(n) {
   const val = Number(n);

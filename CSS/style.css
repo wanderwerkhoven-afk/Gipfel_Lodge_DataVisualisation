@@ -287,7 +287,7 @@ body {
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* altijd even breed */
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 24px;
 }
 
@@ -295,7 +295,7 @@ body {
   background-color: var(--panel); /* Gebruikt je diepblauwe variabele */
   border: 1px solid var(--border);
   border-radius: 12px; /* Iets minder rond voor een serieuzere look */
-  padding: 14px 16px; /* Minder padding maakt het compacter */
+  padding: 12px 10px; /* Minder padding maakt het compacter */
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -8,33 +8,88 @@ import {
   renderHomeBookingCarousel,
   renderHomeRevenueChart,
   renderHomeCumulativeRevenueChartForYear,
-  // placeholders voor later:
   renderBezettingCharts,
   renderGedragCharts,
   renderDataVisCharts,
 } from "./charts/index.js";
 
+/* ============================================================
+ * SCROLL PRESERVATION (voorkomt “verspringen” bij updates)
+ * ============================================================ */
+
+function ensureScrollState() {
+  state.scroll ??= { windowY: 0, containers: {} };
+  state.scroll.containers ??= {};
+}
+
+function saveScrollPositions() {
+  ensureScrollState();
+
+  // verticale pagina-scroll
+  state.scroll.windowY = window.scrollY;
+
+  // horizontale/verticale scroll van specifieke containers
+  document.querySelectorAll("[data-scroll-key]").forEach((el) => {
+    const key = el.dataset.scrollKey;
+    state.scroll.containers[key] = {
+      x: el.scrollLeft,
+      y: el.scrollTop,
+    };
+  });
+}
+
+function restoreScrollPositions() {
+  ensureScrollState();
+
+  // herstel page-scroll
+  window.scrollTo({ top: state.scroll.windowY || 0, behavior: "auto" });
+
+  // herstel container scrolls
+  document.querySelectorAll("[data-scroll-key]").forEach((el) => {
+    const key = el.dataset.scrollKey;
+    const saved = state.scroll.containers[key];
+    if (saved) {
+      el.scrollLeft = saved.x || 0;
+      el.scrollTop = saved.y || 0;
+    }
+  });
+}
+
+// Handige wrapper zodat je dit niet vergeet
+function withPreservedScroll(fn) {
+  saveScrollPositions();
+  fn?.();
+  // 2 frames: 1) DOM update 2) charts/layout klaar
+  requestAnimationFrame(() => requestAnimationFrame(restoreScrollPositions));
+}
+
+/* ============================================================
+ * BOOT
+ * ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
+  ensureScrollState();
+
   // 1) Navigatie (bottom nav + back buttons)
   bindNavigation();
 
-  // 2) Uploads (Home + Data) — bindt op class .excel-upload
+  // 2) Uploads — bindt op class .excel-upload
   bindFileUploads(".excel-upload", ({ years }) => {
-    setupYearSelects(years);
-    renderActivePage(); // render alleen de pagina die je nu ziet
+    withPreservedScroll(() => {
+      setupYearSelects(years);
+      renderActivePage(); // render alleen de pagina die je nu ziet
+    });
   });
 
   // 3) Dropdown toggles (open/dicht)
   bindCustomSelectToggles();
 
-  // 4) Filters / toggles (alleen actief wanneer page zichtbaar is, maar binden kan altijd)
+  // 4) Filters / toggles
   bindSeasonButtons();
   bindModeButtons();
 
-  // 5) Bezetting --> kalender 
+  // 5) Bezetting toggles
   bindOccupancyToggles();
-
 });
 
 /* ============================================================
@@ -48,18 +103,18 @@ function bindNavigation() {
 }
 
 function navigateTo(pageId) {
-  // Pages
-  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
-  document.getElementById(`${pageId}-page`)?.classList.add("active");
+  withPreservedScroll(() => {
+    // Pages
+    document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+    document.getElementById(`${pageId}-page`)?.classList.add("active");
 
-  // Bottom nav active state
-  document.querySelectorAll(".nav-item").forEach((n) => n.classList.remove("active"));
-  document.getElementById(`nav-${pageId}`)?.classList.add("active");
+    // Bottom nav active state
+    document.querySelectorAll(".nav-item").forEach((n) => n.classList.remove("active"));
+    document.getElementById(`nav-${pageId}`)?.classList.add("active");
 
-  window.scrollTo(0, 0);
-
-  // Render alleen wat nodig is voor deze pagina
-  renderActivePage();
+    // Render alleen wat nodig is voor deze pagina
+    renderActivePage();
+  });
 }
 
 /* ============================================================
@@ -73,7 +128,7 @@ function getActivePageId() {
 }
 
 function renderActivePage() {
-  if (!state.rawRows.length) return;
+  if (!state.rawRows?.length) return;
 
   const page = getActivePageId();
 
@@ -83,13 +138,11 @@ function renderActivePage() {
       break;
 
     case "occupancy":
-      // later: zet je bezetting charts in ./JS/charts/bezetting.js
       if (typeof renderBezettingCharts === "function") renderBezettingCharts();
       break;
 
     case "revenue":
-      // later: omzet pagina charts in ./JS/charts/omzet.js
-      // (cumulatief staat nu op home, dus hier nog leeg)
+      // (cumulatief staat nu op home)
       break;
 
     case "behavior":
@@ -106,7 +159,6 @@ function renderActivePage() {
 }
 
 function renderHomePage() {
-  // KPI dropdown stuurt dit aan (met ALL support)
   const kpiYear = state.kpiYear ?? "ALL";
   renderHomeKPIsForYear(kpiYear);
 
@@ -117,13 +169,11 @@ function renderHomePage() {
   if (y != null) renderHomeCumulativeRevenueChartForYear(y);
 }
 
-
 /* ============================================================
  * YEAR SELECTS (CUSTOM)
  * ============================================================ */
 
 function setupYearSelects(years = getYears()) {
-
   // ✅ KPI dropdown (met ALL)
   wireCustomYearSelect({
     containerId: "yearSelectContainerKpi",
@@ -133,7 +183,8 @@ function setupYearSelects(years = getYears()) {
     years: ["ALL", ...years],
     get: () => state.kpiYear ?? "ALL",
     set: (y) => (state.kpiYear = y),
-    onChange: () => renderHomeKPIsForYear(state.kpiYear ?? "ALL"),
+    onChange: () =>
+      withPreservedScroll(() => renderHomeKPIsForYear(state.kpiYear ?? "ALL")),
   });
 
   // ✅ HOME (Seizoensinzichten) dropdown
@@ -145,7 +196,7 @@ function setupYearSelects(years = getYears()) {
     years,
     get: () => state.currentYear,
     set: (y) => (state.currentYear = y),
-    onChange: () => renderActivePage(),
+    onChange: () => withPreservedScroll(renderActivePage),
   });
 
   // ✅ CUMULATIEF dropdown (met ALL)
@@ -157,7 +208,10 @@ function setupYearSelects(years = getYears()) {
     years: ["ALL", ...years],
     get: () => state.cumulativeYear ?? "ALL",
     set: (y) => (state.cumulativeYear = y),
-    onChange: () => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL"),
+    onChange: () =>
+      withPreservedScroll(() =>
+        renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL")
+      ),
   });
 
   // ✅ OCCUPANCY dropdown (met ALL)
@@ -170,12 +224,9 @@ function setupYearSelects(years = getYears()) {
     get: () => state.occupancyYear ?? "ALL",
     set: (y) => (state.occupancyYear = y),
     onChange: () => {
-      // alleen opnieuw tekenen als je op bezetting zit,
-      // anders blijft het light
-      if (getActivePageId() === "occupancy") renderActivePage();
+      if (getActivePageId() === "occupancy") withPreservedScroll(renderActivePage);
     },
   });
-
 }
 
 function wireCustomYearSelect({
@@ -187,9 +238,7 @@ function wireCustomYearSelect({
   get,
   set,
   onChange,
-}) 
-
-{
+}) {
   const container = document.getElementById(containerId);
   const display = document.getElementById(displayId);
   const options = document.getElementById(optionsId);
@@ -229,6 +278,9 @@ function wireCustomYearSelect({
  * .custom-select
  *   .select-trigger
  *   .select-options
+ *
+ * ✅ Belangrijk: houd dus ALTIJD class "custom-select" op je dropdowns,
+ * en voeg daarnaast je styling class toe (bv. "custom-select-kpi").
  */
 function bindCustomSelectToggles() {
   const selectContainers = document.querySelectorAll(".custom-select");
@@ -273,8 +325,7 @@ function bindSeasonButtons() {
       btn.classList.add("active");
       state.currentSeason = btn.dataset.season;
 
-      // Alleen home gebruikt deze chart nu
-      if (getActivePageId() === "home") renderHomeRevenueChart();
+      if (getActivePageId() === "home") withPreservedScroll(renderHomeRevenueChart);
     });
   });
 }
@@ -289,9 +340,8 @@ function bindModeButtons() {
     net.classList.remove("active");
     state.currentMode = "gross";
 
-    // mode beïnvloedt meerdere visualisaties op home
-    if (getActivePageId() === "home") renderHomePage();
-    else renderActivePage();
+    if (getActivePageId() === "home") withPreservedScroll(renderHomePage);
+    else withPreservedScroll(renderActivePage);
   });
 
   net.addEventListener("click", () => {
@@ -299,9 +349,10 @@ function bindModeButtons() {
     gross.classList.remove("active");
     state.currentMode = "net";
 
-    if (getActivePageId() === "home") renderHomePage();
-    else renderActivePage();
+    if (getActivePageId() === "home") withPreservedScroll(renderHomePage);
+    else withPreservedScroll(renderActivePage);
   });
+}
 
 function bindOccupancyToggles() {
   const tPlatform = document.getElementById("togglePlatform");
@@ -310,15 +361,14 @@ function bindOccupancyToggles() {
   if (tPlatform) {
     tPlatform.addEventListener("change", () => {
       state.showPlatform = !!tPlatform.checked;
-      renderActivePage();
+      withPreservedScroll(renderActivePage);
     });
   }
+
   if (tOwner) {
     tOwner.addEventListener("change", () => {
       state.showOwner = !!tOwner.checked;
-      renderActivePage();
+      withPreservedScroll(renderActivePage);
     });
   }
-}
-
 }
