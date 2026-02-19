@@ -11,23 +11,41 @@ export const CONFIG = {
 };
 
 export const state = {
+  // data
   rawRows: [],
+
+  // year filters
   kpiYear: "ALL",
   currentYear: new Date().getFullYear(),
   cumulativeYear: null,
+
+  // filters / mode
   currentSeason: "all",
   currentMode: "gross",
 
+  // charts instances
   charts: {
     homeBar: null,
     cumulative: null,
+    // (weekStack mag weg als je weekchart verwijderd hebt)
+    // weekStack: null,
   },
 
-  // ✅ occupancy page
+  // pricing "database"
+  pricingByDate: {},        // "YYYY-MM-DD" -> pricing record
+  pricingYearLoaded: null,  // number
+
+  // occupancy page
   occupancyYear: "ALL",
   occupancyMonth: null,
   showPlatform: true,
   showOwner: true,
+
+  // scroll preservation
+  scroll: {
+    windowY: 0,
+    containers: {},
+  },
 };
 
 export function setState(patch) {

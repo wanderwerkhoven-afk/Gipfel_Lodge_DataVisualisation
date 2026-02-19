@@ -2,7 +2,6 @@
 import { state } from "./state.js";
 import { bindFileUploads, getYears } from "./data.js";
 
-// ✅ Charts per pagina (barrel exports)
 import {
   renderHomeKPIsForYear,
   renderHomeBookingCarousel,
@@ -24,27 +23,18 @@ function ensureScrollState() {
 
 function saveScrollPositions() {
   ensureScrollState();
-
-  // verticale pagina-scroll
   state.scroll.windowY = window.scrollY;
 
-  // horizontale/verticale scroll van specifieke containers
   document.querySelectorAll("[data-scroll-key]").forEach((el) => {
     const key = el.dataset.scrollKey;
-    state.scroll.containers[key] = {
-      x: el.scrollLeft,
-      y: el.scrollTop,
-    };
+    state.scroll.containers[key] = { x: el.scrollLeft, y: el.scrollTop };
   });
 }
 
 function restoreScrollPositions() {
   ensureScrollState();
-
-  // herstel page-scroll
   window.scrollTo({ top: state.scroll.windowY || 0, behavior: "auto" });
 
-  // herstel container scrolls
   document.querySelectorAll("[data-scroll-key]").forEach((el) => {
     const key = el.dataset.scrollKey;
     const saved = state.scroll.containers[key];
@@ -55,11 +45,9 @@ function restoreScrollPositions() {
   });
 }
 
-// Handige wrapper zodat je dit niet vergeet
 function withPreservedScroll(fn) {
   saveScrollPositions();
   fn?.();
-  // 2 frames: 1) DOM update 2) charts/layout klaar
   requestAnimationFrame(() => requestAnimationFrame(restoreScrollPositions));
 }
 
@@ -70,25 +58,18 @@ function withPreservedScroll(fn) {
 document.addEventListener("DOMContentLoaded", () => {
   ensureScrollState();
 
-  // 1) Navigatie (bottom nav + back buttons)
   bindNavigation();
 
-  // 2) Uploads — bindt op class .excel-upload
   bindFileUploads(".excel-upload", ({ years }) => {
     withPreservedScroll(() => {
       setupYearSelects(years);
-      renderActivePage(); // render alleen de pagina die je nu ziet
+      renderActivePage();
     });
   });
 
-  // 3) Dropdown toggles (open/dicht)
   bindCustomSelectToggles();
-
-  // 4) Filters / toggles
   bindSeasonButtons();
   bindModeButtons();
-
-  // 5) Bezetting toggles
   bindOccupancyToggles();
 });
 
@@ -104,15 +85,12 @@ function bindNavigation() {
 
 function navigateTo(pageId) {
   withPreservedScroll(() => {
-    // Pages
     document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
     document.getElementById(`${pageId}-page`)?.classList.add("active");
 
-    // Bottom nav active state
     document.querySelectorAll(".nav-item").forEach((n) => n.classList.remove("active"));
     document.getElementById(`nav-${pageId}`)?.classList.add("active");
 
-    // Render alleen wat nodig is voor deze pagina
     renderActivePage();
   });
 }
@@ -136,23 +114,16 @@ function renderActivePage() {
     case "home":
       renderHomePage();
       break;
-
     case "occupancy":
       if (typeof renderBezettingCharts === "function") renderBezettingCharts();
       break;
-
-    case "revenue":
-      // (cumulatief staat nu op home)
-      break;
-
     case "behavior":
       if (typeof renderGedragCharts === "function") renderGedragCharts();
       break;
-
     case "data":
       if (typeof renderDataVisCharts === "function") renderDataVisCharts();
       break;
-
+    case "revenue":
     default:
       renderHomePage();
   }
@@ -174,7 +145,6 @@ function renderHomePage() {
  * ============================================================ */
 
 function setupYearSelects(years = getYears()) {
-  // ✅ KPI dropdown (met ALL)
   wireCustomYearSelect({
     containerId: "yearSelectContainerKpi",
     displayId: "selectedYearDisplayKpi",
@@ -183,11 +153,9 @@ function setupYearSelects(years = getYears()) {
     years: ["ALL", ...years],
     get: () => state.kpiYear ?? "ALL",
     set: (y) => (state.kpiYear = y),
-    onChange: () =>
-      withPreservedScroll(() => renderHomeKPIsForYear(state.kpiYear ?? "ALL")),
+    onChange: () => withPreservedScroll(() => renderHomeKPIsForYear(state.kpiYear ?? "ALL")),
   });
 
-  // ✅ HOME (Seizoensinzichten) dropdown
   wireCustomYearSelect({
     containerId: "yearSelectContainer",
     displayId: "selectedYearDisplay",
@@ -199,7 +167,6 @@ function setupYearSelects(years = getYears()) {
     onChange: () => withPreservedScroll(renderActivePage),
   });
 
-  // ✅ CUMULATIEF dropdown (met ALL)
   wireCustomYearSelect({
     containerId: "cumulativeYearSelectContainer",
     displayId: "cumulativeYearDisplay",
@@ -209,12 +176,9 @@ function setupYearSelects(years = getYears()) {
     get: () => state.cumulativeYear ?? "ALL",
     set: (y) => (state.cumulativeYear = y),
     onChange: () =>
-      withPreservedScroll(() =>
-        renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL")
-      ),
+      withPreservedScroll(() => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL")),
   });
 
-  // ✅ OCCUPANCY dropdown (met ALL)
   wireCustomYearSelect({
     containerId: "occYearSelectContainer",
     displayId: "occSelectedYear",
@@ -229,21 +193,11 @@ function setupYearSelects(years = getYears()) {
   });
 }
 
-function wireCustomYearSelect({
-  containerId,
-  displayId,
-  optionsId,
-  hiddenId,
-  years,
-  get,
-  set,
-  onChange,
-}) {
+function wireCustomYearSelect({ containerId, displayId, optionsId, hiddenId, years, get, set, onChange }) {
   const container = document.getElementById(containerId);
   const display = document.getElementById(displayId);
   const options = document.getElementById(optionsId);
   const hidden = document.getElementById(hiddenId);
-
   if (!container || !display || !options || !hidden) return;
 
   options.innerHTML = "";
@@ -273,14 +227,8 @@ function wireCustomYearSelect({
 }
 
 /**
- * Custom select open/close.
- * Verwacht:
- * .custom-select
- *   .select-trigger
- *   .select-options
- *
- * ✅ Belangrijk: houd dus ALTIJD class "custom-select" op je dropdowns,
- * en voeg daarnaast je styling class toe (bv. "custom-select-kpi").
+ * Custom select open/close
+ * BELANGRIJK: dropdowns moeten class "custom-select" blijven houden.
  */
 function bindCustomSelectToggles() {
   const selectContainers = document.querySelectorAll(".custom-select");
@@ -292,7 +240,6 @@ function bindCustomSelectToggles() {
     if (!trigger || !options) return;
 
     trigger.addEventListener("click", (e) => {
-      // close others
       selectContainers.forEach((c) => {
         if (c !== container) {
           c.classList.remove("open");
