@@ -1,0 +1,22 @@
+.typography {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+blockquote {
+    font-style: italic;
+    margin: 1em 0;
+    padding-left: 1em;
+    border-left: 2px solid #ccc;
+}
