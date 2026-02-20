@@ -33,7 +33,7 @@ function handleFileUpload(event, onLoaded) {
         state.cumulativeYear = state.currentYear;
       }
       if (state.occupancyYear == null || !years.includes(state.occupancyYear)) {
-        state.occupancyYear = "ALL"; // of years[0], net wat jij wilt
+        state.occupancyYear = "ALL";
       }
     }
 
@@ -41,24 +41,25 @@ function handleFileUpload(event, onLoaded) {
   };
 
   reader.readAsArrayBuffer(file);
-  event.target.value = ""; // re-upload same file allowed
+  event.target.value = "";
 }
 
 /* ============================================================
- * 2) ROW HELPERS (filter / normalize)
+ * 2) ROW HELPERS
  * ============================================================ */
 
 export function getYears(rows = state.rawRows) {
-  return [...new Set(rows.map((r) => r.__aankomst.getFullYear()))].sort((a, b) => b - a);
+  return [...new Set(rows.map(r => r.__aankomst.getFullYear()))]
+    .sort((a, b) => b - a);
 }
 
 export function getRowsForYear(year, rows = state.rawRows) {
-  return rows.filter((r) => r.__aankomst.getFullYear() === year);
+  return rows.filter(r => r.__aankomst.getFullYear() === year);
 }
 
 export function normalizeRows(rows) {
   return rows
-    .map((r) => {
+    .map(r => {
       const aankomst = toDate(r["Aankomst"]);
       if (!aankomst) return null;
 
@@ -78,19 +79,25 @@ export function normalizeRows(rows) {
 }
 
 /* ============================================================
- * 3) PRICING (JSON “database” per jaar)
+ * 3) PRICING (JSON per jaar)
  * ============================================================ */
 
+/**
+ * Laadt pricing JSON via een repo-safe pad
+ */
 export async function loadPricingYear(year) {
-  const res = await fetch(`/JSON/pricing_${year}.json`);
-  if (!res.ok) throw new Error(`Pricing file ontbreekt: pricing_${year}.json`);
+  const url = new URL(`../JSON/pricing_${year}.json`, import.meta.url);
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Pricing file ontbreekt: ${url.href}`);
+  }
+
   return res.json();
 }
 
 /**
- * Zorgt dat state.pricingByDate gevuld is voor het gevraagde jaar.
- * - cached per jaar (pricingYearLoaded)
- * - safe fallback: {} als file ontbreekt
+ * Zorgt dat pricing één keer per jaar geladen wordt
  */
 export async function ensurePricingLoadedForYear(year) {
   if (
@@ -103,8 +110,9 @@ export async function ensurePricingLoadedForYear(year) {
 
   try {
     const rows = await loadPricingYear(year);
-
-    state.pricingByDate = Object.fromEntries(rows.map((r) => [r.datum, r]));
+    state.pricingByDate = Object.fromEntries(
+      rows.map(r => [r.datum, r])
+    );
     state.pricingYearLoaded = year;
   } catch (err) {
     console.warn(`Geen pricing voor jaar ${year}`, err);
@@ -114,7 +122,7 @@ export async function ensurePricingLoadedForYear(year) {
 }
 
 /* ============================================================
- * 4) INTERNAL HELPERS (later naar utils)
+ * 4) INTERNAL HELPERS
  * ============================================================ */
 
 function isOwnerBooking(row) {
@@ -141,10 +149,7 @@ function toDate(v) {
     const onlyDate = v.split(" ")[0].trim();
     const m = onlyDate.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
     if (m) {
-      const dd = Number(m[1]);
-      const mm = Number(m[2]) - 1;
-      const yyyy = Number(m[3]);
-      const d = new Date(yyyy, mm, dd);
+      const d = new Date(+m[3], +m[2] - 1, +m[1]);
       return Number.isNaN(d.getTime()) ? null : d;
     }
   }
