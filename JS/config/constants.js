@@ -1,8 +1,11 @@
-// App constants and configuration values
+// App Configuration Constants and Settings
 
-const APP_NAME = 'Gipfel Lodge Data Visualisation';
-const API_URL = 'https://api.example.com';
-const TIMEOUT_DURATION = 5000; // timeout duration in milliseconds
-const DEFAULT_THEME = 'light';
+const CONFIG = {
+    ENVIRONMENT: 'production',
+    API_URL: 'https://api.gipfellodge.com',
+    TIMEOUT: 5000,
+    MAX_RETRIES: 3,
+    LOG_LEVEL: 'info',
+};
 
-export { APP_NAME, API_URL, TIMEOUT_DURATION, DEFAULT_THEME };
+export default CONFIG;
