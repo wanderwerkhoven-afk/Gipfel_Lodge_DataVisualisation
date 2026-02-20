@@ -1,0 +1,293 @@
+/* 1.3 KPI CARDS
+     ====================================================================== */
+/* ============================================================
+   KPI header + year select (compact)
+   ============================================================ */
+
+.kpi-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 10px;
+  /* Ook hier extra ruimte toegevoegd, sluit aan op cards-grid */
+  gap: 14px;
+  margin: 6px 0 14px;
+}
+
+.kpi-header__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.kpi-header__subtitle {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* altijd even breed */
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 0 10px;
+  /* Extra ruimte vanaf de randen */
+}
+
+.kpi-card {
+  background-color: var(--panel);
+  /* Gebruikt je diepblauwe variabele */
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  /* Iets minder rond voor een serieuzere look */
+  padding: 12px 10px;
+  /* Minder padding maakt het compacter */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.kpi-card:hover {
+  background-color: var(--panel-light);
+}
+
+.kpi-card .label {
+  color: var(--text-muted);
+  font-size: 12px;
+  /* Kleiner en subtieler */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.kpi-card .value {
+  color: var(--text);
+  font-size: 25px;
+  /* Iets kleiner getal voor een betere balans */
+  font-weight: 700;
+  margin: 0;
+  /* Weg met de extra ruimte van het strepje */
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* We verwijderen de ::after (het witte strepje) */
+.kpi-card .value::after {
+  display: none;
+}
+
+/* Optioneel: Een heel klein gekleurd randje aan de zijkant voor herkenbaarheid */
+.kpi-card:nth-child(odd) {
+  border-left: 2px solid var(--accent);
+}
+
+.kpi-card:nth-child(even) {
+  border-left: 2px solid #22c55e;
+  /* Groen voor de rechterkolom */
+}
+
+/* ============================================================
+   Booking Card (v2)
+   ============================================================ */
+
+.booking-card--v2 {
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  /* Forceert de kaart langer te zijn voor de extra ruimte */
+  padding: 20px;
+  border-radius: 28px;
+  background:
+    radial-gradient(1200px 500px at 20% -10%, rgba(59, 130, 246, 0.16), transparent 55%),
+    radial-gradient(900px 600px at 80% 0%, rgba(34, 197, 94, 0.10), transparent 60%),
+    linear-gradient(180deg, rgba(8, 14, 32, 0.92), rgba(6, 10, 24, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.booking-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.booking-card__title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.booking-card__badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Badges */
+.badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 10px;
+  border-radius: 999px;
+  line-height: 1;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.badge--now {
+  background: #22c55e;
+  color: #0b1225;
+}
+
+.badge--next {
+  background: #60a5fa;
+  color: #0b1225;
+}
+
+.badge--owner {
+  background: #ff8a2a;
+  color: #0b1225;
+}
+
+.badge--muted {
+  background: rgba(255, 255, 255, 0.10);
+  color: #cbd5e1;
+}
+
+/* Dividers */
+.booking-card__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  margin: 14px 0 18px;
+}
+
+.booking-card__divider--bottom {
+  margin: 18px 0 18px;
+  margin-top: auto;
+  /* Push dit lijntje (en de prijs eronder) helemaal naar de onderkant */
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Top area (naam + land) */
+.booking-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+.booking-card__guest {
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
+  margin: 0 0 8px 0;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.booking-card__sub {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 14px;
+}
+
+/* Country block */
+.booking-card__country {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 50px;
+}
+
+.booking-card__flag {
+  width: 42px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.booking-card__countryCode {
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Rows */
+.booking-card__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  /* Meer ruimte tussen gasten-info en de kalender-rijen */
+}
+
+.booking-card__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 16px;
+}
+
+.booking-card__row i {
+  width: 22px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 18px;
+}
+
+.booking-card__row--strong {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.booking-card__row--strong strong {
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+/* Links (tel/mail) */
+.booking-card__link {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+}
+
+.booking-card__link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Price bottom */
+.booking-card__price {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 30px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.5px;
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
+}
+
+/* ============================================================

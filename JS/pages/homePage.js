@@ -13,9 +13,9 @@
      =============================================================================
      ======================================================================== --*/
 
-// ./JS/charts/home.js
-import { CONFIG, state } from "../state.js";
-import { getRowsForYear } from "../data.js";
+// ./JS/pages/homePage.js
+import { CONFIG, state } from "../core/app.js";
+import { getRowsForYear } from "../core/dataManager.js";
 
 /* ============================================================
  * HOME KPI CARDS
@@ -36,42 +36,42 @@ function renderHomeKPIs(allRows) {
   if (!allRows || allRows.length === 0) return;
 
   const platformRows = allRows.filter((r) => !r.__owner);
-  const ownerRows    = allRows.filter((r) => r.__owner);
+  const ownerRows = allRows.filter((r) => r.__owner);
 
-  const bookings      = platformRows.length;
+  const bookings = platformRows.length;
   const ownerBookings = ownerRows.length;
 
-  const nights      = platformRows.reduce((s, r) => s + (r.__nights || 0), 0);
+  const nights = platformRows.reduce((s, r) => s + (r.__nights || 0), 0);
   const ownerNights = ownerRows.reduce((s, r) => s + (r.__nights || 0), 0);
 
   const totalOccupied = nights + ownerNights;
 
   // ALL -> kan meerdere jaren bevatten, jaarselect -> meestal 1 jaar
   const yearsInData = Math.max(1, getUniqueYearsCount(allRows));
-  const totalDays   = yearsInData * CONFIG.DAYS_IN_YEAR;
+  const totalDays = yearsInData * CONFIG.DAYS_IN_YEAR;
 
   const occupancyPct = totalDays > 0 ? totalOccupied / totalDays : 0;
 
   const grossRevenue = platformRows.reduce((s, r) => s + (r.__gross || 0), 0);
-  const netRevenue   = platformRows.reduce((s, r) => s + (r.__net || 0), 0);
+  const netRevenue = platformRows.reduce((s, r) => s + (r.__net || 0), 0);
 
- // ints
-setCountUp("kpiBookings", bookings, { formatter: (v) => String(Math.round(v)) });
-setCountUp("kpiNights", nights, { formatter: (v) => String(Math.round(v)) });
-setCountUp("kpiOwnerBookings", ownerBookings, { formatter: (v) => String(Math.round(v)) });
-setCountUp("kpiOwnerNights", ownerNights, { formatter: (v) => String(Math.round(v)) });
+  // ints
+  setCountUp("kpiBookings", bookings, { formatter: (v) => String(Math.round(v)) });
+  setCountUp("kpiNights", nights, { formatter: (v) => String(Math.round(v)) });
+  setCountUp("kpiOwnerBookings", ownerBookings, { formatter: (v) => String(Math.round(v)) });
+  setCountUp("kpiOwnerNights", ownerNights, { formatter: (v) => String(Math.round(v)) });
 
-setCountUp("kpiNightsFree", Math.max(0, totalDays - totalOccupied), {formatter: (v) => String(Math.round(v)),});
+  setCountUp("kpiNightsFree", Math.max(0, totalDays - totalOccupied), { formatter: (v) => String(Math.round(v)), });
 
-// percentage (1 decimaal)
-setCountUp("kpiOccupancyPct", occupancyPct * 100, {formatter: (v) => `${v.toFixed(1)}%`,});
+  // percentage (1 decimaal)
+  setCountUp("kpiOccupancyPct", occupancyPct * 100, { formatter: (v) => `${v.toFixed(1)}%`, });
 
-// euro’s (met jouw fmtEUR)
-setCountUp("kpiGrossRevenue", grossRevenue, {formatter: (v) => fmtEUR(v),});
-setCountUp("kpiGrossRevPerNight", nights > 0 ? grossRevenue / nights : 0, {formatter: (v) => fmtEUR(v),});
+  // euro’s (met jouw fmtEUR)
+  setCountUp("kpiGrossRevenue", grossRevenue, { formatter: (v) => fmtEUR(v), });
+  setCountUp("kpiGrossRevPerNight", nights > 0 ? grossRevenue / nights : 0, { formatter: (v) => fmtEUR(v), });
 
-setCountUp("kpiNetRevenue", netRevenue, {formatter: (v) => fmtEUR(v),});
-setCountUp("kpiNetRevPerNight", nights > 0 ? netRevenue / nights : 0, {formatter: (v) => fmtEUR(v),});
+  setCountUp("kpiNetRevenue", netRevenue, { formatter: (v) => fmtEUR(v), });
+  setCountUp("kpiNetRevPerNight", nights > 0 ? netRevenue / nights : 0, { formatter: (v) => fmtEUR(v), });
 
 }
 
@@ -87,17 +87,17 @@ setCountUp("kpiNetRevPerNight", nights > 0 ? netRevenue / nights : 0, {formatter
 
 export function renderHomeBookingCarousel(allRows) {
   // --- DOM refs ---
-  const carousel  = document.getElementById("bookingCarousel");
-  const track     = document.getElementById("bookingCarouselTrack");
+  const carousel = document.getElementById("bookingCarousel");
+  const track = document.getElementById("bookingCarouselTrack");
 
   // (oude dots blijven bestaan, maar worden vervangen door knob/ticks)
-  const dotsWrap  = document.getElementById("bookingCarouselDots");
+  const dotsWrap = document.getElementById("bookingCarouselDots");
 
-  const prevBtn   = document.getElementById("bookingPrevBtn");
-  const nextBtn   = document.getElementById("bookingNextBtn");
+  const prevBtn = document.getElementById("bookingPrevBtn");
+  const nextBtn = document.getElementById("bookingNextBtn");
 
   // nieuwe pager elementen
-  const knob      = document.getElementById("bookingKnob");
+  const knob = document.getElementById("bookingKnob");
   const ticksWrap = document.getElementById("bookingTicks");
 
   if (!carousel || !track) return;
@@ -154,8 +154,8 @@ export function renderHomeBookingCarousel(allRows) {
   const rows = allRows
     .map((r) => {
       const aankomst = coerceDate(get(r, ["__aankomst", "Aankomst"]));
-      const vertrek  = coerceDate(get(r, ["__vertrek", "Vertrek"]));
-      const nights   = Number(get(r, ["__nights", "Nachten"], 0)) || 0;
+      const vertrek = coerceDate(get(r, ["__vertrek", "Vertrek"]));
+      const nights = Number(get(r, ["__nights", "Nachten"], 0)) || 0;
 
       const guest = String(get(r, ["__guest", "__gast", "Gast", "Naam"], "Onbekende gast"));
       const owner = !!get(r, ["__owner"], false);
@@ -166,7 +166,7 @@ export function renderHomeBookingCarousel(allRows) {
         : (owner ? "Huiseigenaar" : "");
 
       const adults = Number(get(r, ["__adults", "Volw.", "Volwassenen"], 0)) || 0;
-      const kids   = Number(get(r, ["__kids", "Knd.", "Kinderen"], 0)) || 0;
+      const kids = Number(get(r, ["__kids", "Knd.", "Kinderen"], 0)) || 0;
       const babies = Number(get(r, ["__babies", "Bab.", "Baby"], 0)) || 0;
 
       const phone = normalizePhone(get(r, ["__phone", "Telefoon", "Phone", "Tel"], ""));
@@ -177,7 +177,7 @@ export function renderHomeBookingCarousel(allRows) {
         .toUpperCase();
 
       const gross = Number(get(r, ["__gross", "Inkomsten", "Bruto", "Gross"], 0)) || 0;
-      const net   = Number(get(r, ["__net", "Netto", "Net"], 0)) || 0;
+      const net = Number(get(r, ["__net", "Netto", "Net"], 0)) || 0;
 
       return {
         aankomst,
@@ -207,9 +207,9 @@ export function renderHomeBookingCarousel(allRows) {
   // ------------------------------------------------------------
   // 2) start index: NU (als aanwezig), anders eerst VOLGENDE
   // ------------------------------------------------------------
-  const now        = startOfDay(new Date());
+  const now = startOfDay(new Date());
   const currentIdx = rows.findIndex((r) => r.aankomst <= now && now < r.vertrek);
-  const nextIdx    = rows.findIndex((r) => r.aankomst > now);
+  const nextIdx = rows.findIndex((r) => r.aankomst > now);
   const startIndex = currentIdx !== -1 ? currentIdx : (nextIdx !== -1 ? nextIdx : 0);
 
   // ------------------------------------------------------------
@@ -243,42 +243,20 @@ export function renderHomeBookingCarousel(allRows) {
   // 2c) Scroll helpers
   // ------------------------------------------------------------
   const scrollToIndex = (idx, smooth = true) => {
-    const slides = track.querySelectorAll(".booking-slide");
-    if (!slides[idx]) return;
-
-    // inline: "start" past beter bij jouw full-page swipe CSS (100vw slides)
-    slides[idx].scrollIntoView({
-      behavior: smooth ? "smooth" : "auto",
-      inline: "start",
-      block: "nearest",
+    // ✅ Gebruik scrollLeft ipv scrollIntoView (werkt beter met overflow:hidden parents)
+    const slideWidth = carousel.clientWidth;
+    carousel.scrollTo({
+      left: slideWidth * idx,
+      behavior: smooth ? "smooth" : "instant",
     });
-
-    // update pagers
-    setActiveDot(idx);  // dots blijven werken als je ze nog gebruikt
-    updateKnob(idx);    // nieuwe knob
+    setActiveDot(idx);
+    updateKnob(idx);
   };
 
   const getClosestIndex = () => {
-    const slides = [...track.querySelectorAll(".booking-slide")];
-    if (!slides.length) return 0;
-
-    const trackRect = track.getBoundingClientRect();
-    const center = trackRect.left + trackRect.width / 2;
-
-    let bestIdx = 0;
-    let bestDist = Infinity;
-
-    slides.forEach((s, i) => {
-      const r = s.getBoundingClientRect();
-      const c = r.left + r.width / 2;
-      const dist = Math.abs(center - c);
-      if (dist < bestDist) {
-        bestDist = dist;
-        bestIdx = i;
-      }
-    });
-
-    return bestIdx;
+    if (!carousel || carousel.clientWidth === 0) return 0;
+    const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+    return Math.max(0, Math.min(rows.length - 1, idx));
   };
 
   // ------------------------------------------------------------
@@ -300,16 +278,16 @@ export function renderHomeBookingCarousel(allRows) {
   }
 
   rows.forEach((picked, idx) => {
-    const isNow  = picked.aankomst <= now && now < picked.vertrek;
+    const isNow = picked.aankomst <= now && now < picked.vertrek;
     const isNext = !isNow && picked.aankomst > now;
 
-    const statusText  = isNow ? "NU" : (isNext ? "VOLGENDE" : "VERLEDEN");
+    const statusText = isNow ? "NU" : (isNext ? "VOLGENDE" : "VERLEDEN");
     const statusClass = isNow ? "badge--now" : (isNext ? "badge--next" : "badge--muted");
 
     // breakdown: alleen >0
     const breakdownParts = [];
     if ((picked.adults || 0) > 0) breakdownParts.push(`${picked.adults} volwassenen`);
-    if ((picked.kids   || 0) > 0) breakdownParts.push(`${picked.kids} kinderen`);
+    if ((picked.kids || 0) > 0) breakdownParts.push(`${picked.kids} kinderen`);
     if ((picked.babies || 0) > 0) breakdownParts.push(`${picked.babies} baby`);
     const breakdown = breakdownParts.length ? `(${breakdownParts.join(", ")})` : "—";
 
@@ -323,69 +301,131 @@ export function renderHomeBookingCarousel(allRows) {
     const cc = (picked.countryCode || "").trim().toUpperCase();
     const flagUrl = cc ? `https://flagcdn.com/w40/${cc.toLowerCase()}.png` : "";
 
+    // --- FACTUUR BEREKENING ---
     const amount = (picked.gross && picked.gross !== 0) ? picked.gross : picked.net;
+    const rent = amount; // Base price (gross)
+    const cleaning = picked.owner ? 0 : 350.00;
+    const bedLinen = picked.owner ? 0 : (totalGuests * 20.95);
+    const touristTax = totalGuests * picked.nights * 2.50;
+    const mobilityFee = totalGuests * picked.nights * 0.50;
+    const commission = rent * 0.24;
+
+    const totalSettlement = rent + cleaning + bedLinen + touristTax + mobilityFee - commission;
+
+    const fmtSettlement = (val) => {
+      return val.toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
 
     const slide = document.createElement("div");
     slide.className = "booking-slide";
 
     slide.innerHTML = `
-      <div class="chart-panel booking-card booking-card--v2">
-
-        <div class="booking-card__header">
-          <h3 class="booking-card__title">Boeking</h3>
-          <div class="booking-card__badges">
-            <span class="badge ${statusClass}">${statusText}</span>
-            ${sourceText ? `<span class="badge badge--muted ${picked.owner ? "badge--owner" : ""}">${sourceText}</span>` : ""}
-          </div>
-        </div>
-
-        <div class="booking-card__divider"></div>
-
-        <div class="booking-card__top">
-          <div class="booking-card__left">
-            <div class="booking-card__guest">${picked.guest || "—"}</div>
-
-            <div class="booking-card__row booking-card__row--strong">
-              <i class="fa-solid fa-user"></i>
-              <span><strong>${totalGuests || "—"}</strong> gasten</span>
+      <div class="booking-card-flip-container" onclick="this.classList.toggle('is-flipped')">
+        <div class="booking-card-flipper">
+          
+          <!-- FRONT -->
+          <div class="chart-panel booking-card booking-card--v2 booking-card--front">
+            <div class="booking-card__header">
+              <h3 class="booking-card__title">Boeking</h3>
+              <div class="booking-card__badges">
+                <span class="badge ${statusClass}">${statusText}</span>
+                ${sourceText ? `<span class="badge badge--muted ${picked.owner ? "badge--owner" : ""}">${sourceText}</span>` : ""}
+                <button class="flip-btn" title="Bekijk factuur"><i class="fa-solid fa-file-invoice"></i></button>
+              </div>
             </div>
 
-            <div class="booking-card__sub">${breakdown}</div>
-          </div>
+            <div class="booking-card__divider"></div>
 
-          <div class="booking-card__country">
-            ${flagUrl ? `<img class="booking-card__flag" src="${flagUrl}" alt="Flag" />` : ""}
-            <div class="booking-card__countryCode">${cc || "—"}</div>
+            <div class="booking-card__top">
+              <div class="booking-card__left">
+                <div class="booking-card__guest">${picked.guest || "—"}</div>
+
+                <div class="booking-card__row booking-card__row--strong">
+                  <i class="fa-solid fa-user"></i>
+                  <span><strong>${totalGuests || "—"}</strong> gasten</span>
+                </div>
+
+                <div class="booking-card__sub">${breakdown}</div>
+              </div>
+
+              <div class="booking-card__country">
+                ${flagUrl ? `<img class="booking-card__flag" src="${flagUrl}" alt="Flag" />` : ""}
+                <div class="booking-card__countryCode">${cc || "—"}</div>
+              </div>
+            </div>
+
+            <div class="booking-card__rows">
+              <div class="booking-card__row">
+                <i class="fa-regular fa-calendar"></i>
+                <span>${fmtRange(picked.aankomst, picked.vertrek)}</span>
+              </div>
+
+              <div class="booking-card__row">
+                <i class="fa-regular fa-moon"></i>
+                <span>${picked.nights || 0} nachten</span>
+              </div>
+
+              ${picked.phone ? `
+                <div class="booking-card__row">
+                  <i class="fa-solid fa-phone" onclick="event.stopPropagation()"></i>
+                  <a class="booking-card__link" href="tel:${picked.phone.replace(/\s+/g, "")}" onclick="event.stopPropagation()">${picked.phone}</a>
+                </div>` : ""}
+
+              ${picked.email ? `
+                <div class="booking-card__row">
+                  <i class="fa-regular fa-envelope" onclick="event.stopPropagation()"></i>
+                  <a class="booking-card__link" href="mailto:${picked.email}" onclick="event.stopPropagation()">${picked.email}</a>
+                </div>` : ""}
+            </div>
+
+            <div class="booking-card__divider booking-card__divider--bottom"></div>
+
+            <div class="booking-card__price">${fmtEUR(amount)}</div>
+          </div>
+          
+          <!-- BACK (Settlement) -->
+          <div class="chart-panel booking-card booking-card--v2 booking-card--back">
+            <div class="booking-card__header">
+              <h3 class="booking-card__title">Factuur specificatie</h3>
+            </div>
+            
+            <div class="booking-card__divider"></div>
+            
+            <div class="settlement-table">
+              <div class="settlement-row">
+                <span class="settle-label">Huur</span>
+                <span class="settle-val">€ ${fmtSettlement(rent)}</span>
+              </div>
+              <div class="settlement-row">
+                <span class="settle-label">Schoonmaak</span>
+                <span class="settle-val">${picked.owner ? 'n.t.b.' : '€ ' + fmtSettlement(cleaning)}</span>
+              </div>
+              <div class="settlement-row">
+                <span class="settle-label">Bedlinnen</span>
+                <span class="settle-val">${picked.owner ? 'n.v.t.' : '€ ' + fmtSettlement(bedLinen)}</span>
+              </div>
+              <div class="settlement-row">
+                <span class="settle-label">Toeristenbelasting</span>
+                <span class="settle-val">€ ${fmtSettlement(touristTax)}</span>
+              </div>
+              <div class="settlement-row">
+                <span class="settle-label">Mobiliteitsheffing</span>
+                <span class="settle-val">€ ${fmtSettlement(mobilityFee)}</span>
+              </div>
+              
+              <div class="settlement-row settlement-row--commission">
+                <span class="settle-label">Commissie factuur</span>
+                <span class="settle-val">€ -${fmtSettlement(commission)}</span>
+              </div>
+              
+              <div class="settlement-row settlement-row--total">
+                <span class="settle-label">Totaal bedrag</span>
+                <span class="settle-val">€ ${fmtSettlement(totalSettlement)}</span>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        <div class="booking-card__rows">
-          <div class="booking-card__row">
-            <i class="fa-regular fa-calendar"></i>
-            <span>${fmtRange(picked.aankomst, picked.vertrek)}</span>
-          </div>
-
-          <div class="booking-card__row">
-            <i class="fa-regular fa-moon"></i>
-            <span>${picked.nights || 0} nachten</span>
-          </div>
-
-          ${picked.phone ? `
-            <div class="booking-card__row">
-              <i class="fa-solid fa-phone"></i>
-              <a class="booking-card__link" href="tel:${picked.phone.replace(/\s+/g, "")}">${picked.phone}</a>
-            </div>` : ""}
-
-          ${picked.email ? `
-            <div class="booking-card__row">
-              <i class="fa-regular fa-envelope"></i>
-              <a class="booking-card__link" href="mailto:${picked.email}">${picked.email}</a>
-            </div>` : ""}
-        </div>
-
-        <div class="booking-card__divider booking-card__divider--bottom"></div>
-
-        <div class="booking-card__price">${fmtEUR(amount)}</div>
       </div>
     `;
 
@@ -419,17 +459,18 @@ export function renderHomeBookingCarousel(allRows) {
   // 6) update pager on swipe/scroll
   // ------------------------------------------------------------
   let raf = null;
-  track.addEventListener("scroll", () => {
+  // ✅ scroll-snap staat op .booking-carousel (niet op track)
+  carousel.addEventListener("scroll", () => {
     if (raf) cancelAnimationFrame(raf);
     raf = requestAnimationFrame(() => {
       const idx = getClosestIndex();
-      setActiveDot(idx);   // blijft veilig (als dotsWrap bestaat)
-      updateKnob(idx);     // nieuwe knob
+      setActiveDot(idx);
+      updateKnob(idx);
     });
-  });
+  }, { passive: true });
 
-    // ------------------------------------------------------------
-  // 7) Draggable pager knob (slepen = naar page snappen)
+  // ------------------------------------------------------------
+  // 7) Draggable pager knob — pointer capture op de knob zelf
   // ------------------------------------------------------------
   const rail = knob ? knob.closest(".booking-scrollbar__rail") : null;
 
@@ -437,81 +478,51 @@ export function renderHomeBookingCarousel(allRows) {
 
   const indexFromClientX = (clientX) => {
     if (!rail) return 0;
-
     const rect = rail.getBoundingClientRect();
-    const padding = 14; // moet matchen met CSS ticks padding
+    const padding = 14;
     const usable = Math.max(1, rect.width - padding * 2);
-
     const x = clamp(clientX - rect.left - padding, 0, usable);
-    const t = x / usable; // 0..1
-
-    const maxIdx = Math.max(1, rows.length - 1);
-    return Math.round(t * maxIdx);
+    return Math.round((x / usable) * Math.max(1, rows.length - 1));
   };
 
-  let isDragging = false;
-  let dragRaf = null;
-  let lastIdx = startIndex;
+  if (knob && rail) {
+    let isDragging = false;
 
-  const onPointerMove = (e) => {
-    if (!isDragging) return;
+    knob.addEventListener("pointerdown", (e) => {
+      isDragging = true;
+      knob.setPointerCapture(e.pointerId); // ✅ alle events komen nu op knob
+      e.preventDefault();
+    }, { passive: false });
 
-    const idx = indexFromClientX(e.clientX);
-    lastIdx = idx;
+    // ✅ pointermove op knob (niet window) — werkt correct met pointer capture
+    knob.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
 
-    // Update knob soepel tijdens slepen (zonder elke pixel te scrollen)
-    if (dragRaf) cancelAnimationFrame(dragRaf);
-    dragRaf = requestAnimationFrame(() => updateKnob(idx));
-  };
+      const idx = indexFromClientX(e.clientX);
+      updateKnob(idx);           // knob positie live bijwerken
+      setActiveDot(idx);
 
-  const onPointerUp = (e) => {
-    if (!isDragging) return;
-    isDragging = false;
+      // ✅ Scroll carousel live tijdens drag (geen snap animatie)
+      carousel.scrollTo({ left: carousel.clientWidth * idx, behavior: "instant" });
+    }, { passive: false });
 
-    // release capture (veilig)
-    try {
-      if (knob && e?.pointerId != null) knob.releasePointerCapture(e.pointerId);
-    } catch (_) {}
+    const stopDrag = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      try { knob.releasePointerCapture(e.pointerId); } catch (_) { }
 
-    window.removeEventListener("pointermove", onPointerMove);
-    window.removeEventListener("pointerup", onPointerUp);
-    window.removeEventListener("pointercancel", onPointerUp);
+      // Snap naar dichtstbijzijnde slide na loslaten
+      const idx = indexFromClientX(e.clientX);
+      scrollToIndex(idx, true);
+    };
 
-    scrollToIndex(lastIdx, true);
-  };
+    knob.addEventListener("pointerup", stopDrag, { passive: false });
+    knob.addEventListener("pointercancel", stopDrag, { passive: false });
 
-    const startDrag = (e) => {
-    if (!rail || !knob) return;
-
-    isDragging = true;
-
-    // ✅ super belangrijk: pointer capture zodat je de knob "vast" houdt
-    try {
-      knob.setPointerCapture(e.pointerId);
-    } catch (_) {}
-
-    // voorkom dat de pagina scrollt tijdens drag
-    e.preventDefault();
-
-    lastIdx = indexFromClientX(e.clientX);
-    updateKnob(lastIdx);
-
-    window.addEventListener("pointermove", onPointerMove, { passive: false });
-    window.addEventListener("pointerup", onPointerUp, { passive: false });
-    window.addEventListener("pointercancel", onPointerUp, { passive: false });
-  };
-
-  // Slepen op knob
-  if (knob) {
-    knob.addEventListener("pointerdown", startDrag, { passive: false });
-  }
-
-  // Klik/tap op rail = spring naar page
-  if (rail) {
+    // Klik/tap op rail (niet op knob) = direct naar positie springen
     rail.addEventListener("pointerdown", (e) => {
-      // ✅ belangrijk: als je op de knob (of iets erin) klikt, niet jumpen
-      if (e.target.closest && e.target.closest("#bookingKnob")) return;
-
+      if (e.target === knob || knob.contains(e.target)) return;
       const idx = indexFromClientX(e.clientX);
       scrollToIndex(idx, true);
     }, { passive: true });

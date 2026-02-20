@@ -1,4 +1,4 @@
-// ./JS/state.js
+// ./JS/core/app.js
 export const CONFIG = {
   NET_FACTOR: 0.76,
   DAYS_IN_YEAR: 365,

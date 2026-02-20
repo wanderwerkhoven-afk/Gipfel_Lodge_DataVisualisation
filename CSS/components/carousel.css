@@ -1,0 +1,131 @@
+/* Booking Carousel — paged: 1 card per scherm
+   ============================================================ */
+
+.booking-carousel {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.booking-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.booking-carousel__track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  gap: 0;
+  padding: 0;
+
+  overflow: visible;
+}
+
+.booking-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  /* ✅ was 100vw — veroorzaakte horizontale overflow */
+  max-width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+
+  padding: 14px 14px;
+  /* De 14px zijkanten zorgen voor 28px totale 'gap' tussen kaarten */
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+}
+
+.booking-slide .booking-card--v2 {
+  width: 100%;
+  max-width: 520px;
+  margin: 0;
+}
+
+/* ============================================================
+   Booking pager — rail + knob (premium)
+   ============================================================ */
+
+.booking-scrollbar {
+  display: flex;
+  justify-content: center;
+  padding: 10px 14px 6px;
+}
+
+.booking-scrollbar__rail {
+  position: relative;
+  width: min(520px, 92vw);
+  height: 22px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 10px 26px rgba(0, 0, 0, 0.30);
+
+  overflow: hidden;
+
+  touch-action: pan-x;
+}
+
+.booking-scrollbar__ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.booking-tick {
+  width: 2px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.booking-scrollbar__knob {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 14px;
+
+  width: 34px;
+  height: 14px;
+  border-radius: 999px;
+
+  background: linear-gradient(90deg, #60a5fa, #22c55e);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 10px 22px rgba(34, 197, 94, 0.25),
+    0 10px 22px rgba(96, 165, 250, 0.25);
+
+  transition: left 180ms ease;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  /* ✅ Voorkomt browser-pan tijdens drag */
+  user-select: none;
+}
+
+.booking-scrollbar__knob:active {
+  cursor: grabbing;
+}
+
+@media (hover:hover) {
+  .booking-scrollbar__rail:hover .booking-scrollbar__knob {
+    height: 15px;
+    width: 36px;
+  }
+}

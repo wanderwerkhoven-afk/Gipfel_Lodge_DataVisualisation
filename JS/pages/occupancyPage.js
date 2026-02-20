@@ -1,6 +1,6 @@
-// ./JS/charts/bezetting.js
-import { state } from "../state.js";
-import { loadPricingYear } from "../data.js";
+// ./JS/pages/occupancyPage.js
+import { state } from "../core/app.js";
+import { loadPricingYear } from "../core/dataManager.js";
 
 /**
  * Entry: render occupancy page

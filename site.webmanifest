@@ -1,0 +1,9 @@
+{
+  "name": "Gipfel Lodge Data Visualisation",
+  "short_name": "Gipfel Lodge",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050a18",
+  "theme_color": "#050a18",
+  "icons": []
+}

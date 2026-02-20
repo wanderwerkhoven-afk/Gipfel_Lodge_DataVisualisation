@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="nl">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,381 +23,384 @@
 
 <body>
 
-<!-- ============================================================
+  <!-- ============================================================
      PAGE: HOME
      ============================================================ -->
 
-<main id="home-page" class="page active">
+  <main id="home-page" class="page active">
 
-  <header class="top-bar">
-    <div class="header-flex">
-      <div class="header-titles">
-        <h1>Gipfel Home</h1>
-        <p class="subtitle">Data overzichtelijk gemaakt</p>
-      </div>
-
-      <div class="topbar__controls">
-        <label class="action-btn" for="fileInputOcc">
-          <i class="fa-solid fa-file-import"></i>
-          <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
-        </label>
-      </div>
-    </div>
-  </header>
-
-  <div class="container">
-
-  <!-- ====== KPI-CARDS ====== -->
-  <div class="kpi-header">
-    <div class="kpi-header__left">
-      <h3 class="kpi-header__title">Overzicht</h3>
-      <p class="kpi-header__subtitle">Kies een jaar</p>
-    </div>
-
-    <div class="year-select-container">
-      <div class="custom-select custom-select-kpi" id="yearSelectContainerKpi">
-        <div class="select-trigger">
-          <span id="selectedYearDisplayKpi">—</span>
-          <i class="fa-solid fa-chevron-down"></i>
+    <header class="top-bar">
+      <div class="header-flex">
+        <div class="header-titles">
+          <h1>Gipfel Home</h1>
+          <p class="subtitle">Data overzichtelijk gemaakt</p>
         </div>
-        <div class="select-options" id="yearOptionsKpi"></div>
-        <input type="hidden" id="yearValueKpi" value="">
+
+        <div class="topbar__controls">
+          <label class="action-btn" for="fileInputOcc">
+            <i class="fa-solid fa-file-import"></i>
+            <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
+          </label>
+        </div>
       </div>
-    </div>
-  </div>
+    </header>
 
-  <section class="cards-grid">
-    <div class="kpi-card">
-      <span class="label">Boekingen</span>
-      <span id="kpiBookings" class="value">—</span>
-    </div>
-    <div class="kpi-card">
-      <span class="label">Nachten geboekt</span>
-      <span id="kpiNights" class="value">—</span>
-    </div>
+    <div class="container">
 
-    <div class="kpi-card">
-      <span class="label">Eigen boekingen</span>
-      <span id="kpiOwnerBookings" class="value">—</span>
-    </div>
-    <div class="kpi-card">
-      <span class="label">Nachten zelf geboekt</span>
-      <span id="kpiOwnerNights" class="value">—</span>
-    </div>
-
-    <div class="kpi-card">
-      <span class="label">% al geboekt (jaar)</span>
-      <span id="kpiOccupancyPct" class="value">—</span>
-    </div>
-    <div class="kpi-card">
-      <span class="label">Nachten ongeboekt</span>
-      <span id="kpiNightsFree" class="value">—</span>
-    </div>
-
-    <div class="kpi-card">
-      <span class="label">Omzet (Bruto)</span>
-      <span id="kpiGrossRevenue" class="value">—</span>
-    </div>
-    <div class="kpi-card">
-      <span class="label">Gem. bruto / nacht</span>
-      <span id="kpiGrossRevPerNight" class="value">—</span>
-    </div>
-
-    <div class="kpi-card">
-      <span class="label">Omzet (Netto)</span>
-      <span id="kpiNetRevenue" class="value">—</span>
-    </div>
-    <div class="kpi-card">
-      <span class="label">Gem. netto / nacht</span>
-      <span id="kpiNetRevPerNight" class="value">—</span>
-    </div>
-  </section>
-
-
-  <!-- ====== Booking Cards Carousel ====== -->
-  <section class="content-section">
-    <div class="booking-carousel" id="bookingCarousel" style="display:none;">
-
-      <!-- swipebare track -->
-      <div class="booking-carousel__track" id="bookingCarouselTrack">
-        <!-- booking slides worden hier dynamisch door JS ingevoegd -->
-      </div>
-
-      
-
-    </div>
-
-    <!-- Dots indicator -->
-    <div class="booking-scrollbar" id="bookingScrollbar" aria-label="Booking pager">
-      <div class="booking-scrollbar__rail">
-        <div class="booking-scrollbar__ticks" id="bookingTicks"></div>
-        <div class="booking-scrollbar__knob" id="bookingKnob"></div>
-      </div>
-    </div>
-
-
-  </section>
-
-
-  <!-- ====== SEIZOENSINZICHTEN ====== -->
-  <section class="content-section">
-    <div class="chart-panel">
-      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 class="panel-title" style="margin: 0;">Seizoensinzichten</h3>
+      <!-- ====== KPI-CARDS ====== -->
+      <div class="kpi-header">
+        <div class="kpi-header__left">
+          <h3 class="kpi-header__title">Overzicht</h3>
+          <p class="kpi-header__subtitle">Kies een jaar</p>
+        </div>
 
         <div class="year-select-container">
-          <div class="custom-select custom-select-seizoen" id="yearSelectContainer">
+          <div class="custom-select custom-select-kpi" id="yearSelectContainerKpi">
             <div class="select-trigger">
-              <span id="selectedYearDisplay">—</span>
+              <span id="selectedYearDisplayKpi">—</span>
               <i class="fa-solid fa-chevron-down"></i>
             </div>
-            <div class="select-options" id="yearOptions"></div>
-            <input type="hidden" id="yearValue" value="">
+            <div class="select-options" id="yearOptionsKpi"></div>
+            <input type="hidden" id="yearValueKpi" value="">
           </div>
         </div>
       </div>
 
-      <div class="season-filter">
-        <button class="filter-btn active" data-season="all">Jaar</button>
-        <button class="filter-btn" data-season="winter">Winter</button>
-        <button class="filter-btn" data-season="spring">Lente</button>
-        <button class="filter-btn" data-season="summer">Zomer</button>
-        <button class="filter-btn" data-season="autumn">Herfst</button>
-      </div>
+      <section class="cards-grid">
+        <div class="kpi-card">
+          <span class="label">Boekingen</span>
+          <span id="kpiBookings" class="value">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="label">Nachten geboekt</span>
+          <span id="kpiNights" class="value">—</span>
+        </div>
 
-      <div class="chart-container">
-        <canvas id="chartHomeRevenue"></canvas>
-      </div>
+        <div class="kpi-card">
+          <span class="label">Eigen boekingen</span>
+          <span id="kpiOwnerBookings" class="value">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="label">Nachten zelf geboekt</span>
+          <span id="kpiOwnerNights" class="value">—</span>
+        </div>
 
-      <div class="mode-toggle">
-        <button id="btnGross" class="toggle-btn active">Bruto</button>
-        <button id="btnNet" class="toggle-btn">Netto</button>
-      </div>
-    </div>
-  </section>
+        <div class="kpi-card">
+          <span class="label">% al geboekt (jaar)</span>
+          <span id="kpiOccupancyPct" class="value">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="label">Nachten ongeboekt</span>
+          <span id="kpiNightsFree" class="value">—</span>
+        </div>
 
-  <!-- ====== CUMULATIEVE OMZET ====== -->
-  <section class="content-section">
-    <div class="chart-panel">
+        <div class="kpi-card">
+          <span class="label">Omzet (Bruto)</span>
+          <span id="kpiGrossRevenue" class="value">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="label">Gem. bruto / nacht</span>
+          <span id="kpiGrossRevPerNight" class="value">—</span>
+        </div>
 
-      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 class="panel-title" style="margin: 0;">Overzicht boekingen</h3>
+        <div class="kpi-card">
+          <span class="label">Omzet (Netto)</span>
+          <span id="kpiNetRevenue" class="value">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="label">Gem. netto / nacht</span>
+          <span id="kpiNetRevPerNight" class="value">—</span>
+        </div>
+      </section>
 
-        <div class="year-select-container">
-          <div class="custom-select custom-select-cumulative" id="cumulativeYearSelectContainer">
-            <div class="select-trigger">
-              <span id="cumulativeYearDisplay">—</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </div>
-            <div class="select-options" id="cumulativeYearOptions"></div>
-            <input type="hidden" id="cumulativeYearValue" value="">
+
+      <!-- ====== Booking Cards Carousel ====== -->
+      <section class="content-section">
+        <div class="booking-carousel" id="bookingCarousel" style="display:none;">
+
+          <!-- swipebare track -->
+          <div class="booking-carousel__track" id="bookingCarouselTrack">
+            <!-- booking slides worden hier dynamisch door JS ingevoegd -->
+          </div>
+
+
+
+        </div>
+
+        <!-- Dots indicator -->
+        <div class="booking-scrollbar" id="bookingScrollbar" aria-label="Booking pager">
+          <div class="booking-scrollbar__rail">
+            <div class="booking-scrollbar__ticks" id="bookingTicks"></div>
+            <div class="booking-scrollbar__knob" id="bookingKnob"></div>
           </div>
         </div>
-      </div>
 
-      <div class="panel__body">
-        <div class="chart-scroll" id="cumScrollWrapper">
-            <!-- ✅ Sticky y-axis labels (DOM) -->
-            <div class="cum-y-axis" id="cumYAxis"></div>
 
-            <div class="chart-scroll__inner" id="cumScrollInner">
+      </section>
+
+
+      <!-- ====== SEIZOENSINZICHTEN ====== -->
+      <section class="content-section">
+        <div class="chart-panel">
+          <div class="panel-header"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 class="panel-title" style="margin: 0;">Seizoensinzichten</h3>
+
+            <div class="year-select-container">
+              <div class="custom-select custom-select-seizoen" id="yearSelectContainer">
+                <div class="select-trigger">
+                  <span id="selectedYearDisplay">—</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="select-options" id="yearOptions"></div>
+                <input type="hidden" id="yearValue" value="">
+              </div>
+            </div>
+          </div>
+
+          <div class="season-filter">
+            <button class="filter-btn active" data-season="all">Jaar</button>
+            <button class="filter-btn" data-season="winter">Winter</button>
+            <button class="filter-btn" data-season="spring">Lente</button>
+            <button class="filter-btn" data-season="summer">Zomer</button>
+            <button class="filter-btn" data-season="autumn">Herfst</button>
+          </div>
+
+          <div class="chart-container">
+            <canvas id="chartHomeRevenue"></canvas>
+          </div>
+
+          <div class="mode-toggle">
+            <button id="btnGross" class="toggle-btn active">Bruto</button>
+            <button id="btnNet" class="toggle-btn">Netto</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== CUMULATIEVE OMZET ====== -->
+      <section class="content-section">
+        <div class="chart-panel">
+
+          <div class="panel-header"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 class="panel-title" style="margin: 0;">Overzicht boekingen</h3>
+
+            <div class="year-select-container">
+              <div class="custom-select custom-select-cumulative" id="cumulativeYearSelectContainer">
+                <div class="select-trigger">
+                  <span id="cumulativeYearDisplay">—</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="select-options" id="cumulativeYearOptions"></div>
+                <input type="hidden" id="cumulativeYearValue" value="">
+              </div>
+            </div>
+          </div>
+
+          <div class="panel__body">
+            <div class="chart-scroll" id="cumScrollWrapper">
+              <!-- ✅ Sticky y-axis labels (DOM) -->
+              <div class="cum-y-axis" id="cumYAxis"></div>
+
+              <div class="chart-scroll__inner" id="cumScrollInner">
                 <canvas id="chartCumulative"></canvas>
+              </div>
             </div>
-        </div>
 
 
-        <div class="hint">
-            <span class="hint-text">Scroll horizontaal voor details</span>
-            <span class="hint-separator">•</span>
-            <span class="hint-legend">
+            <div class="hint">
+              <span class="hint-text">Scroll horizontaal voor details</span>
+              <span class="hint-separator">•</span>
+              <span class="hint-legend">
                 <span class="dot dot-orange"></span>
                 <span>Huiseigenaar</span>
-            </span>
+              </span>
+            </div>
+          </div>
+
         </div>
-      </div>
+      </section>
 
-    </div>
-  </section>
+      <div class="container"></div>
 
-  <div class="container"></div>
+  </main>
 
-</main>
-
-<!-- ============================================================
+  <!-- ============================================================
      PAGE: BEZETTING
      ============================================================ -->
 
-<main id="occupancy-page" class="page">
+  <main id="occupancy-page" class="page">
 
-  <header class="top-bar">
-    <div class="header-flex">
-      <div class="header-titles">
-        <h1>Bezetting & Gebruik</h1>
-        <p class="subtitle">Data overzichtelijk gemaakt</p>
+    <header class="top-bar">
+      <div class="header-flex">
+        <div class="header-titles">
+          <h1>Bezetting & Gebruik</h1>
+          <p class="subtitle">Data overzichtelijk gemaakt</p>
+        </div>
+
+        <div class="topbar__controls">
+          <label class="action-btn" for="fileInputOcc">
+            <i class="fa-solid fa-file-import"></i>
+            <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
+          </label>
+        </div>
       </div>
+    </header>
 
-      <div class="topbar__controls">
-        <label class="action-btn" for="fileInputOcc">
-          <i class="fa-solid fa-file-import"></i>
-          <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
-        </label>
-      </div>
-    </div>
-  </header>
+    <div class="container">
 
-  <div class="container">
+      <!-- ====== KPI-HEADER (zoals Home) + YEAR DROPDOWN ====== -->
+      <div class="kalender-header">
+        <div class="kalender-header__left">
+          <h3 class="kalender__title">Bezettingskalender</h3>
+          <p class="kalender__subtitle">Swipe door de maanden</p>
+        </div>
 
-    <!-- ====== KPI-HEADER (zoals Home) + YEAR DROPDOWN ====== -->
-    <div class="kalender-header">
-      <div class="kalender-header__left">
-        <h3 class="kalender__title">Bezettingskalender</h3>
-        <p class="kalender__subtitle">Swipe door de maanden</p>
-      </div>
-
-      <div class="year-select-container">
-        <div class="custom-select custom-select-calender" id="occYearSelectContainer">
-          <div class="select-trigger">
-            <span id="occSelectedYear"></span>
-            <i class="fa-solid fa-chevron-down"></i>
+        <div class="year-select-container">
+          <div class="custom-select custom-select-calender" id="occYearSelectContainer">
+            <div class="select-trigger">
+              <span id="occSelectedYear"></span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="select-options" id="occYearOptions"></div>
+            <input type="hidden" id="occYearValue" value="">
           </div>
-          <div class="select-options" id="occYearOptions"></div>
-          <input type="hidden" id="occYearValue" value="">
-        </div>
-      </div>
-    </div>
-
-    <!-- ====== Kalender panel (ongewijzigd) ====== -->
-    <div class="panel">
-      <div id="occCalendarCarousel" class="occ-carousel booking-carousel">
-        <div id="occCalendarTrack" class="booking-carousel__track"></div>
-      </div>
-
-      <div class="occ-legend">
-        <div class="occ-legend__item">
-          <span class="dot dot-platform"></span>
-          <span>Platform</span>
-        </div>
-        <div class="occ-legend__item">
-          <span class="dot dot-owner"></span>
-          <span>Eigen gebruik</span>
         </div>
       </div>
 
-      <div id="occTooltip" class="occ-tooltip" style="display:none;"></div>
-    </div>
+      <!-- ====== Kalender panel (ongewijzigd) ====== -->
+      <div class="panel">
+        <div id="occCalendarCarousel" class="occ-carousel booking-carousel">
+          <div id="occCalendarTrack" class="booking-carousel__track"></div>
+        </div>
 
-  <div class="divider-horizontal"></div>
+        <div class="occ-legend">
+          <div class="occ-legend__item">
+            <span class="dot dot-platform"></span>
+            <span>Platform</span>
+          </div>
+          <div class="occ-legend__item">
+            <span class="dot dot-owner"></span>
+            <span>Eigen gebruik</span>
+          </div>
+        </div>
 
-</main>
+        <div id="occTooltip" class="occ-tooltip" style="display:none;"></div>
+      </div>
+
+      <div class="divider-horizontal"></div>
+
+  </main>
 
 
 
 
 
-<!-- ============================================================
+  <!-- ============================================================
      PAGE: OMZET
      ============================================================ -->
 
-<main id="revenue-page" class="page">
-  <header class="top-bar">
-    <div class="header-flex">
-      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
-      <h1>Omzet & Prijs</h1>
-    </div>
-  </header>
+  <main id="revenue-page" class="page">
+    <header class="top-bar">
+      <div class="header-flex">
+        <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
+        <h1>Omzet & Prijs</h1>
+      </div>
+    </header>
 
-  <div class="container">
-    <div class="panel">
-      <h3 class="panel-title">Omzet per kanaal</h3>
-      <canvas id="chartRevenueChannel"></canvas>
+    <div class="container">
+      <div class="panel">
+        <h3 class="panel-title">Omzet per kanaal</h3>
+        <canvas id="chartRevenueChannel"></canvas>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
 
-<!-- ============================================================
+  <!-- ============================================================
      PAGE: GEDRAG
      ============================================================ -->
 
-<main id="behavior-page" class="page">
-  <header class="top-bar">
-    <div class="header-flex">
-      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
-      <h1>Gasten Gedrag</h1>
-    </div>
-  </header>
+  <main id="behavior-page" class="page">
+    <header class="top-bar">
+      <div class="header-flex">
+        <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
+        <h1>Gasten Gedrag</h1>
+      </div>
+    </header>
 
-  <div class="container">
-    <div class="panel">
-      <h3 class="panel-title">Lead Time (Dagen voor aankomst)</h3>
-      <canvas id="chartLeadTime"></canvas>
+    <div class="container">
+      <div class="panel">
+        <h3 class="panel-title">Lead Time (Dagen voor aankomst)</h3>
+        <canvas id="chartLeadTime"></canvas>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Gezinsverdeling</h3>
+        <canvas id="chartGuestPie"></canvas>
+      </div>
     </div>
-    <div class="panel">
-      <h3 class="panel-title">Gezinsverdeling</h3>
-      <canvas id="chartGuestPie"></canvas>
-    </div>
-  </div>
-</main>
+  </main>
 
-<!-- ============================================================
+  <!-- ============================================================
      PAGE: DATA
      ============================================================ -->
 
-<main id="data-page" class="page">
-  <header class="top-bar">
-    <div class="header-flex">
-      <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
-      <h1>Data Management</h1>
+  <main id="data-page" class="page">
+    <header class="top-bar">
+      <div class="header-flex">
+        <button class="back-btn" data-nav="home"><i class="fa-solid fa-chevron-left"></i></button>
+        <h1>Data Management</h1>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="panel upload-zone">
+        <h3 class="panel-title">Nieuwe data inladen</h3>
+        <label class="upload-btn-full" for="fileInputData">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>Selecteer Excel Bestand</span>
+          <input id="fileInputData" class="excel-upload" type="file" accept=".xlsx,.xls,.csv" hidden />
+        </label>
+      </div>
+
+      <div class="panel">
+        <h3 class="panel-title">Systeem Log</h3>
+        <pre id="log" class="log">Wachten op bestand...</pre>
+      </div>
+
+      <div id="tableWrap" class="table-wrap"></div>
     </div>
-  </header>
+  </main>
 
-  <div class="container">
-    <div class="panel upload-zone">
-      <h3 class="panel-title">Nieuwe data inladen</h3>
-      <label class="upload-btn-full" for="fileInputData">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-        <span>Selecteer Excel Bestand</span>
-        <input id="fileInputData" class="excel-upload" type="file" accept=".xlsx,.xls,.csv" hidden />
-      </label>
-    </div>
-
-    <div class="panel">
-      <h3 class="panel-title">Systeem Log</h3>
-      <pre id="log" class="log">Wachten op bestand...</pre>
-    </div>
-
-    <div id="tableWrap" class="table-wrap"></div>
-  </div>
-</main>
-
-<!-- ============================================================
+  <!-- ============================================================
      BOTTOM NAVIGATION BAR
      ============================================================ -->
 
-<nav class="bottom-nav">
-  <div class="nav-item active" id="nav-home" data-nav="home">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </div>
-  <div class="nav-item" id="nav-occupancy" data-nav="occupancy">
-    <i class="fa-solid fa-calendar-days"></i>
-    <span>Bezetting</span>
-  </div>
-  <div class="nav-item" id="nav-revenue" data-nav="revenue">
-    <i class="fa-solid fa-euro-sign"></i>
-    <span>Omzet</span>
-  </div>
-  <div class="nav-item" id="nav-behavior" data-nav="behavior">
-    <i class="fa-solid fa-chart-pie"></i>
-    <span>Gedrag</span>
-  </div>
-  <div class="nav-item" id="nav-data" data-nav="data">
-    <i class="fa-solid fa-database"></i>
-    <span>Data</span>
-  </div>
-</nav>
+  <nav class="bottom-nav">
+    <div class="nav-item active" id="nav-home" data-nav="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" id="nav-occupancy" data-nav="occupancy">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Bezetting</span>
+    </div>
+    <div class="nav-item" id="nav-revenue" data-nav="revenue">
+      <i class="fa-solid fa-euro-sign"></i>
+      <span>Omzet</span>
+    </div>
+    <div class="nav-item" id="nav-behavior" data-nav="behavior">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>Gedrag</span>
+    </div>
+    <div class="nav-item" id="nav-data" data-nav="data">
+      <i class="fa-solid fa-database"></i>
+      <span>Data</span>
+    </div>
+  </nav>
 
-<!-- Entry point (ES Module) -->
-<script type="module" src="./JS/ui.js"></script>
+  <!-- Entry point (ES Module) -->
+  <script type="module" src="./JS/ui.js"></script>
 
 </body>
+
 </html>

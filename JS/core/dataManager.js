@@ -1,5 +1,5 @@
-// ./JS/data.js
-import { CONFIG, state, setState } from "./state.js";
+// ./JS/core/dataManager.js
+import { CONFIG, state, setState } from "./app.js";
 
 /* ============================================================
  * 1) FILE UPLOAD (Excel -> state.rawRows)

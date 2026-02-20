@@ -1,6 +1,6 @@
 // ./JS/ui.js
-import { state } from "./state.js";
-import { bindFileUploads, getYears } from "./data.js";
+import { state } from "./core/app.js";
+import { bindFileUploads, getYears } from "./core/dataManager.js";
 
 import {
   renderHomeKPIsForYear,
@@ -10,7 +10,7 @@ import {
   renderBezettingCharts,
   renderGedragCharts,
   renderDataVisCharts,
-} from "./charts/index.js";
+} from "./components/charts/index.js";
 
 /* ============================================================
  * SCROLL PRESERVATION (voorkomt “verspringen” bij updates)

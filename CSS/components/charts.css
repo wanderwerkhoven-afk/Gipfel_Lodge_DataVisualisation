@@ -1,0 +1,241 @@
+/* --- Omzet seizoenen/jaar chart --- */
+.content-section {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chart-panel {
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 14px;
+  /* Linker- en rechterpadding verminderd voor breder zicht */
+  margin: 20px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.panel-title {
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-title i {
+  color: var(--accent);
+}
+
+.season-filter {
+  display: flex;
+  gap: auto;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  padding: 2px;
+}
+
+.filter-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+  background: var(--panel-light);
+  color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+  margin-bottom: 30px;
+  padding-left: 5px;
+}
+
+.mode-toggle {
+  display: flex;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  padding: 4px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 24px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+@media (max-width: 400px) {
+  .season-filter {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .filter-btn {
+    padding: 8px 12px;
+  }
+}
+
+/* --- 8. CUMULATIEVE GRAFIEK SCROLL SETTINGS --- */
+
+.chart-scroll {
+  position: relative;
+  height: 400px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  background: rgba(11, 18, 37);
+  padding: 0px;
+  margin: 10px 0;
+  cursor: grab;
+
+  display: flex;
+  align-items: stretch;
+}
+
+.chart-scroll:active {
+  cursor: grabbing;
+}
+
+.cum-y-axis {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+
+  width: 45px;
+  flex: 0 0 45px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  align-items: flex-end;
+
+  padding-top: 5px;
+  padding-bottom: 25px;
+  padding-left: 0px;
+  padding-right: 5px;
+
+  font-size: 11px;
+  color: #8b949e;
+  border-radius: 12px;
+  background: rgb(11, 18, 37);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cum-y-axis span {
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chart-scroll__inner {
+  height: 100%;
+  min-width: 100px;
+  flex: 1 1 auto;
+}
+
+#chartCumulative {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+@media (orientation: landscape) {
+  .chart-scroll {
+    height: 380px;
+  }
+}
+
+.hint {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  padding-left: 10px;
+  gap: 10px;
+
+  font-size: 14px;
+  color: #8b949e;
+  margin-top: 14px;
+  opacity: 0.9;
+}
+
+.hint-text {
+  white-space: nowrap;
+}
+
+.hint-separator {
+  opacity: 0.5;
+}
+
+.hint-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-orange {
+  background-color: #ff8a2a;
+}
+
+/*-- ======================================================================
+     ======================================================================
+
+       #########      ############    ###########    ############    ############
+       ###########    ############    ###########    ############    ############
+       ###     ###    ###                   ####     ###                 ####
+       ##########     ##########          ####       ##########          ####
+       ##########     ##########        ####         ##########          ####
+       ###     ###    ###              ####          ###                 ####
+       ###########    ############    ###########    ############        ####      ####
+       #########      ############    ###########    ############        ####      ####
+
+     ======================================================================
+     ====================================================================== */
