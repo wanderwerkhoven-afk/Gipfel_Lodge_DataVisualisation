@@ -1,0 +1,10 @@
+# General Configuration
+
+# Database settings
+# database:
+#   host: localhost
+#   user: user
+#   password: password
+
+# API keys
+# api_key: your_api_key_here
