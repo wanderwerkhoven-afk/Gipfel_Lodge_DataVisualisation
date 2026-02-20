@@ -86,7 +86,7 @@ export function normalizeRows(rows) {
  * Laadt pricing JSON via een repo-safe pad
  */
 export async function loadPricingYear(year) {
-  const url = new URL(`../JSON/pricing_${year}.json`, import.meta.url);
+  const url = new URL(`../../pricing_sources/pricing_${year}.json`, import.meta.url);
   const res = await fetch(url);
 
   if (!res.ok) {

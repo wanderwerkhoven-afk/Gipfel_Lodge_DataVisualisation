@@ -1,15 +1,16 @@
 /* ===== OCCUPANCY PAGE ===== */
 
-.kalender-header{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  padding: 0px 0px 0px 20px;              /* ✅ uitlijning volgt container */
+.kalender-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0px 0px 0px 20px;
+  /* ✅ uitlijning volgt container */
   gap: 14px;
   margin: 6px 0 14px;
 }
 
-.kalender__title{
+.kalender__title {
   margin: 0;
   font-size: 18px;
   font-weight: 900;
@@ -17,18 +18,13 @@
   letter-spacing: 0.5px;
 }
 
-.kalender__subtitle{
+.kalender__subtitle {
   margin: 6px 0 0;
   font-size: 12px;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
 }
 
-.custom-select-calender {
-  position: relative;
-  padding: 0 14px 0 0px;
-  width: 90px;
-  user-select: none;
-}
+
 
 /*-- 
        %%%%%%%    %%%%%    %%       %%%%%%%  %%%   %%  %%%%%%%   %%%%%%%  %%%%%%%
@@ -41,13 +37,13 @@
 
 
 /* scoped variables (alleen voor bezetting-sectie) */
-:root{
+:root {
   --occ-platform: #2563eb;
   --occ-owner: #f59e0b;
 
-  --occ-tooltip-bg: rgba(20,20,24,0.95);
-  --occ-tooltip-border: rgba(255,255,255,0.12);
-  --occ-tooltip-shadow: 0 18px 60px rgba(0,0,0,0.45);
+  --occ-tooltip-bg: rgba(20, 20, 24, 0.95);
+  --occ-tooltip-border: rgba(255, 255, 255, 0.12);
+  --occ-tooltip-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
   --occ-tooltip-radius: 12px;
 
   --occ-carousel-mt: 6px;
@@ -56,8 +52,8 @@
   --occ-card-maxw: 520px;
   --occ-card-radius: 16px;
   --occ-card-pad: 12px;
-  --occ-card-bg: rgba(255,255,255,0.03);
-  --occ-card-border: rgba(255,255,255,0.08);
+  --occ-card-bg: rgba(255, 255, 255, 0.03);
+  --occ-card-border: rgba(255, 255, 255, 0.08);
 
   --occ-title-size: 18px;
   --occ-title-weight: 900;
@@ -65,12 +61,12 @@
 
   --occ-grid-gap: 6px;
   --occ-dow-size: 12px;
-  --occ-dow-color: rgba(255,255,255,0.55);
+  --occ-dow-color: rgba(255, 255, 255, 0.55);
   --occ-dow-pad: 6px 0;
 
   --occ-cell-radius: 12px;
-  --occ-cell-border: rgba(255,255,255,0.10);
-  --occ-cell-bg: rgba(255,255,255,0.02);
+  --occ-cell-border: rgba(255, 255, 255, 0.10);
+  --occ-cell-bg: rgba(255, 255, 255, 0.02);
   --occ-cell-pad: 6px;
   --occ-outside-opacity: 0.15;
 
@@ -85,151 +81,216 @@
   --occ-legend-gap: 16px;
   --occ-legend-mt: 10px;
   --occ-legend-mb: 2px;
-  --occ-legend-color: rgba(255,255,255,0.72);
+  --occ-legend-color: rgba(255, 255, 255, 0.72);
   --occ-legend-size: 15px;
   --occ-legend-item-pad: 6px 10px;
-  --occ-legend-item-border: rgba(255,255,255,0.08);
-  --occ-legend-item-bg: rgba(255,255,255,0.03);
+  --occ-legend-item-border: rgba(255, 255, 255, 0.08);
+  --occ-legend-item-bg: rgba(255, 255, 255, 0.03);
 
   --occ-nav-size: 34px;
-  --occ-nav-border: rgba(255,255,255,0.10);
-  --occ-nav-bg: rgba(255,255,255,0.04);
-  --occ-nav-color: rgba(255,255,255,0.85);
+  --occ-nav-border: rgba(255, 255, 255, 0.10);
+  --occ-nav-bg: rgba(255, 255, 255, 0.04);
+  --occ-nav-color: rgba(255, 255, 255, 0.85);
   --occ-nav-top: 10px;
   --occ-nav-inset: 10px;
 }
 
-.page-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:14px;
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 14px;
   margin: 6px 0 14px;
 }
 
-.page-head__right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
+.page-head__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.muted{
-  color: rgba(255,255,255,0.55);
+.muted {
+  color: rgba(255, 255, 255, 0.55);
   font-size: 13px;
 }
 
-.bezetting-kalender-header{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  padding: 0;              /* ✅ uitlijning volgt container */
+.bezetting-kalender-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0;
+  /* ✅ uitlijning volgt container */
   gap: 14px;
   margin: 6px 0 14px;
 }
 
 /* Toggles */
-.occ-toggles{
-  display:flex;
-  gap:10px;
-  align-items:center;
+.occ-toggles {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.chip{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 10px;
-  border:1px solid rgba(255,255,255,0.10);
-  border-radius:999px;
-  font-size:13px;
-  user-select:none;
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 999px;
+  font-size: 13px;
+  user-select: none;
 }
 
-.chip input{ accent-color: #fff; }
-
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  display:inline-block;
+.chip input {
+  accent-color: #fff;
 }
 
-.dot-platform{ background: var(--occ-platform); }
-.dot-owner{ background: var(--occ-owner); }
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-platform {
+  background: var(--occ-platform);
+}
+
+.dot-owner {
+  background: var(--occ-owner);
+}
 
 /* Tooltip */
-.occ-tooltip{
-  position:fixed;
-  z-index:9999;
-  max-width:280px;
-  padding:10px 12px;
+.occ-tooltip {
+  position: fixed;
+  z-index: 9999;
+  max-width: 280px;
+  width: calc(100% - 40px);
+  /* Voor smalle schermen */
+  padding: 14px 18px;
   border-radius: var(--occ-tooltip-radius);
   background: var(--occ-tooltip-bg);
-  border:1px solid var(--occ-tooltip-border);
-  color:#fff;
-  font-size:12.5px;
-  pointer-events:none;
+  border: 1px solid var(--occ-tooltip-border);
+  color: #fff;
+  font-size: 13.5px;
+  pointer-events: none;
   box-shadow: var(--occ-tooltip-shadow);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  backdrop-filter: blur(12px);
+
+  /* Vaste positie rechtsonder boven de navbar */
+  right: 20px;
+  bottom: 100px;
+  left: auto;
+  top: auto;
+
+  /* Start verborgen/geanimeerd */
+  transform: translateY(10px);
 }
 
-.occ-tooltip strong{
-  font-size:13px;
-  display:block;
-  margin-bottom:6px;
+.occ-tooltip[style*="display: block"] {
+  transform: translateY(0);
 }
 
-.occ-tooltip .tt-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:6px;
-  font-size:13px;
-  opacity:.95;
+/* Wanneer vastgezet */
+.tooltip-content.is-sticky {
+  border-left: 3px solid #60a5fa;
+  padding-left: 8px;
 }
 
-.occ-tooltip .tt-label{
-  opacity:.7;
+.tooltip-hint {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
 }
 
-.occ-tooltip .tt-title{
-  font-weight:600;
-  margin-bottom:8px;
+/* Unified Tooltip Content Layout */
+.tt-line-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.tt-line-meta {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 8px;
+}
+
+.tt-line-rent {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: #60a5fa;
+  /* Accentkleur voor huur */
+  margin-bottom: 4px;
+}
+
+.tt-line-pricing {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.occ-tooltip .tt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: .95;
+}
+
+.occ-tooltip .tt-label {
+  opacity: .7;
+}
+
+.occ-tooltip .tt-title {
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 /* ===========================================================
    SWIPEABLE MONTH CAROUSEL
    =========================================================== */
 
-#occCalendarCarousel{
+#occCalendarCarousel {
   margin-top: var(--occ-carousel-mt);
 }
 
-.occ-month-slide{
+.occ-month-slide {
   flex: 0 0 100%;
   width: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   padding: var(--occ-slide-pad);
   box-sizing: border-box;
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 }
 
-.occ-month-card{
-  width:100%;
+.occ-month-card {
+  width: 100%;
   max-width: var(--occ-card-maxw);
   border-radius: var(--occ-card-radius);
   padding: var(--occ-card-pad);
   background: var(--occ-card-bg);
-  border:1px solid var(--occ-card-border);
+  border: 1px solid var(--occ-card-border);
   position: relative;
 }
 
-.occ-month-title{
+.occ-month-title {
   font-weight: var(--occ-title-weight);
   font-size: var(--occ-title-size);
-  text-align:center;
+  text-align: center;
   margin: var(--occ-title-margin);
 }
 
@@ -237,40 +298,40 @@
    MONTH GRID
    =========================================================== */
 
-.occ-month-grid{
-  display:grid;
+.occ-month-grid {
+  display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: var(--occ-grid-gap);
 }
 
-.occ-month-dow{
+.occ-month-dow {
   font-size: var(--occ-dow-size);
   color: var(--occ-dow-color);
-  text-align:center;
+  text-align: center;
   padding: var(--occ-dow-pad);
 }
 
 /* Day cell = SQUARE */
-.occ-month-cell{
-  position:relative;
+.occ-month-cell {
+  position: relative;
   aspect-ratio: 1 / 1;
-  border:1px solid var(--occ-cell-border);
+  border: 1px solid var(--occ-cell-border);
   border-radius: var(--occ-cell-radius);
   padding: var(--occ-cell-pad);
-  overflow:hidden;
+  overflow: hidden;
   background: var(--occ-cell-bg);
 }
 
-.occ-month-cell.is-outside{
+.occ-month-cell.is-outside {
   opacity: var(--occ-outside-opacity);
 }
 
-.occ-month-day{
-  position:relative;
-  z-index:2;
+.occ-month-day {
+  position: relative;
+  z-index: 2;
   font-size: var(--occ-day-size);
   font-weight: var(--occ-day-weight);
-  text-align:center;
+  text-align: center;
   color: var(--occ-day-color);
 }
 
@@ -278,34 +339,39 @@
    DAY FILLS (FULL / HALF)
    =========================================================== */
 
-.occ-fill{
-  position:absolute;
-  left:0px;
-  right:0px;
-  top:0px;
-  bottom:0px;
+.occ-fill {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
   border-radius: var(--occ-fill-radius);
   opacity: var(--occ-fill-opacity);
-  pointer-events:auto;
+  pointer-events: auto;
 }
 
-.occ-fill.full{}
 
-.occ-fill.half-left{
+
+.occ-fill.half-left {
   right: calc(50% + var(--occ-half-gap));
 }
 
-.occ-fill.half-right{
+.occ-fill.half-right {
   left: calc(50% + var(--occ-half-gap));
 }
 
-.occ-fill.platform{ background: var(--occ-platform); }
-.occ-fill.owner{ background: var(--occ-owner); }
+.occ-fill.platform {
+  background: var(--occ-platform);
+}
+
+.occ-fill.owner {
+  background: var(--occ-owner);
+}
 
 /* Legend under calendar */
-.occ-legend{
-  display:flex;
-  justify-content:center;
+.occ-legend {
+  display: flex;
+  justify-content: center;
   gap: var(--occ-legend-gap);
   margin-top: var(--occ-legend-mt);
   margin-bottom: var(--occ-legend-mb);
@@ -313,10 +379,10 @@
   font-size: var(--occ-legend-size);
 }
 
-.occ-legend__item{
-  display:flex;
-  align-items:center;
-  gap:8px;
+.occ-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: var(--occ-legend-item-pad);
   border: 1px solid var(--occ-legend-item-border);
   background: var(--occ-legend-item-bg);
@@ -324,30 +390,30 @@
 }
 
 /* Subtle round nav arrows inside month card */
-.occ-card-nav{
-  position:absolute;
+.occ-card-nav {
+  position: absolute;
   top: var(--occ-nav-top);
   left: var(--occ-nav-inset);
   right: var(--occ-nav-inset);
-  display:flex;
-  justify-content:space-between;
-  pointer-events:none;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
 }
 
-.occ-nav-btn{
-  pointer-events:auto;
+.occ-nav-btn {
+  pointer-events: auto;
   width: var(--occ-nav-size);
   height: var(--occ-nav-size);
   border-radius: 999px;
   border: 1px solid var(--occ-nav-border);
   background: var(--occ-nav-bg);
   color: var(--occ-nav-color);
-  display:grid;
-  place-items:center;
-  cursor:pointer;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
   backdrop-filter: blur(8px);
 }
 
-.occ-nav-btn:active{
+.occ-nav-btn:active {
   transform: scale(0.96);
 }

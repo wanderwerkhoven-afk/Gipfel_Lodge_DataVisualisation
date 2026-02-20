@@ -12,7 +12,8 @@ import { loadPricingYear } from "../core/dataManager.js";
  * - We cache per year so "ALL" works across multiple years.
  */
 export async function renderBezettingCharts() {
-  if (!state.rawRows || !state.rawRows.length) return;
+  // We halen de "if (!state.rawRows || !state.rawRows.length) return;" weg zodat we een lege kalender kunnen tonen.
+  const rawData = state.rawRows || [];
 
   // defaults
   if (state.occupancyYear == null) state.occupancyYear = "ALL";
@@ -20,16 +21,21 @@ export async function renderBezettingCharts() {
   if (state.showPlatform == null) state.showPlatform = true;
   if (state.showOwner == null) state.showOwner = true;
 
-  const allBookings = normalizeBookings(state.rawRows);
+  const allBookings = normalizeBookings(rawData);
 
   // Welke jaren tonen we in de kalender
   let yearsToRender;
   if (state.occupancyYear === "ALL") {
-    yearsToRender = Array.from(
-      new Set(
-        allBookings.flatMap((b) => [b.start.getFullYear(), b.end.getFullYear()])
-      )
-    ).sort((a, b) => a - b);
+    const foundYears = new Set(
+      allBookings.flatMap((b) => [b.start.getFullYear(), b.end.getFullYear()])
+    );
+
+    // Als er geen boekingen zijn, toon dan minimaal het huidige jaar
+    if (foundYears.size === 0) {
+      yearsToRender = [state.currentYear || new Date().getFullYear()];
+    } else {
+      yearsToRender = Array.from(foundYears).sort((a, b) => a - b);
+    }
   } else {
     yearsToRender = [Number(state.occupancyYear)];
   }
@@ -96,7 +102,7 @@ function normalizeBookings(rows) {
         Number(r["Nachten"] ?? r.__nachten ?? diffDays(start, end)) ||
         diffDays(start, end);
 
-      const income = parseMoney(r["Inkomsten"]);
+      const income = parseMoney(r.__gross ?? r["Inkomsten"]);
 
       const bookingLabel = String(r["Boeking"] ?? "").trim();
       const guest = String(r["Gast"] ?? "").trim();
@@ -245,6 +251,9 @@ function renderCalendarCarousel(bookings, years) {
   });
 
   bindCarouselSyncOnce(carousel, totalSlides);
+
+  // ✅ Clear sticky tooltip on scroll
+  carousel.addEventListener("scroll", () => hideTooltip(tooltip, true), { passive: true });
 }
 
 function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
@@ -271,6 +280,23 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
   // Map: dateKey -> cell element
   const cellByKey = new Map();
 
+  // Apply fills from bookings (clipped to visible grid range)
+  const gridStartDay = startOfDay(gridStart);
+  const gridEndEx = addDays(startOfDay(gridEnd), 1);
+  const visibleBookings = bookings.filter((b) => b.start < gridEndEx && b.end > gridStartDay);
+
+  // Map: dateISO -> Booking (voor snelle lookup bij cell listeners)
+  const primaryBookingMap = new Map();
+  visibleBookings.forEach((b) => {
+    // Vul de map voor elke dag van de boeking
+    let curr = b.start < gridStartDay ? new Date(gridStartDay) : new Date(b.start);
+    const end = b.end > gridEndEx ? new Date(gridEndEx) : new Date(b.end);
+    while (curr < end) {
+      primaryBookingMap.set(toISODateLocal(curr), b);
+      curr.setDate(curr.getDate() + 1);
+    }
+  });
+
   // Render day cells
   days.forEach((day) => {
     const cell = document.createElement("div");
@@ -282,22 +308,28 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
     dayLabel.textContent = String(day.getDate());
     cell.appendChild(dayLabel);
 
-    // ✅ Hover op dag (ook zonder booking) -> laat pricing zien
+    const iso = toISODateLocal(day);
+    const bookingOnThisDay = primaryBookingMap.get(iso);
+
+    // ✅ Hover/Click op dag (nu intelligent: boeking heeft voorrang)
     if (tooltip) {
-      cell.addEventListener("mouseenter", (e) => showDayTooltip(e, day, tooltip));
+      cell.addEventListener("mouseenter", (e) => {
+        if (bookingOnThisDay) showBookingTooltip(e, bookingOnThisDay, iso, tooltip);
+        else showDayTooltip(e, day, tooltip);
+      });
       cell.addEventListener("mousemove", (e) => moveTooltip(e, tooltip));
       cell.addEventListener("mouseleave", () => hideTooltip(tooltip));
+
+      cell.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (bookingOnThisDay) showBookingTooltip(e, bookingOnThisDay, iso, tooltip, true);
+        else showDayTooltip(e, day, tooltip, true);
+      });
     }
 
     gridEl.appendChild(cell);
-    cellByKey.set(dayKey(day), cell);
+    cellByKey.set(iso, cell);
   });
-
-  // Apply fills from bookings (clipped to visible grid range)
-  const gridStartDay = startOfDay(gridStart);
-  const gridEndEx = addDays(startOfDay(gridEnd), 1);
-
-  const visibleBookings = bookings.filter((b) => b.start < gridEndEx && b.end > gridStartDay);
 
   // helper to add a fill layer into a cell
   function addFill(cell, kind, type, booking, dayISO) {
@@ -313,9 +345,7 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
     div.addEventListener("mouseleave", () => hideTooltip(tooltip));
     div.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (!tooltip) return;
-      if (tooltip.style.display === "none") showBookingTooltip(e, booking, dayISO, tooltip);
-      else hideTooltip(tooltip);
+      showBookingTooltip(e, booking, dayISO, tooltip, true); // true = force/sticky
     });
 
     // behind day number
@@ -378,73 +408,96 @@ function bindCarouselSyncOnce(carousel, totalSlides) {
 }
 
 /* =========================================================
-   Tooltip helpers (BOOKING + DAY)
+   Tooltip helpers (UNIFIED)
    ========================================================= */
 
-function showBookingTooltip(e, b, dayISO, tooltipEl) {
-  if (!tooltipEl) return;
+let isTooltipSticky = false;
 
-  const perNight = b.income && b.nights ? b.income / b.nights : null;
+function showBookingTooltip(e, b, dayISO, tooltipEl, forceSticky = false) {
+  renderUnifiedTooltip(e, tooltipEl, b, dayISO, forceSticky);
+}
+
+function showDayTooltip(e, dayDate, tooltipEl, forceSticky = false) {
+  renderUnifiedTooltip(e, tooltipEl, null, toISODateLocal(dayDate), forceSticky);
+}
+
+function renderUnifiedTooltip(e, tooltipEl, booking, dayISO, forceSticky = false) {
+  if (!tooltipEl) return;
+  if (isTooltipSticky && !forceSticky) return;
+
+  if (forceSticky) isTooltipSticky = true;
+
   const p = getPricingByISO(dayISO);
 
+  // Lijn 1: Gast of Status
+  const title = booking
+    ? escapeHtml(booking.guest || "Onbekende gast")
+    : "Nog beschikbaar";
+
+  // Lijn 2: Periode + nachten (indien boeking)
+  let line2 = "";
+  if (booking) {
+    const startStr = booking.start.toLocaleDateString("nl-NL", { day: "numeric", month: "short" });
+    const endStr = booking.end.toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" });
+    line2 = `<div class="tt-line-meta">${startStr}–${endStr} · ${booking.nights}n</div>`;
+  } else {
+    // Voor ongeboekte dagen tonen we geen meta-lijn meer (datum staat onderaan)
+    line2 = "";
+  }
+
+  // Lijn 3: Huur (indien boeking)
+  let line3 = "";
+  if (booking && booking.income != null) {
+    line3 = `<div class="tt-line-rent">Huur: ${euro(booking.income)}</div>`;
+  }
+
+  // Lijn 4: Pricing (Dag/Week)
+  let line4 = "";
+  if (p) {
+    const dayP = p.dagprijs ?? p.day_price ?? p.dayPrice;
+    const weekP = p.weekprijs ?? p.week_price ?? p.weekPrice;
+    line4 = `<div class="tt-line-pricing">Dag: ${dayP != null ? euro(dayP) : "—"} · Week: ${weekP != null ? euro(weekP) : "—"}</div>`;
+  } else {
+    line4 = `<div class="tt-line-pricing opacity-50">Geen prijsdata beschikbaar</div>`;
+  }
+
   tooltipEl.innerHTML = `
-    <strong>${escapeHtml(b.guest || "Onbekende gast")}</strong>
-
-    <div><b>Type:</b> ${b.type === "owner" ? "Eigen gebruik" : escapeHtml(b.channel || "Platform")}</div>
-    <div><b>Periode:</b> ${fmtDateNL(b.start)} – ${fmtDateNL(b.end)}</div>
-    <div><b>Nachten:</b> ${b.nights}</div>
-    <div><b>€ / nacht:</b> ${perNight != null ? euro(perNight) : "—"}</div>
-
-    ${p ? pricingBlockHTML(p) : `<div style="opacity:.7;margin-top:6px;">Geen prijsdata voor ${escapeHtml(dayISO)}</div>`}
-  `;
-
-  tooltipEl.style.display = "block";
-  moveTooltip(e, tooltipEl);
-}
-
-function showDayTooltip(e, dayDate, tooltipEl) {
-  if (!tooltipEl) return;
-
-  const iso = toISODateLocal(dayDate);
-  const p = getPricingByISO(iso);
-
-  tooltipEl.innerHTML = `
-    <strong>${fmtDateNL(dayDate)}</strong>
-    ${p ? pricingBlockHTML(p) : `<div style="opacity:.7;margin-top:6px;">Geen prijsdata</div>`}
-  `;
-
-  tooltipEl.style.display = "block";
-  moveTooltip(e, tooltipEl);
-}
-
-function pricingBlockHTML(p) {
-  // p = { datum, seizoen, min_nachten_boeken, dagprijs, weekprijs, ... }
-  const seizoen = p.seizoen ?? "—";
-  const minN = p.min_nachten_boeken ?? p.minNights ?? "—";
-  const dayP = p.dagprijs ?? p.day_price ?? p.dayPrice;
-  const weekP = p.weekprijs ?? p.week_price ?? p.weekPrice;
-
-  return `
-    <div style="margin-top:8px;">
-      <div><b>Seizoen:</b> ${escapeHtml(String(seizoen))}</div>
-      <div><b>Min. nachten:</b> ${escapeHtml(String(minN))}</div>
-      <div><b>Dagprijs:</b> ${dayP != null ? euro(dayP) : "—"}</div>
-      <div><b>Weekprijs:</b> ${weekP != null ? euro(weekP) : "—"}</div>
+    <div class="tooltip-content ${isTooltipSticky ? "is-sticky" : ""}">
+      <div class="tt-line-title">${title}</div>
+      ${line2}
+      ${line3}
+      ${line4}
+      <div class="tooltip-hint">${fmtDateNL(new Date(dayISO))}</div>
     </div>
   `;
+
+  tooltipEl.style.display = "block";
+  moveTooltip(e, tooltipEl, true);
 }
 
-function moveTooltip(e, tooltipEl) {
+function moveTooltip(e, tooltipEl, force = false) {
   if (!tooltipEl) return;
-  const pad = 12;
-  tooltipEl.style.left = `${e.clientX + pad}px`;
-  tooltipEl.style.top = `${e.clientY + pad}px`;
+  if (isTooltipSticky && !force) return;
+
+  // We negeren de muispositie (e) en gebruiken een vaste positie via CSS.
+  // We hoeven hier dus geen inline styles voor left/top te zetten.
+  tooltipEl.style.left = "";
+  tooltipEl.style.top = "";
 }
 
-function hideTooltip(tooltipEl) {
+function hideTooltip(tooltipEl, force = false) {
   if (!tooltipEl) return;
+  if (isTooltipSticky && !force) return;
+
+  if (force) isTooltipSticky = false;
   tooltipEl.style.display = "none";
 }
+
+// Global click to clear sticky
+document.addEventListener("click", () => {
+  const tt = document.getElementById("occTooltip");
+  if (tt) hideTooltip(tt, true);
+});
 
 /* =========================================================
    Date / money utils
@@ -472,6 +525,7 @@ function parseNLDate(v) {
 }
 
 function parseMoney(v) {
+  if (typeof v === "number") return v;
   if (v == null) return null;
   const s = String(v).trim();
   if (!s || s === "-" || s === "—") return null;

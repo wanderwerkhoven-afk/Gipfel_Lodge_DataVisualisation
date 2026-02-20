@@ -71,6 +71,10 @@ document.addEventListener("DOMContentLoaded", () => {
   bindSeasonButtons();
   bindModeButtons();
   bindOccupancyToggles();
+
+  // Meteen renderen (zodat bijv. de lege kalender zichtbaar is)
+  setupYearSelects();
+  renderActivePage();
 });
 
 /* ============================================================
@@ -106,8 +110,6 @@ function getActivePageId() {
 }
 
 function renderActivePage() {
-  if (!state.rawRows?.length) return;
-
   const page = getActivePageId();
 
   switch (page) {
@@ -145,12 +147,15 @@ function renderHomePage() {
  * ============================================================ */
 
 function setupYearSelects(years = getYears()) {
+  // Zorg dat we altijd minimaal het huidige jaar hebben om te tonen in de dropdowns
+  const availableYears = years.length > 0 ? years : [state.currentYear || new Date().getFullYear()];
+
   wireCustomYearSelect({
     containerId: "yearSelectContainerKpi",
     displayId: "selectedYearDisplayKpi",
     optionsId: "yearOptionsKpi",
     hiddenId: "yearValueKpi",
-    years: ["ALL", ...years],
+    years: ["ALL", ...availableYears],
     get: () => state.kpiYear ?? "ALL",
     set: (y) => (state.kpiYear = y),
     onChange: () => withPreservedScroll(() => renderHomeKPIsForYear(state.kpiYear ?? "ALL")),
@@ -161,7 +166,7 @@ function setupYearSelects(years = getYears()) {
     displayId: "selectedYearDisplay",
     optionsId: "yearOptions",
     hiddenId: "yearValue",
-    years,
+    years: availableYears,
     get: () => state.currentYear,
     set: (y) => (state.currentYear = y),
     onChange: () => withPreservedScroll(renderActivePage),
@@ -172,7 +177,7 @@ function setupYearSelects(years = getYears()) {
     displayId: "cumulativeYearDisplay",
     optionsId: "cumulativeYearOptions",
     hiddenId: "cumulativeYearValue",
-    years: ["ALL", ...years],
+    years: ["ALL", ...availableYears],
     get: () => state.cumulativeYear ?? "ALL",
     set: (y) => (state.cumulativeYear = y),
     onChange: () =>
@@ -184,7 +189,7 @@ function setupYearSelects(years = getYears()) {
     displayId: "occSelectedYear",
     optionsId: "occYearOptions",
     hiddenId: "occYearValue",
-    years: ["ALL", ...years],
+    years: ["ALL", ...availableYears],
     get: () => state.occupancyYear ?? "ALL",
     set: (y) => (state.occupancyYear = y),
     onChange: () => {
