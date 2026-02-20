@@ -143,15 +143,54 @@ function toNumber(v) {
   return null;
 }
 
+/* ============================================================
+ * 5) LOCALSTORAGE PERSISTENCE
+ * ============================================================ */
+
+const STORAGE_KEY = "gipfel_lodge_data";
+
+export function saveToLocalStorage(rows) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+    console.log("✅ Data opgeslagen in LocalStorage:", rows.length, "rijen.");
+  } catch (err) {
+    console.warn("LocalStorage save gefaald:", err);
+  }
+}
+
+export function loadFromLocalStorage() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    const data = JSON.parse(raw);
+    // Restore dates
+    return data.map(r => {
+      if (r.__aankomst) r.__aankomst = new Date(r.__aankomst);
+      return r;
+    });
+  } catch (err) {
+    console.warn("LocalStorage parse gefaald:", err);
+    return null;
+  }
+}
+
 function toDate(v) {
   if (v instanceof Date && !Number.isNaN(v.getTime())) return v;
   if (typeof v === "string") {
-    const onlyDate = v.split(" ")[0].trim();
-    const m = onlyDate.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+    const s = v.trim();
+    if (!s) return null;
+
+    // 1) Probeer DD-MM-YYYY
+    const datePart = s.split(" ")[0];
+    const m = datePart.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
     if (m) {
       const d = new Date(+m[3], +m[2] - 1, +m[1]);
       return Number.isNaN(d.getTime()) ? null : d;
     }
+
+    // 2) Fallback: ISO of andere formaten (zoals uit LocalStorage)
+    const d = new Date(s);
+    return Number.isFinite(d.getTime()) ? d : null;
   }
   return null;
 }

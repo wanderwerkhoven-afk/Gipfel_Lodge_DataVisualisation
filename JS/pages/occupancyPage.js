@@ -510,6 +510,7 @@ function parseNLDate(v) {
   const s = String(v).trim();
   if (!s) return null;
 
+  // 1) Check DD-MM-YYYY
   const datePart = s.split(" ")[0];
   const m = datePart.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
   if (m) {
@@ -520,8 +521,9 @@ function parseNLDate(v) {
     return isNaN(d) ? null : d;
   }
 
+  // 2) Fallback: ISO of andere formaten
   const d = new Date(s);
-  return isNaN(d) ? null : d;
+  return isNaN(d.getTime()) ? null : d;
 }
 
 function parseMoney(v) {

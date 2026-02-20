@@ -1,6 +1,5 @@
-// ./JS/ui.js
-import { state } from "./core/app.js";
-import { bindFileUploads, getYears } from "./core/dataManager.js";
+import { state, setState } from "./core/app.js";
+import { bindFileUploads, getYears, saveToLocalStorage, loadFromLocalStorage } from "./core/dataManager.js";
 
 import {
   renderHomeKPIsForYear,
@@ -60,7 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   bindNavigation();
 
-  bindFileUploads(".excel-upload", ({ years }) => {
+  bindFileUploads(".excel-upload", ({ rows, years }) => {
+    saveToLocalStorage(rows);
     withPreservedScroll(() => {
       setupYearSelects(years);
       renderActivePage();
@@ -73,7 +73,16 @@ document.addEventListener("DOMContentLoaded", () => {
   bindOccupancyToggles();
 
   // Meteen renderen (zodat bijv. de lege kalender zichtbaar is)
-  setupYearSelects();
+  // Eerst kijken of we data in LocalStorage hebben
+  const storedRows = loadFromLocalStorage();
+  if (storedRows && storedRows.length) {
+    setState({ rawRows: storedRows });
+    const years = getYears(storedRows);
+    setupYearSelects(years);
+  } else {
+    setupYearSelects();
+  }
+
   renderActivePage();
 });
 

@@ -49,28 +49,29 @@
   --occ-carousel-mt: 6px;
   --occ-slide-pad: 12px 14px 6px;
 
-  --occ-card-maxw: 520px;
+  --occ-card-maxw: 580px;
   --occ-card-radius: 16px;
-  --occ-card-pad: 12px;
-  --occ-card-bg: rgba(255, 255, 255, 0.03);
-  --occ-card-border: rgba(255, 255, 255, 0.08);
+  --occ-card-pad: 16px;
+  --occ-card-bg: rgba(255, 255, 255, 0.035);
+  --occ-card-border: rgba(255, 255, 255, 0.1);
 
-  --occ-title-size: 18px;
+  --occ-title-size: 20px;
   --occ-title-weight: 900;
-  --occ-title-margin: 12px 0 20px;
+  --occ-title-margin: 14px 0 24px;
 
-  --occ-grid-gap: 6px;
+  --occ-grid-gap: 8px;
   --occ-dow-size: 12px;
+  --occ-dow-weight: 600;
   --occ-dow-color: rgba(255, 255, 255, 0.55);
   --occ-dow-pad: 6px 0;
 
   --occ-cell-radius: 12px;
-  --occ-cell-border: rgba(255, 255, 255, 0.10);
+  --occ-cell-border: rgba(255, 255, 255, 0.12);
   --occ-cell-bg: rgba(255, 255, 255, 0.02);
-  --occ-cell-pad: 6px;
+  --occ-cell-pad: 8px;
   --occ-outside-opacity: 0.15;
 
-  --occ-day-size: 13px;
+  --occ-day-size: 15px;
   --occ-day-weight: 800;
   --occ-day-color: #fff;
 
@@ -306,6 +307,7 @@
 
 .occ-month-dow {
   font-size: var(--occ-dow-size);
+  font-weight: var(--occ-dow-weight);
   color: var(--occ-dow-color);
   text-align: center;
   padding: var(--occ-dow-pad);
