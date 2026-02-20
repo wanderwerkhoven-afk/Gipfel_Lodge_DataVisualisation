@@ -1,0 +1,22 @@
+.responsive {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1200px) {
+  .responsive {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive {
+    padding: 10px;
+  }
+}
