@@ -7,6 +7,7 @@ import {
   renderHomeRevenueChart,
   renderHomeCumulativeRevenueChartForYear,
   renderBezettingCharts,
+  renderRevenueCharts,
   renderGedragCharts,
   renderDataVisCharts,
 } from "./components/charts/index.js";
@@ -101,6 +102,8 @@ function renderActivePage() {
       if (typeof renderDataVisCharts === "function") renderDataVisCharts();
       break;
     case "revenue":
+      if (typeof renderRevenueCharts === "function") renderRevenueCharts();
+      break;
     default:
       break;
   }

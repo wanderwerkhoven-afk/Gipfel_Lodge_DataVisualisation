@@ -11,8 +11,46 @@
 </head>
 <body data-page="revenue">
   <main id="revenue-page" class="page active">
-    <header class="top-bar"><div class="header-flex"><h1>Omzet & Prijs</h1></div></header>
-    <div class="container"><div class="panel"><h3 class="panel-title">Omzet per kanaal</h3><canvas id="chartRevenueChannel"></canvas></div></div>
+    <header class="top-bar">
+      <div class="header-flex">
+        <div class="header-titles">
+          <h1>Omzet & Prijs</h1>
+          <p class="subtitle">Omzetanalyse op basis van boekingsdata</p>
+        </div>
+        <div class="topbar__controls">
+          <label class="action-btn" for="fileInputRevenue">
+            <i class="fa-solid fa-file-import"></i>
+            <input id="fileInputRevenue" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 class="panel-title" style="margin:0;">Kies jaar</h3>
+        <div class="year-select-container">
+          <div class="custom-select" id="yearSelectContainer">
+            <div class="select-trigger"><span id="selectedYearDisplay">—</span><i class="fa-solid fa-chevron-down"></i></div>
+            <div class="select-options" id="yearOptions"></div>
+            <input type="hidden" id="yearValue" value="">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="height:320px;">
+        <h3 class="panel-title">Omzet per kanaal</h3>
+        <canvas id="chartRevenueChannel"></canvas>
+      </div>
+      <div class="panel" style="height:320px;">
+        <h3 class="panel-title">Bruto vs Netto per maand</h3>
+        <canvas id="chartRevenueMonthly"></canvas>
+      </div>
+      <div class="panel" style="height:320px;">
+        <h3 class="panel-title">Nachten: platform vs eigen gebruik</h3>
+        <canvas id="chartNightsType"></canvas>
+      </div>
+    </div>
   </main>
   <nav class="bottom-nav">
     <a class="nav-item" id="nav-home" data-nav-link="home" href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>

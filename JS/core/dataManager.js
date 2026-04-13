@@ -61,18 +61,42 @@ export function normalizeRows(rows) {
   return rows
     .map(r => {
       const aankomst = toDate(r["Aankomst"]);
+      const vertrek = toDate(r["Vertrek"]);
+      const bookedOn = toDate(r["Geboekt op"]);
       if (!aankomst) return null;
 
       const owner = isOwnerBooking(r);
       const gross = owner ? 0 : (toNumber(r["Inkomsten"]) ?? 0);
+      const nights = toNumber(r["Nachten"]) ?? (vertrek ? diffDays(aankomst, vertrek) : 0);
+
+      const bookingRaw = String(r["Boeking"] || "");
+      const channel = bookingRaw.includes("|")
+        ? bookingRaw.split("|")[1].trim()
+        : bookingRaw.trim();
+
+      const adults = toNumber(r["Volw."]) ?? 0;
+      const kids = toNumber(r["Knd."]) ?? 0;
+      const babies = toNumber(r["Bab."]) ?? 0;
 
       return {
         ...r,
         __aankomst: aankomst,
-        __nights: toNumber(r["Nachten"]) ?? 0,
+        __vertrek: vertrek,
+        __bookedOn: bookedOn,
+        __nights: nights,
         __owner: owner,
         __gross: gross,
         __net: gross * CONFIG.NET_FACTOR,
+        __channel: channel || (owner ? "Huiseigenaar" : "Onbekend"),
+        __adults: adults,
+        __kids: kids,
+        __babies: babies,
+        __guestCount: adults + kids + babies,
+        __country: String(r["Land"] || "").trim().toUpperCase(),
+        __email: String(r["E-mailadres"] || "").trim(),
+        __phone: String(r["Telefoon"] || "").trim(),
+        __remark: String(r["Opmerking"] || "").trim(),
+        __leadTimeDays: bookedOn ? diffDays(bookedOn, aankomst) : null,
       };
     })
     .filter(Boolean);
@@ -166,6 +190,8 @@ export function loadFromLocalStorage() {
     // Restore dates
     return data.map(r => {
       if (r.__aankomst) r.__aankomst = new Date(r.__aankomst);
+      if (r.__vertrek) r.__vertrek = new Date(r.__vertrek);
+      if (r.__bookedOn) r.__bookedOn = new Date(r.__bookedOn);
       return r;
     });
   } catch (err) {
@@ -193,4 +219,10 @@ function toDate(v) {
     return Number.isFinite(d.getTime()) ? d : null;
   }
   return null;
+}
+
+function diffDays(a, b) {
+  const start = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+  const end = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+  return Math.max(0, Math.round((end - start) / (1000 * 60 * 60 * 24)));
 }

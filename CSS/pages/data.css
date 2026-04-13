@@ -1,1 +1,38 @@
-/* Data page styles (TODO) */
+/* Data page styles */
+
+#dataQualityCards {
+  margin-bottom: 16px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+}
+
+.data-table th {
+  color: #e2e8f0;
+  background: #111827;
+  position: sticky;
+  top: 0;
+}
+
+.data-table td {
+  color: #cbd5e1;
+}
+
+.table-wrap {
+  overflow: auto;
+  max-height: 460px;
+}

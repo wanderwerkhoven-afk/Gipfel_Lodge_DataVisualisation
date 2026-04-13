@@ -7,13 +7,39 @@
   <link rel="stylesheet" href="./CSS/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body data-page="behavior">
   <main id="behavior-page" class="page active">
-    <header class="top-bar"><div class="header-flex"><h1>Gasten Gedrag</h1></div></header>
+    <header class="top-bar">
+      <div class="header-flex">
+        <div class="header-titles">
+          <h1>Gasten Gedrag</h1>
+          <p class="subtitle">Inzicht in lead time, groepssamenstelling en herkomst</p>
+        </div>
+        <div class="topbar__controls">
+          <label class="action-btn" for="fileInputBehavior">
+            <i class="fa-solid fa-file-import"></i>
+            <input id="fileInputBehavior" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
+          </label>
+        </div>
+      </div>
+    </header>
     <div class="container">
-      <div class="panel"><h3 class="panel-title">Lead Time (Dagen voor aankomst)</h3><canvas id="chartLeadTime"></canvas></div>
-      <div class="panel"><h3 class="panel-title">Gezinsverdeling</h3><canvas id="chartGuestPie"></canvas></div>
+      <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 class="panel-title" style="margin:0;">Kies jaar</h3>
+        <div class="year-select-container">
+          <div class="custom-select" id="yearSelectContainer">
+            <div class="select-trigger"><span id="selectedYearDisplay">—</span><i class="fa-solid fa-chevron-down"></i></div>
+            <div class="select-options" id="yearOptions"></div>
+            <input type="hidden" id="yearValue" value="">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="height:320px;"><h3 class="panel-title">Lead Time (Dagen voor aankomst)</h3><canvas id="chartLeadTime"></canvas></div>
+      <div class="panel" style="height:320px;"><h3 class="panel-title">Gezinsverdeling</h3><canvas id="chartGuestPie"></canvas></div>
+      <div class="panel" style="height:320px;"><h3 class="panel-title">Herkomst landen</h3><canvas id="chartCountryMix"></canvas></div>
     </div>
   </main>
   <nav class="bottom-nav">
