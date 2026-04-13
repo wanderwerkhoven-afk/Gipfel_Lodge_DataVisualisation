@@ -1,0 +1,27 @@
+.container {
+  padding: var(--page-pad);
+  padding-bottom: 60px;
+  /* Ruimte voor de navigatiebalk */
+}
+
+/* Verberg pagina's die niet actief zijn */
+.page {
+  display: none;
+  overflow-x: hidden;
+  /* ✅ Voorkomt dat carousels de pagina uitrekken */
+  width: 100%;
+}
+
+/* Toon de actieve pagina */
+.page.active {
+  display: block !important;
+}
+
+/* Voorkom horizontale overflow op body-niveau */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* --- Bottom Navigation Styling --- */

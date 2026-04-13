@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <title>Gipfel Lodge — Excel Dashboard</title>
+
+  <!-- App / Favicon icons -->
+  <link rel="icon" href="assets/logo/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/logo/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="stylesheet" href="./CSS/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Excel reader / Chart library -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+</head>
+
+<body>
+
+  <main id="app-content">
+    <!-- Pages will be injected here by the router -->
+  </main>
+
+  <!-- ============================================================
+     BOTTOM NAVIGATION BAR
+     ============================================================ -->
+  <nav class="bottom-nav">
+    <a href="#home" class="nav-item active" id="nav-home" data-nav="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="#occupancy" class="nav-item" id="nav-occupancy" data-nav="occupancy">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Bezetting</span>
+    </a>
+    <a href="#revenue" class="nav-item" id="nav-revenue" data-nav="revenue">
+      <i class="fa-solid fa-euro-sign"></i>
+      <span>Omzet</span>
+    </a>
+    <a href="#behavior" class="nav-item" id="nav-behavior" data-nav="behavior">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>Gedrag</span>
+    </a>
+    <a href="#data" class="nav-item" id="nav-data" data-nav="data">
+      <i class="fa-solid fa-database"></i>
+      <span>Data</span>
+    </a>
+  </nav>
+
+  <!-- Entry point (ES Module) -->
+  <script type="module" src="./JS/ui.js"></script>
+
+</body>
+
+</html>

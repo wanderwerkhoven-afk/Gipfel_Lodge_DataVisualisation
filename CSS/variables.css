@@ -1,0 +1,19 @@
+:root {
+  /* Achtergrond & Panels */
+  --bg: #050a18;           /* Extreem diep blauw (bijna zwart, maar warmer) */
+  --panel: #0d152b;        /* Marineblauw voor kaarten en navigatie */
+  --panel-light: #161f3d;  /* Voor actieve items of hover-states */
+
+  /* Tekst */
+  --text: #ffffff;         /* Puur wit voor titels */
+  --text-muted: #94a3b8;   /* Zacht blauwgrijs voor secundaire info */
+
+  /* Accentkleuren */
+  --accent: #3b82f6;       /* Helder blauw voor knoppen en icons */
+  --border: rgba(255, 255, 255, 0.08);
+
+  --radius: 16px;
+
+  /* ✅ 1 bron van waarheid voor links/rechts padding */
+  --page-pad: 20px;
+}

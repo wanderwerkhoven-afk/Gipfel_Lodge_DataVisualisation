@@ -1,0 +1,2922 @@
+[
+  {
+    "datum": "2027-01-01",
+    "weekdag": "2027-01-01",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  },
+  {
+    "datum": "2027-01-02",
+    "weekdag": "2027-01-02",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-03",
+    "weekdag": "2027-01-03",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-04",
+    "weekdag": "2027-01-04",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-05",
+    "weekdag": "2027-01-05",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-06",
+    "weekdag": "2027-01-06",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-07",
+    "weekdag": "2027-01-07",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-08",
+    "weekdag": "2027-01-08",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-09",
+    "weekdag": "2027-01-09",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-10",
+    "weekdag": "2027-01-10",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-11",
+    "weekdag": "2027-01-11",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-12",
+    "weekdag": "2027-01-12",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-13",
+    "weekdag": "2027-01-13",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-14",
+    "weekdag": "2027-01-14",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-15",
+    "weekdag": "2027-01-15",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-16",
+    "weekdag": "2027-01-16",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-01-17",
+    "weekdag": "2027-01-17",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-01-18",
+    "weekdag": "2027-01-18",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-01-19",
+    "weekdag": "2027-01-19",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-01-20",
+    "weekdag": "2027-01-20",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-01-21",
+    "weekdag": "2027-01-21",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-01-22",
+    "weekdag": "2027-01-22",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-01-23",
+    "weekdag": "2027-01-23",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-24",
+    "weekdag": "2027-01-24",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-25",
+    "weekdag": "2027-01-25",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-26",
+    "weekdag": "2027-01-26",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-27",
+    "weekdag": "2027-01-27",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-28",
+    "weekdag": "2027-01-28",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-29",
+    "weekdag": "2027-01-29",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-30",
+    "weekdag": "2027-01-30",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-01-31",
+    "weekdag": "2027-01-31",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-01",
+    "weekdag": "2027-02-01",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-02",
+    "weekdag": "2027-02-02",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-03",
+    "weekdag": "2027-02-03",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-04",
+    "weekdag": "2027-02-04",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-05",
+    "weekdag": "2027-02-05",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-06",
+    "weekdag": "2027-02-06",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-07",
+    "weekdag": "2027-02-07",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-08",
+    "weekdag": "2027-02-08",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-09",
+    "weekdag": "2027-02-09",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-10",
+    "weekdag": "2027-02-10",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-11",
+    "weekdag": "2027-02-11",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-12",
+    "weekdag": "2027-02-12",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-13",
+    "weekdag": "2027-02-13",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-14",
+    "weekdag": "2027-02-14",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-15",
+    "weekdag": "2027-02-15",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-16",
+    "weekdag": "2027-02-16",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-17",
+    "weekdag": "2027-02-17",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-18",
+    "weekdag": "2027-02-18",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-19",
+    "weekdag": "2027-02-19",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-20",
+    "weekdag": "2027-02-20",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-21",
+    "weekdag": "2027-02-21",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-22",
+    "weekdag": "2027-02-22",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-23",
+    "weekdag": "2027-02-23",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-24",
+    "weekdag": "2027-02-24",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-25",
+    "weekdag": "2027-02-25",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-26",
+    "weekdag": "2027-02-26",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-02-27",
+    "weekdag": "2027-02-27",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-02-28",
+    "weekdag": "2027-02-28",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-03-01",
+    "weekdag": "2027-03-01",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-03-02",
+    "weekdag": "2027-03-02",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-03-03",
+    "weekdag": "2027-03-03",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-03-04",
+    "weekdag": "2027-03-04",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-03-05",
+    "weekdag": "2027-03-05",
+    "seizoen": "C",
+    "min_nachten_boeken": 7,
+    "dagprijs": 535.7142857142857,
+    "weekprijs": 3749.9999999999995
+  },
+  {
+    "datum": "2027-03-06",
+    "weekdag": "2027-03-06",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-07",
+    "weekdag": "2027-03-07",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-08",
+    "weekdag": "2027-03-08",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-09",
+    "weekdag": "2027-03-09",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-10",
+    "weekdag": "2027-03-10",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-11",
+    "weekdag": "2027-03-11",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-12",
+    "weekdag": "2027-03-12",
+    "seizoen": "D",
+    "min_nachten_boeken": 7,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-13",
+    "weekdag": "2027-03-13",
+    "seizoen": "E",
+    "min_nachten_boeken": 7,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-03-14",
+    "weekdag": "2027-03-14",
+    "seizoen": "E",
+    "min_nachten_boeken": 7,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-03-15",
+    "weekdag": "2027-03-15",
+    "seizoen": "E",
+    "min_nachten_boeken": 7,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-03-16",
+    "weekdag": "2027-03-16",
+    "seizoen": "E",
+    "min_nachten_boeken": 7,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-03-17",
+    "weekdag": "2027-03-17",
+    "seizoen": "E",
+    "min_nachten_boeken": 7,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-03-18",
+    "weekdag": "2027-03-18",
+    "seizoen": "E",
+    "min_nachten_boeken": 7,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-03-19",
+    "weekdag": "2027-03-19",
+    "seizoen": "E",
+    "min_nachten_boeken": 7,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-03-20",
+    "weekdag": "2027-03-20",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-21",
+    "weekdag": "2027-03-21",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-22",
+    "weekdag": "2027-03-22",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-23",
+    "weekdag": "2027-03-23",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-24",
+    "weekdag": "2027-03-24",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-25",
+    "weekdag": "2027-03-25",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-26",
+    "weekdag": "2027-03-26",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-27",
+    "weekdag": "2027-03-27",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-28",
+    "weekdag": "2027-03-28",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-29",
+    "weekdag": "2027-03-29",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-30",
+    "weekdag": "2027-03-30",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-03-31",
+    "weekdag": "2027-03-31",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-04-01",
+    "weekdag": "2027-04-01",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-04-02",
+    "weekdag": "2027-04-02",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-04-03",
+    "weekdag": "2027-04-03",
+    "seizoen": "E",
+    "min_nachten_boeken": 3,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-04-04",
+    "weekdag": "2027-04-04",
+    "seizoen": "E",
+    "min_nachten_boeken": 3,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-04-05",
+    "weekdag": "2027-04-05",
+    "seizoen": "E",
+    "min_nachten_boeken": 3,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-04-06",
+    "weekdag": "2027-04-06",
+    "seizoen": "E",
+    "min_nachten_boeken": 3,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-04-07",
+    "weekdag": "2027-04-07",
+    "seizoen": "E",
+    "min_nachten_boeken": 3,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-04-08",
+    "weekdag": "2027-04-08",
+    "seizoen": "E",
+    "min_nachten_boeken": 3,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-04-09",
+    "weekdag": "2027-04-09",
+    "seizoen": "E",
+    "min_nachten_boeken": 3,
+    "dagprijs": 335.7142857142857,
+    "weekprijs": 2350.0
+  },
+  {
+    "datum": "2027-04-10",
+    "weekdag": "2027-04-10",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-11",
+    "weekdag": "2027-04-11",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-12",
+    "weekdag": "2027-04-12",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-13",
+    "weekdag": "2027-04-13",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-14",
+    "weekdag": "2027-04-14",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-15",
+    "weekdag": "2027-04-15",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-16",
+    "weekdag": "2027-04-16",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-17",
+    "weekdag": "2027-04-17",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-18",
+    "weekdag": "2027-04-18",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-19",
+    "weekdag": "2027-04-19",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-20",
+    "weekdag": "2027-04-20",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-21",
+    "weekdag": "2027-04-21",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-22",
+    "weekdag": "2027-04-22",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-23",
+    "weekdag": "2027-04-23",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-04-24",
+    "weekdag": "2027-04-24",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-04-25",
+    "weekdag": "2027-04-25",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-04-26",
+    "weekdag": "2027-04-26",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-04-27",
+    "weekdag": "2027-04-27",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-04-28",
+    "weekdag": "2027-04-28",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-04-29",
+    "weekdag": "2027-04-29",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-04-30",
+    "weekdag": "2027-04-30",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-01",
+    "weekdag": "2027-05-01",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-02",
+    "weekdag": "2027-05-02",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-03",
+    "weekdag": "2027-05-03",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-04",
+    "weekdag": "2027-05-04",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-05",
+    "weekdag": "2027-05-05",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-06",
+    "weekdag": "2027-05-06",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-07",
+    "weekdag": "2027-05-07",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-08",
+    "weekdag": "2027-05-08",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-09",
+    "weekdag": "2027-05-09",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-10",
+    "weekdag": "2027-05-10",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-11",
+    "weekdag": "2027-05-11",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-12",
+    "weekdag": "2027-05-12",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-13",
+    "weekdag": "2027-05-13",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-14",
+    "weekdag": "2027-05-14",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-15",
+    "weekdag": "2027-05-15",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-16",
+    "weekdag": "2027-05-16",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-17",
+    "weekdag": "2027-05-17",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-18",
+    "weekdag": "2027-05-18",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-19",
+    "weekdag": "2027-05-19",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-20",
+    "weekdag": "2027-05-20",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-21",
+    "weekdag": "2027-05-21",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-05-22",
+    "weekdag": "2027-05-22",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-23",
+    "weekdag": "2027-05-23",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-24",
+    "weekdag": "2027-05-24",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-25",
+    "weekdag": "2027-05-25",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-26",
+    "weekdag": "2027-05-26",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-27",
+    "weekdag": "2027-05-27",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-28",
+    "weekdag": "2027-05-28",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-29",
+    "weekdag": "2027-05-29",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-30",
+    "weekdag": "2027-05-30",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-05-31",
+    "weekdag": "2027-05-31",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-01",
+    "weekdag": "2027-06-01",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-02",
+    "weekdag": "2027-06-02",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-03",
+    "weekdag": "2027-06-03",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-04",
+    "weekdag": "2027-06-04",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-05",
+    "weekdag": "2027-06-05",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-06",
+    "weekdag": "2027-06-06",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-07",
+    "weekdag": "2027-06-07",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-08",
+    "weekdag": "2027-06-08",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-09",
+    "weekdag": "2027-06-09",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-10",
+    "weekdag": "2027-06-10",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-11",
+    "weekdag": "2027-06-11",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-12",
+    "weekdag": "2027-06-12",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-13",
+    "weekdag": "2027-06-13",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-14",
+    "weekdag": "2027-06-14",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-15",
+    "weekdag": "2027-06-15",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-16",
+    "weekdag": "2027-06-16",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-17",
+    "weekdag": "2027-06-17",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-18",
+    "weekdag": "2027-06-18",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-19",
+    "weekdag": "2027-06-19",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-20",
+    "weekdag": "2027-06-20",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-21",
+    "weekdag": "2027-06-21",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-22",
+    "weekdag": "2027-06-22",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-23",
+    "weekdag": "2027-06-23",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-24",
+    "weekdag": "2027-06-24",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-25",
+    "weekdag": "2027-06-25",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-06-26",
+    "weekdag": "2027-06-26",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-06-27",
+    "weekdag": "2027-06-27",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-06-28",
+    "weekdag": "2027-06-28",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-06-29",
+    "weekdag": "2027-06-29",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-06-30",
+    "weekdag": "2027-06-30",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-07-01",
+    "weekdag": "2027-07-01",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-07-02",
+    "weekdag": "2027-07-02",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-07-03",
+    "weekdag": "2027-07-03",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-04",
+    "weekdag": "2027-07-04",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-05",
+    "weekdag": "2027-07-05",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-06",
+    "weekdag": "2027-07-06",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-07",
+    "weekdag": "2027-07-07",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-08",
+    "weekdag": "2027-07-08",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-09",
+    "weekdag": "2027-07-09",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-10",
+    "weekdag": "2027-07-10",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-11",
+    "weekdag": "2027-07-11",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-12",
+    "weekdag": "2027-07-12",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-13",
+    "weekdag": "2027-07-13",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-14",
+    "weekdag": "2027-07-14",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-15",
+    "weekdag": "2027-07-15",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-16",
+    "weekdag": "2027-07-16",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-17",
+    "weekdag": "2027-07-17",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-18",
+    "weekdag": "2027-07-18",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-19",
+    "weekdag": "2027-07-19",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-20",
+    "weekdag": "2027-07-20",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-21",
+    "weekdag": "2027-07-21",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-22",
+    "weekdag": "2027-07-22",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-23",
+    "weekdag": "2027-07-23",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-24",
+    "weekdag": "2027-07-24",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-25",
+    "weekdag": "2027-07-25",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-26",
+    "weekdag": "2027-07-26",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-27",
+    "weekdag": "2027-07-27",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-28",
+    "weekdag": "2027-07-28",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-29",
+    "weekdag": "2027-07-29",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-30",
+    "weekdag": "2027-07-30",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-07-31",
+    "weekdag": "2027-07-31",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-01",
+    "weekdag": "2027-08-01",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-02",
+    "weekdag": "2027-08-02",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-03",
+    "weekdag": "2027-08-03",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-04",
+    "weekdag": "2027-08-04",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-05",
+    "weekdag": "2027-08-05",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-06",
+    "weekdag": "2027-08-06",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-07",
+    "weekdag": "2027-08-07",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-08",
+    "weekdag": "2027-08-08",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-09",
+    "weekdag": "2027-08-09",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-10",
+    "weekdag": "2027-08-10",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-11",
+    "weekdag": "2027-08-11",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-12",
+    "weekdag": "2027-08-12",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-13",
+    "weekdag": "2027-08-13",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-14",
+    "weekdag": "2027-08-14",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-15",
+    "weekdag": "2027-08-15",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-16",
+    "weekdag": "2027-08-16",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-17",
+    "weekdag": "2027-08-17",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-18",
+    "weekdag": "2027-08-18",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-19",
+    "weekdag": "2027-08-19",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-20",
+    "weekdag": "2027-08-20",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-21",
+    "weekdag": "2027-08-21",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-22",
+    "weekdag": "2027-08-22",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-23",
+    "weekdag": "2027-08-23",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-24",
+    "weekdag": "2027-08-24",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-25",
+    "weekdag": "2027-08-25",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-26",
+    "weekdag": "2027-08-26",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-27",
+    "weekdag": "2027-08-27",
+    "seizoen": "G",
+    "min_nachten_boeken": 3,
+    "dagprijs": 285.7142857142857,
+    "weekprijs": 2000.0
+  },
+  {
+    "datum": "2027-08-28",
+    "weekdag": "2027-08-28",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-08-29",
+    "weekdag": "2027-08-29",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-08-30",
+    "weekdag": "2027-08-30",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-08-31",
+    "weekdag": "2027-08-31",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-01",
+    "weekdag": "2027-09-01",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-02",
+    "weekdag": "2027-09-02",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-03",
+    "weekdag": "2027-09-03",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-04",
+    "weekdag": "2027-09-04",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-05",
+    "weekdag": "2027-09-05",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-06",
+    "weekdag": "2027-09-06",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-07",
+    "weekdag": "2027-09-07",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-08",
+    "weekdag": "2027-09-08",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-09",
+    "weekdag": "2027-09-09",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-10",
+    "weekdag": "2027-09-10",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-11",
+    "weekdag": "2027-09-11",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-12",
+    "weekdag": "2027-09-12",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-13",
+    "weekdag": "2027-09-13",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-14",
+    "weekdag": "2027-09-14",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-15",
+    "weekdag": "2027-09-15",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-16",
+    "weekdag": "2027-09-16",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-17",
+    "weekdag": "2027-09-17",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-18",
+    "weekdag": "2027-09-18",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-19",
+    "weekdag": "2027-09-19",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-20",
+    "weekdag": "2027-09-20",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-21",
+    "weekdag": "2027-09-21",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-22",
+    "weekdag": "2027-09-22",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-23",
+    "weekdag": "2027-09-23",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-24",
+    "weekdag": "2027-09-24",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-09-25",
+    "weekdag": "2027-09-25",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-09-26",
+    "weekdag": "2027-09-26",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-09-27",
+    "weekdag": "2027-09-27",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-09-28",
+    "weekdag": "2027-09-28",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-09-29",
+    "weekdag": "2027-09-29",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-09-30",
+    "weekdag": "2027-09-30",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-01",
+    "weekdag": "2027-10-01",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-02",
+    "weekdag": "2027-10-02",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-03",
+    "weekdag": "2027-10-03",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-04",
+    "weekdag": "2027-10-04",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-05",
+    "weekdag": "2027-10-05",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-06",
+    "weekdag": "2027-10-06",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-07",
+    "weekdag": "2027-10-07",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-08",
+    "weekdag": "2027-10-08",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-09",
+    "weekdag": "2027-10-09",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-10",
+    "weekdag": "2027-10-10",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-11",
+    "weekdag": "2027-10-11",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-12",
+    "weekdag": "2027-10-12",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-13",
+    "weekdag": "2027-10-13",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-14",
+    "weekdag": "2027-10-14",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-15",
+    "weekdag": "2027-10-15",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-16",
+    "weekdag": "2027-10-16",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-10-17",
+    "weekdag": "2027-10-17",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-10-18",
+    "weekdag": "2027-10-18",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-10-19",
+    "weekdag": "2027-10-19",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-10-20",
+    "weekdag": "2027-10-20",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-10-21",
+    "weekdag": "2027-10-21",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-10-22",
+    "weekdag": "2027-10-22",
+    "seizoen": "H",
+    "min_nachten_boeken": 3,
+    "dagprijs": 235.71428571428572,
+    "weekprijs": 1650.0
+  },
+  {
+    "datum": "2027-10-23",
+    "weekdag": "2027-10-23",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-24",
+    "weekdag": "2027-10-24",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-25",
+    "weekdag": "2027-10-25",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-26",
+    "weekdag": "2027-10-26",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-27",
+    "weekdag": "2027-10-27",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-28",
+    "weekdag": "2027-10-28",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-29",
+    "weekdag": "2027-10-29",
+    "seizoen": "I",
+    "min_nachten_boeken": 3,
+    "dagprijs": 189.28571428571428,
+    "weekprijs": 1325.0
+  },
+  {
+    "datum": "2027-10-30",
+    "weekdag": "2027-10-30",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-10-31",
+    "weekdag": "2027-10-31",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-01",
+    "weekdag": "2027-11-01",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-02",
+    "weekdag": "2027-11-02",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-03",
+    "weekdag": "2027-11-03",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-04",
+    "weekdag": "2027-11-04",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-05",
+    "weekdag": "2027-11-05",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-06",
+    "weekdag": "2027-11-06",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-07",
+    "weekdag": "2027-11-07",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-08",
+    "weekdag": "2027-11-08",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-09",
+    "weekdag": "2027-11-09",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-10",
+    "weekdag": "2027-11-10",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-11",
+    "weekdag": "2027-11-11",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-12",
+    "weekdag": "2027-11-12",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-13",
+    "weekdag": "2027-11-13",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-14",
+    "weekdag": "2027-11-14",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-15",
+    "weekdag": "2027-11-15",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-16",
+    "weekdag": "2027-11-16",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-17",
+    "weekdag": "2027-11-17",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-18",
+    "weekdag": "2027-11-18",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-19",
+    "weekdag": "2027-11-19",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-20",
+    "weekdag": "2027-11-20",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-21",
+    "weekdag": "2027-11-21",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-22",
+    "weekdag": "2027-11-22",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-23",
+    "weekdag": "2027-11-23",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-24",
+    "weekdag": "2027-11-24",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-25",
+    "weekdag": "2027-11-25",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-26",
+    "weekdag": "2027-11-26",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-27",
+    "weekdag": "2027-11-27",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-28",
+    "weekdag": "2027-11-28",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-29",
+    "weekdag": "2027-11-29",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-11-30",
+    "weekdag": "2027-11-30",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-01",
+    "weekdag": "2027-12-01",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-02",
+    "weekdag": "2027-12-02",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-03",
+    "weekdag": "2027-12-03",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-04",
+    "weekdag": "2027-12-04",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-05",
+    "weekdag": "2027-12-05",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-06",
+    "weekdag": "2027-12-06",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-07",
+    "weekdag": "2027-12-07",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-08",
+    "weekdag": "2027-12-08",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-09",
+    "weekdag": "2027-12-09",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-10",
+    "weekdag": "2027-12-10",
+    "seizoen": "F",
+    "min_nachten_boeken": 3,
+    "dagprijs": 271.42857142857144,
+    "weekprijs": 1900.0
+  },
+  {
+    "datum": "2027-12-11",
+    "weekdag": "2027-12-11",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-12-12",
+    "weekdag": "2027-12-12",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-12-13",
+    "weekdag": "2027-12-13",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-12-14",
+    "weekdag": "2027-12-14",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-12-15",
+    "weekdag": "2027-12-15",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-12-16",
+    "weekdag": "2027-12-16",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-12-17",
+    "weekdag": "2027-12-17",
+    "seizoen": "D",
+    "min_nachten_boeken": 3,
+    "dagprijs": 385.7142857142857,
+    "weekprijs": 2700.0
+  },
+  {
+    "datum": "2027-12-18",
+    "weekdag": "2027-12-18",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-12-19",
+    "weekdag": "2027-12-19",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-12-20",
+    "weekdag": "2027-12-20",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-12-21",
+    "weekdag": "2027-12-21",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-12-22",
+    "weekdag": "2027-12-22",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-12-23",
+    "weekdag": "2027-12-23",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-12-24",
+    "weekdag": "2027-12-24",
+    "seizoen": "B",
+    "min_nachten_boeken": 7,
+    "dagprijs": 657.1428571428571,
+    "weekprijs": 4600.0
+  },
+  {
+    "datum": "2027-12-25",
+    "weekdag": "2027-12-25",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  },
+  {
+    "datum": "2027-12-26",
+    "weekdag": "2027-12-26",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  },
+  {
+    "datum": "2027-12-27",
+    "weekdag": "2027-12-27",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  },
+  {
+    "datum": "2027-12-28",
+    "weekdag": "2027-12-28",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  },
+  {
+    "datum": "2027-12-29",
+    "weekdag": "2027-12-29",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  },
+  {
+    "datum": "2027-12-30",
+    "weekdag": "2027-12-30",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  },
+  {
+    "datum": "2027-12-31",
+    "weekdag": "2027-12-31",
+    "seizoen": "A",
+    "min_nachten_boeken": 7,
+    "dagprijs": 878.5714285714286,
+    "weekprijs": 6150.0
+  }
+]

@@ -1,0 +1,53 @@
+/* Page Transitions */
+#app-content {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  background: var(--bg-dark);
+}
+
+.page-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  z-index: 1;
+  background: var(--bg-dark);
+}
+
+.page-wrapper.active {
+  transform: translateX(0);
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Slide Right */
+.page-wrapper.from-right {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.page-wrapper.exit-left {
+  transform: translateX(-30%);
+  opacity: 0;
+}
+
+/* Slide Left */
+.page-wrapper.from-left {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.page-wrapper.exit-right {
+  transform: translateX(30%);
+  opacity: 0;
+}
+
+/* Fix for mobile/safari clipping */
+.page-wrapper::-webkit-scrollbar {
+  display: none;
+}
