@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gipfel Lodge — Bezetting</title>
+  <link rel="stylesheet" href="./CSS/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+</head>
+<body data-page="occupancy">
+  <main id="occupancy-page" class="page active">
+    <header class="top-bar">
+      <div class="header-flex">
+        <div class="header-titles"><h1>Bezetting & Gebruik</h1><p class="subtitle">Data overzichtelijk gemaakt</p></div>
+        <div class="topbar__controls">
+          <label class="action-btn" for="fileInputOcc"><i class="fa-solid fa-file-import"></i><input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden /></label>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="kalender-header">
+        <div class="kalender-header__left"><h3 class="kalender__title">Bezettingskalender</h3><p class="kalender__subtitle">Swipe door de maanden</p></div>
+        <div class="year-select-container">
+          <div class="custom-select custom-select-calender" id="occYearSelectContainer">
+            <div class="select-trigger"><span id="occSelectedYear"></span><i class="fa-solid fa-chevron-down"></i></div>
+            <div class="select-options" id="occYearOptions"></div>
+            <input type="hidden" id="occYearValue" value="">
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div id="occCalendarCarousel" class="occ-carousel booking-carousel"><div id="occCalendarTrack" class="booking-carousel__track"></div></div>
+        <div class="occ-legend">
+          <div class="occ-legend__item"><span class="dot dot-platform"></span><span>Platform</span></div>
+          <div class="occ-legend__item"><span class="dot dot-owner"></span><span>Eigen gebruik</span></div>
+        </div>
+        <div id="occTooltip" class="occ-tooltip" style="display:none;"></div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a class="nav-item" id="nav-home" data-nav-link="home" href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="nav-item" id="nav-occupancy" data-nav-link="occupancy" href="occupancy.html"><i class="fa-solid fa-calendar-days"></i><span>Bezetting</span></a>
+    <a class="nav-item" id="nav-revenue" data-nav-link="revenue" href="revenue.html"><i class="fa-solid fa-euro-sign"></i><span>Omzet</span></a>
+    <a class="nav-item" id="nav-behavior" data-nav-link="behavior" href="behavior.html"><i class="fa-solid fa-chart-pie"></i><span>Gedrag</span></a>
+    <a class="nav-item" id="nav-data" data-nav-link="data" href="data.html"><i class="fa-solid fa-database"></i><span>Data</span></a>
+  </nav>
+
+  <script type="module" src="./JS/ui.js"></script>
+</body>
+</html>

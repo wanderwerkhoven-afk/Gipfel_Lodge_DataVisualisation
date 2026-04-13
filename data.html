@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gipfel Lodge — Data</title>
+  <link rel="stylesheet" href="./CSS/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body data-page="data">
+  <main id="data-page" class="page active">
+    <header class="top-bar"><div class="header-flex"><h1>Data Management</h1></div></header>
+    <div class="container">
+      <div class="panel upload-zone">
+        <h3 class="panel-title">Nieuwe data inladen</h3>
+        <label class="upload-btn-full" for="fileInputData"><i class="fa-solid fa-cloud-arrow-up"></i><span>Selecteer Excel Bestand</span><input id="fileInputData" class="excel-upload" type="file" accept=".xlsx,.xls,.csv" hidden /></label>
+      </div>
+      <div class="panel"><h3 class="panel-title">Systeem Log</h3><pre id="log" class="log">Wachten op bestand...</pre></div>
+      <div id="tableWrap" class="table-wrap"></div>
+    </div>
+  </main>
+  <nav class="bottom-nav">
+    <a class="nav-item" id="nav-home" data-nav-link="home" href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="nav-item" id="nav-occupancy" data-nav-link="occupancy" href="occupancy.html"><i class="fa-solid fa-calendar-days"></i><span>Bezetting</span></a>
+    <a class="nav-item" id="nav-revenue" data-nav-link="revenue" href="revenue.html"><i class="fa-solid fa-euro-sign"></i><span>Omzet</span></a>
+    <a class="nav-item" id="nav-behavior" data-nav-link="behavior" href="behavior.html"><i class="fa-solid fa-chart-pie"></i><span>Gedrag</span></a>
+    <a class="nav-item" id="nav-data" data-nav-link="data" href="data.html"><i class="fa-solid fa-database"></i><span>Data</span></a>
+  </nav>
+  <script type="module" src="./JS/ui.js"></script>
+</body>
+</html>

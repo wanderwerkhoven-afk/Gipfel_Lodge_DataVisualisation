@@ -11,10 +11,6 @@ import {
   renderDataVisCharts,
 } from "./components/charts/index.js";
 
-/* ============================================================
- * SCROLL PRESERVATION (voorkomt “verspringen” bij updates)
- * ============================================================ */
-
 function ensureScrollState() {
   state.scroll ??= { windowY: 0, containers: {} };
   state.scroll.containers ??= {};
@@ -50,14 +46,9 @@ function withPreservedScroll(fn) {
   requestAnimationFrame(() => requestAnimationFrame(restoreScrollPositions));
 }
 
-/* ============================================================
- * BOOT
- * ============================================================ */
-
 document.addEventListener("DOMContentLoaded", () => {
   ensureScrollState();
-
-  bindNavigation();
+  highlightCurrentNavItem();
 
   bindFileUploads(".excel-upload", ({ rows, years }) => {
     saveToLocalStorage(rows);
@@ -72,13 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
   bindModeButtons();
   bindOccupancyToggles();
 
-  // Meteen renderen (zodat bijv. de lege kalender zichtbaar is)
-  // Eerst kijken of we data in LocalStorage hebben
   const storedRows = loadFromLocalStorage();
   if (storedRows && storedRows.length) {
     setState({ rawRows: storedRows });
-    const years = getYears(storedRows);
-    setupYearSelects(years);
+    setupYearSelects(getYears(storedRows));
   } else {
     setupYearSelects();
   }
@@ -86,36 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
   renderActivePage();
 });
 
-/* ============================================================
- * NAVIGATION
- * ============================================================ */
-
-function bindNavigation() {
-  document.querySelectorAll("[data-nav]").forEach((el) => {
-    el.addEventListener("click", () => navigateTo(el.dataset.nav));
-  });
-}
-
-function navigateTo(pageId) {
-  withPreservedScroll(() => {
-    document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
-    document.getElementById(`${pageId}-page`)?.classList.add("active");
-
-    document.querySelectorAll(".nav-item").forEach((n) => n.classList.remove("active"));
-    document.getElementById(`nav-${pageId}`)?.classList.add("active");
-
-    renderActivePage();
-  });
-}
-
-/* ============================================================
- * PAGE RENDER ROUTER
- * ============================================================ */
-
 function getActivePageId() {
-  const active = document.querySelector(".page.active");
-  if (!active?.id) return "home";
-  return active.id.replace("-page", "");
+  return document.body?.dataset?.page || "home";
+}
+
+function highlightCurrentNavItem() {
+  const page = getActivePageId();
+  document.querySelectorAll(".nav-item").forEach((n) => n.classList.remove("active"));
+  document.getElementById(`nav-${page}`)?.classList.add("active");
 }
 
 function renderActivePage() {
@@ -136,14 +102,13 @@ function renderActivePage() {
       break;
     case "revenue":
     default:
-      renderHomePage();
+      break;
   }
 }
 
 function renderHomePage() {
   const kpiYear = state.kpiYear ?? "ALL";
   renderHomeKPIsForYear(kpiYear);
-
   renderHomeBookingCarousel(state.rawRows);
   renderHomeRevenueChart();
 
@@ -151,12 +116,7 @@ function renderHomePage() {
   if (y != null) renderHomeCumulativeRevenueChartForYear(y);
 }
 
-/* ============================================================
- * YEAR SELECTS (CUSTOM)
- * ============================================================ */
-
 function setupYearSelects(years = getYears()) {
-  // Zorg dat we altijd minimaal het huidige jaar hebben om te tonen in de dropdowns
   const availableYears = years.length > 0 ? years : [state.currentYear || new Date().getFullYear()];
 
   wireCustomYearSelect({
@@ -189,8 +149,7 @@ function setupYearSelects(years = getYears()) {
     years: ["ALL", ...availableYears],
     get: () => state.cumulativeYear ?? "ALL",
     set: (y) => (state.cumulativeYear = y),
-    onChange: () =>
-      withPreservedScroll(() => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL")),
+    onChange: () => withPreservedScroll(() => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL")),
   });
 
   wireCustomYearSelect({
@@ -240,10 +199,6 @@ function wireCustomYearSelect({ containerId, displayId, optionsId, hiddenId, yea
   hidden.value = String(initial);
 }
 
-/**
- * Custom select open/close
- * BELANGRIJK: dropdowns moeten class "custom-select" blijven houden.
- */
 function bindCustomSelectToggles() {
   const selectContainers = document.querySelectorAll(".custom-select");
   if (!selectContainers.length) return;
@@ -274,10 +229,6 @@ function bindCustomSelectToggles() {
     });
   });
 }
-
-/* ============================================================
- * FILTERS / TOGGLES
- * ============================================================ */
 
 function bindSeasonButtons() {
   document.querySelectorAll(".filter-btn").forEach((btn) => {
