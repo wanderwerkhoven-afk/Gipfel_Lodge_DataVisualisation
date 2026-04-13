@@ -1,7 +1,21 @@
-// ./JS/pages/occupancyPage.js
 import { state } from "../core/app.js";
 import { loadPricingYear, getYears } from "../core/dataManager.js";
-import { withPreservedScroll, wireCustomYearSelect } from "../core/ui-helpers.js";
+import { 
+  withPreservedScroll, 
+  wireCustomYearSelect, 
+  euro, 
+  fmtDateNL, 
+  pad2, 
+  clamp, 
+  startOfDay, 
+  addDays, 
+  diffDays,
+  startOfWeekMonday,
+  endOfWeekSunday,
+  intersectsYear,
+  escapeHtml,
+  toISODateLocal
+} from "../core/ui-helpers.js";
 
 export const OccupancyPage = {
   id: "occupancy",
@@ -146,9 +160,6 @@ function setupOccupancyYearSelects() {
   });
 }
 
-/**
- * Entry: render occupancy page
- */
 export async function renderBezettingCharts() {
   const rawData = state.rawRows || [];
   if (state.occupancyYear == null) state.occupancyYear = "ALL";
@@ -177,6 +188,20 @@ export async function renderBezettingCharts() {
   );
 
   await preloadPricingForYears(yearsToRender);
+
+  if (bookingsForView.length === 0 && rawData.length > 0) {
+    const track = document.getElementById("occCalendarTrack");
+    if (track) {
+      track.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-calendar-xmark" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i>
+          <p>Geen boekingen gevonden voor het jaar ${state.occupancyYear}.</p>
+          <small>Probeer een ander jaar te selecteren of controleer de data op de Data-pagina.</small>
+        </div>
+      `;
+    }
+    return;
+  }
 
   renderCalendarCarousel(bookingsForView, yearsToRender);
   renderOccupancyTrendChart(allBookings);
@@ -211,44 +236,23 @@ function getPricingByISO(iso) {
 }
 
 function normalizeBookings(rows) {
-  return rows
-    .map((r) => {
-      const start = parseNLDate(r.__aankomst ?? r["Aankomst"]);
-      const end = parseNLDate(r.__vertrek ?? r["Vertrek"]);
-      if (!start || !end) return null;
-
-      const nights =
-        Number(r["Nachten"] ?? r.__nachten ?? diffDays(start, end)) ||
-        diffDays(start, end);
-
-      const income = parseMoney(r.__gross ?? r["Inkomsten"]);
-      const bookingLabel = String(r["Boeking"] ?? "").trim();
-      const guest = String(r["Gast"] ?? "").trim();
-      const channel = bookingLabel.includes("|")
-        ? bookingLabel.split("|")[1].trim()
-        : bookingLabel;
-
-      const type = isOwnerBooking(r) ? "owner" : "platform";
-
-      return {
-        start: startOfDay(start),
-        end: startOfDay(end),
-        nights,
-        income,
-        guest,
-        channel,
-        bookingLabel,
-        type,
-        raw: r,
-      };
-    })
-    .filter(Boolean);
+  return rows.map((r) => ({
+    start: startOfDay(r.__aankomst),
+    end: startOfDay(r.__vertrek),
+    nights: r.__nights,
+    income: r.__gross,
+    guest: r.__guest,
+    channel: (r.__bookingRaw || "").includes("|") 
+      ? r.__bookingRaw.split("|")[1].trim() 
+      : (r.__bookingRaw || ""),
+    bookingLabel: (r.__bookingRaw || ""),
+    type: r.__owner ? "owner" : "platform",
+    raw: r,
+  })).filter(b => b.start && b.end);
 }
 
 function isOwnerBooking(r) {
-  const b = String(r["Boeking"] ?? "").toLowerCase();
-  const inc = String(r["Inkomsten"] ?? "").trim();
-  return b.includes("huiseigenaar") || inc === "-" || inc === "" || inc === "—";
+  return r.__owner;
 }
 
 let occCarouselBound = false;
@@ -325,16 +329,18 @@ function renderCalendarCarousel(bookings, years) {
     }
   });
 
-  const totalSlides = yearList.length * 12;
-  if (state.occupancySlideIndex == null) {
-    state.occupancySlideIndex = clamp(new Date().getMonth(), 0, totalSlides - 1);
+  const isDesktop = window.innerWidth >= 1024;
+  if (!isDesktop) {
+    const totalSlides = yearList.length * 12;
+    if (state.occupancySlideIndex == null) {
+      state.occupancySlideIndex = clamp(new Date().getMonth(), 0, totalSlides - 1);
+    }
+    const activeSlide = clamp(Number(state.occupancySlideIndex), 0, totalSlides - 1);
+    requestAnimationFrame(() => {
+      carousel.scrollLeft = carousel.clientWidth * activeSlide;
+    });
+    bindCarouselSyncOnce(carousel, totalSlides);
   }
-  const activeSlide = clamp(Number(state.occupancySlideIndex), 0, totalSlides - 1);
-  requestAnimationFrame(() => {
-    carousel.scrollLeft = carousel.clientWidth * activeSlide;
-  });
-
-  bindCarouselSyncOnce(carousel, totalSlides);
   carousel.addEventListener("scroll", () => hideTooltip(tooltip, true), { passive: true });
 }
 
@@ -369,10 +375,13 @@ function renderSingleMonthGrid(gridEl, bookings, year, monthIdx, tooltip) {
     }
   });
 
+  const today = startOfDay(new Date());
+
   days.forEach((day) => {
     const cell = document.createElement("div");
     cell.className = "occ-month-cell";
     if (day.getMonth() !== monthIdx) cell.classList.add("is-outside");
+    if (startOfDay(day) < today) cell.classList.add("is-past");
     const dayLabel = document.createElement("div");
     dayLabel.className = "occ-month-day"; dayLabel.textContent = String(day.getDate());
     cell.appendChild(dayLabel);
@@ -619,53 +628,4 @@ function renderOccTrendStickyYAxisLabels(chart) {
       wrap.appendChild(span);
     }
   });
-}
-
-function parseNLDate(v) {
-  if (!v || (v instanceof Date && !isNaN(v))) return v;
-  const s = String(v).trim();
-  if (!s) return null;
-  const m = s.split(" ")[0].match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
-  if (m) return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
-  const d = new Date(s);
-  return isNaN(d.getTime()) ? null : d;
-}
-
-function parseMoney(v) {
-  if (typeof v === "number") return v;
-  if (v == null) return null;
-  const s = String(v).trim();
-  if (!s || s === "-" || s === "—") return null;
-  const cleaned = s.replaceAll("€", "").replaceAll(".", "").replaceAll(",", ".").replace(/\s+/g, "");
-  const n = Number(cleaned);
-  return Number.isFinite(n) ? n : null;
-}
-
-function euro(x) {
-  try { return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(Number(x)); }
-  catch { const n = Number(x); return Number.isFinite(n) ? `€${Math.round(n * 100) / 100}` : "—"; }
-}
-
-function pad2(n) { return String(n).padStart(2, "0"); }
-function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
-function startOfDay(d) { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; }
-function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
-function diffDays(a, b) {
-  const A = startOfDay(a).getTime(); const B = startOfDay(b).getTime();
-  return Math.max(0, Math.round((B - A) / 86400000));
-}
-function fmtDateNL(d) { return `${pad2(d.getDate())}-${pad2(d.getMonth() + 1)}-${d.getFullYear()}`; }
-function startOfWeekMonday(d) {
-  const x = startOfDay(d); const day = x.getDay();
-  const diff = (day === 0 ? -6 : 1) - day;
-  return addDays(x, diff);
-}
-function endOfWeekSunday(d) { return addDays(startOfWeekMonday(d), 6); }
-function intersectsYear(b, year) { return b.start < new Date(year + 1, 0, 1) && b.end > new Date(year, 0, 1); }
-function escapeHtml(str) {
-  return String(str).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
-}
-function toISODateLocal(d) {
-  const x = new Date(d);
-  return `${x.getFullYear()}-${pad2(x.getMonth() + 1)}-${pad2(x.getDate())}`;
 }

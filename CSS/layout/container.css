@@ -1,7 +1,15 @@
 .container {
-  padding: var(--page-pad);
-  padding-bottom: 60px;
-  /* Ruimte voor de navigatiebalk */
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 40px;
+  padding-bottom: 100px; /* 75px navbar + 25px extra ademaruimte */
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 var(--page-pad);
+    padding-bottom: 100px; /* behoud ook op mobiel */
+  }
 }
 
 /* Verberg pagina's die niet actief zijn */

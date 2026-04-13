@@ -39,6 +39,14 @@
   /* Extra ruimte vanaf de randen */
 }
 
+@media (min-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0;
+  }
+}
+
 .kpi-card {
   background-color: var(--panel);
   /* Gebruikt je diepblauwe variabele */

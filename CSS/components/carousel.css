@@ -42,12 +42,50 @@
 
   display: flex;
   justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, filter 0.4s ease;
 }
 
 .booking-slide .booking-card--v2 {
   width: 100%;
   max-width: 520px;
   margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .booking-carousel__track {
+    gap: 20px;
+    padding: 0 100px; /* Ruimte aan de zijkanten voor de 'neighbors' */
+  }
+
+  .booking-slide {
+    flex: 0 0 400px; /* Vaste breedte op desktop voor voorspelbaarheid */
+    width: 400px;
+    scroll-snap-align: center;
+    padding: 20px 0; /* Geen zij-padding meer nodig want we hebben track gap */
+  }
+
+  .booking-slide .booking-card--v2 {
+    max-width: 100%;
+  }
+
+  /* Neighbors dimmen */
+  .booking-slide:not(.is-active) {
+    opacity: 0.35;
+    transform: scale(0.92);
+    filter: blur(0.5px) brightness(0.6);
+  }
+
+  /* Active card focus */
+  .booking-slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+    z-index: 2;
+  }
+
+  .booking-scrollbar__rail {
+    width: 600px; /* Iets breder op desktop */
+  }
 }
 
 /* ============================================================

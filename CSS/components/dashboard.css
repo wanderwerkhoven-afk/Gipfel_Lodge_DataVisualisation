@@ -1,0 +1,174 @@
+/* --- Dashboard Layouts (Revenue/Behavior) --- */
+
+.charts-masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.charts-masonry .full-width {
+  grid-column: 1 / -1;
+}
+
+/* 2-Column Dashboard Grid for Desktop */
+.dashboard-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chart-container-sq {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+/* KPI Card Enhancements */
+.kpi-card .sub-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Specific KPI Grid for pages */
+.revenue-kpis, .behavior-kpis {
+  margin-bottom: 20px;
+}
+
+/* Table Management Styles */
+.search-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px; /* ✅ Verminderd van 20px */
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+}
+
+.search-box i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-box input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px 12px 40px;
+  color: var(--text);
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.data-count {
+  font-size: 13.5px; /* ✅ Iets groter */
+  color: var(--text-muted);
+  text-align: left; /* ✅ Links uitgelijnd */
+  font-weight: 500;
+  padding-left: 2px;
+}
+
+/* Data Table Component */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 30px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.data-table th {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 14px 16px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Action Button Large */
+.action-btn-large {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+  border: 2px dashed var(--border);
+  border-radius: 20px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn-large:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.action-btn-large i {
+  font-size: 32px;
+}
+
+.data-log {
+  margin-top: 15px;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--accent);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  text-align: center;
+}

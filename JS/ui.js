@@ -1,6 +1,6 @@
 // ./JS/ui.js
 import { state, setState } from "./core/app.js";
-import { bindFileUploads, saveToLocalStorage, loadFromLocalStorage } from "./core/dataManager.js";
+import { handleExcelUpload, saveToLocalStorage, loadFromLocalStorage } from "./core/dataManager.js";
 import Router from "./core/router.js";
 import { initGlobalUI, withPreservedScroll, ensureScrollState } from "./core/ui-helpers.js";
 
@@ -32,33 +32,49 @@ let router;
 document.addEventListener("DOMContentLoaded", () => {
   ensureScrollState();
 
-  // Initialize Router
-  router = new Router(routes, "app-content");
-  router.init();
-
-  // Initialize Global UI (delegated events)
-  initGlobalUI();
-
-  // Global event bindings
-  bindGlobalEvents();
-
-  // First data load
+  // 1. Herstel data uit localStorage (datum-objecten worden gedeserialiseerd door loadFromLocalStorage)
   const storedRows = loadFromLocalStorage();
   if (storedRows && storedRows.length) {
     setState({ rawRows: storedRows });
+
+    // Zet standaard jaarselectie op basis van de data
+    const years = [...new Set(storedRows.map(r => r.__aankomst.getFullYear()))].sort((a, b) => b - a);
+    if (years.length) {
+      if (!state.currentYear || !years.includes(state.currentYear)) state.currentYear = years[0];
+      if (!state.kpiYear || !years.includes(state.kpiYear)) state.kpiYear = years[0];
+    }
   }
+
+  // 2. Initialize Router
+  router = new Router(routes, "app-content");
+  router.init();
+
+  // 3. Initialize Global UI (delegated events)
+  initGlobalUI();
+
+  // 4. Global event bindings
+  bindGlobalEvents();
 });
 
 function bindGlobalEvents() {
-    // We bind file uploads globally because the input can be in the header (shared)
-    // or on the data page.
-    bindFileUploads(".excel-upload", ({ rows }) => {
-        saveToLocalStorage(rows);
-        withPreservedScroll(() => {
-          // Re-initialize current page logic with new data
-          if (router.currentPage && router.currentPage.init) {
-              router.currentPage.init();
-          }
+    // Gebruik event delegation op document zodat dynamisch ingevoegde upload-inputs
+    // (door de router) ook worden afgevangen, ongeacht wanneer ze in de DOM worden gezet.
+    document.addEventListener("change", (e) => {
+        const input = e.target.closest(".excel-upload");
+        if (!input || !input.files?.[0]) return;
+
+        handleExcelUpload(input.files[0], ({ rows }) => {
+            // handleExcelUpload zet rawRows al in state; hier slaan we op en herlaadden we de pagina
+            saveToLocalStorage(rows);
+
+            withPreservedScroll(() => {
+                if (router.currentPage && router.currentPage.init) {
+                    router.currentPage.init();
+                }
+            });
         });
-      });
+
+        // Reset input zodat dezelfde file opnieuw geüpload kan worden
+        input.value = "";
+    });
 }

@@ -333,6 +333,16 @@
   opacity: var(--occ-outside-opacity);
 }
 
+/* Verleden dagen: lichter en matter */
+.occ-month-cell.is-past {
+  opacity: 0.38;
+}
+
+/* Verleden dagen met boeking: iets minder dim zodat boeking nog leesbaar is */
+.occ-month-cell.is-past:has(.occ-fill) {
+  opacity: 0.55;
+}
+
 .occ-month-day {
   position: relative;
   z-index: 2;
@@ -423,4 +433,56 @@
 
 .occ-nav-btn:active {
   transform: scale(0.96);
+}
+
+/* ===========================================================
+   DESKTOP GRID (12 MONTHS, 3x4)
+   =========================================================== */
+
+@media (min-width: 1024px) {
+  #occupancy .panel {
+    padding: 24px;
+    background: var(--panel);
+  }
+
+  .occ-carousel {
+    overflow: visible !important;
+    padding: 0;
+  }
+
+  #occCalendarTrack {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 24px !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .occ-month-slide {
+    flex: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    scroll-snap-align: none !important;
+  }
+
+  .occ-month-card {
+    max-width: 100% !important;
+    /* Fors groter maken om 1600px breedte extra goed te benutten */
+    --occ-card-pad: 24px;
+    --occ-title-size: 22px;
+    --occ-title-margin: 10px 0 24px;
+    --occ-grid-gap: 10px;
+    --occ-dow-size: 14px;
+    --occ-cell-radius: 12px;
+    --occ-cell-pad: 10px;
+    --occ-day-size: 17px;
+  }
+
+  .occ-card-nav {
+    display: none !important; /* Verberg pijltjes op desktop */
+  }
+
+  .occ-month-grid {
+    gap: 6px;
+  }
 }

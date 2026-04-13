@@ -16,7 +16,7 @@
 // ./JS/pages/homePage.js
 import { CONFIG, state } from "../core/app.js";
 import { getRowsForYear, getYears } from "../core/dataManager.js";
-import { withPreservedScroll, wireCustomYearSelect } from "../core/ui-helpers.js";
+import { withPreservedScroll, wireCustomYearSelect, euro, fmtDateNL, startOfDay, clamp } from "../core/ui-helpers.js";
 
 export const HomePage = {
   id: "home",
@@ -330,13 +330,12 @@ function renderHomeKPIs(allRows) {
   // percentage (1 decimaal)
   setCountUp("kpiOccupancyPct", occupancyPct * 100, { formatter: (v) => `${v.toFixed(1)}%`, });
 
-  // euro’s (met jouw fmtEUR)
-  setCountUp("kpiGrossRevenue", grossRevenue, { formatter: (v) => fmtEUR(v), });
-  setCountUp("kpiGrossRevPerNight", nights > 0 ? grossRevenue / nights : 0, { formatter: (v) => fmtEUR(v), });
+  // euro’s
+  setCountUp("kpiGrossRevenue", grossRevenue, { formatter: (v) => euro(v), });
+  setCountUp("kpiGrossRevPerNight", nights > 0 ? grossRevenue / nights : 0, { formatter: (v) => euro(v), });
 
-  setCountUp("kpiNetRevenue", netRevenue, { formatter: (v) => fmtEUR(v), });
-  setCountUp("kpiNetRevPerNight", nights > 0 ? netRevenue / nights : 0, { formatter: (v) => fmtEUR(v), });
-
+  setCountUp("kpiNetRevenue", netRevenue, { formatter: (v) => euro(v), });
+  setCountUp("kpiNetRevPerNight", nights > 0 ? netRevenue / nights : 0, { formatter: (v) => euro(v), });
 }
 
 
@@ -344,10 +343,7 @@ function renderHomeKPIs(allRows) {
 
 
 
-/* ============================================================
- * HOME: Booking Cards Carousel (swipeable: verleden / nu / toekomst)
- * + Pager: rail + ticks + knob (platgeslagen draaiknop)
- * ============================================================ */
+let carouselObserver = null;
 
 export function renderHomeBookingCarousel(allRows) {
   // --- DOM refs ---
@@ -374,36 +370,12 @@ export function renderHomeBookingCarousel(allRows) {
   // ------------------------------------------------------------
   // Helpers
   // ------------------------------------------------------------
-  const get = (row, keys, fallback = null) => {
-    for (const k of keys) {
-      if (row && row[k] != null && row[k] !== "") return row[k];
-    }
-    return fallback;
-  };
-
-  const coerceDate = (v) => {
-    if (!v) return null;
-    if (v instanceof Date && !Number.isNaN(v.getTime())) return v;
-
-    if (typeof v === "string") {
-      const m = v.match(/(\d{2})-(\d{2})-(\d{4})/);
-      if (m) return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
-    }
-    const d = new Date(v);
-    return Number.isNaN(d.getTime()) ? null : d;
-  };
-
-  const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
   const fmtRange = (a, b) => {
+    if (!a || !b) return "—";
     const aStr = a.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" });
     const bStr = b.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
     return `${aStr} → ${bStr}`;
-  };
-
-  const fmtEUR = (value) => {
-    const n = Number(value) || 0;
-    return n.toLocaleString("nl-NL", { style: "currency", currency: "EUR" });
   };
 
   const normalizePhone = (v) => {
@@ -417,47 +389,26 @@ export function renderHomeBookingCarousel(allRows) {
   // ------------------------------------------------------------
   const rows = allRows
     .map((r) => {
-      const aankomst = coerceDate(get(r, ["__aankomst", "Aankomst"]));
-      const vertrek = coerceDate(get(r, ["__vertrek", "Vertrek"]));
-      const nights = Number(get(r, ["__nights", "Nachten"], 0)) || 0;
-
-      const guest = String(get(r, ["__guest", "__gast", "Gast", "Naam"], "Onbekende gast"));
-      const owner = !!get(r, ["__owner"], false);
-
-      const bookingRaw = String(get(r, ["__bookingRaw", "Boeking"], ""));
-      const source = bookingRaw.includes("|")
-        ? bookingRaw.split("|")[1].trim()
-        : (owner ? "Huiseigenaar" : "");
-
-      const adults = Number(get(r, ["__adults", "Volw.", "Volwassenen"], 0)) || 0;
-      const kids = Number(get(r, ["__kids", "Knd.", "Kinderen"], 0)) || 0;
-      const babies = Number(get(r, ["__babies", "Bab.", "Baby"], 0)) || 0;
-
-      const phone = normalizePhone(get(r, ["__phone", "Telefoon", "Phone", "Tel"], ""));
-      const email = String(get(r, ["__email", "E-mailadres", "Email", "E-mail", "Mail"], "") || "").trim();
-
-      const countryCode = String(get(r, ["__countryCode", "Land", "Landcode", "Country code", "CC"], "") || "")
-        .trim()
-        .toUpperCase();
-
-      const gross = Number(get(r, ["__gross", "Inkomsten", "Bruto", "Gross"], 0)) || 0;
-      const net = Number(get(r, ["__net", "Netto", "Net"], 0)) || 0;
+      const bRaw = r.__bookingRaw || "";
+      const source = bRaw.includes("|")
+        ? bRaw.split("|")[1].trim()
+        : (r.__owner ? "Huiseigenaar" : "");
 
       return {
-        aankomst,
-        vertrek,
-        nights,
-        guest,
-        owner,
-        source,
-        adults,
-        kids,
-        babies,
-        phone,
-        email,
-        countryCode,
-        gross,
-        net,
+        aankomst: r.__aankomst,
+        vertrek: r.__vertrek,
+        nights: r.__nights,
+        guest: r.__guest,
+        owner: r.__owner,
+        source: source,
+        adults: r.__adults,
+        kids: r.__kids,
+        babies: r.__babies,
+        phone: normalizePhone(r.__phone),
+        email: r.__email,
+        countryCode: r.__countryCode,
+        gross: r.__gross,
+        net: r.__net,
       };
     })
     .filter((x) => x.aankomst && x.vertrek)
@@ -482,8 +433,11 @@ export function renderHomeBookingCarousel(allRows) {
 
   // (oude dots helper blijft bestaan; wordt nog aangeroepen maar is optioneel)
   const setActiveDot = (idx) => {
-    if (!dotsWrap) return;
-    [...dotsWrap.children].forEach((d, i) => d.classList.toggle("is-active", i === idx));
+    if (dotsWrap) {
+      [...dotsWrap.children].forEach((d, i) => d.classList.toggle("is-active", i === idx));
+    }
+    // Geef de huidige slide de actieve klasse (voor dimmen van buren op desktop)
+    [...track.children].forEach((slide, i) => slide.classList.toggle("is-active", i === idx));
   };
 
   const updateKnob = (idx) => {
@@ -506,21 +460,40 @@ export function renderHomeBookingCarousel(allRows) {
   // ------------------------------------------------------------
   // 2c) Scroll helpers
   // ------------------------------------------------------------
+  const getXForIndex = (idx) => {
+    const slides = [...track.children];
+    if (!slides[idx]) return 0;
+    return slides[idx].offsetLeft - (carousel.clientWidth / 2) + (slides[idx].clientWidth / 2);
+  };
+
   const scrollToIndex = (idx, smooth = true) => {
-    // ✅ Gebruik scrollLeft ipv scrollIntoView (werkt beter met overflow:hidden parents)
-    const slideWidth = carousel.clientWidth;
     carousel.scrollTo({
-      left: slideWidth * idx,
+      left: getXForIndex(idx),
       behavior: smooth ? "smooth" : "instant",
     });
+    
     setActiveDot(idx);
     updateKnob(idx);
   };
 
   const getClosestIndex = () => {
-    if (!carousel || carousel.clientWidth === 0) return 0;
-    const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
-    return Math.max(0, Math.min(rows.length - 1, idx));
+    if (!carousel || !track.children.length) return 0;
+    const slides = [...track.children];
+    const centerX = carousel.scrollLeft + (carousel.clientWidth / 2);
+    
+    let closestIdx = 0;
+    let minDiff = Infinity;
+    
+    slides.forEach((slide, i) => {
+      const slideCenter = slide.offsetLeft + (slide.clientWidth / 2);
+      const diff = Math.abs(centerX - slideCenter);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIdx = i;
+      }
+    });
+    
+    return closestIdx;
   };
 
   // ------------------------------------------------------------
@@ -582,7 +555,7 @@ export function renderHomeBookingCarousel(allRows) {
 
     const slide = document.createElement("div");
     slide.className = "booking-slide";
-
+    slide.dataset.index = idx; // ✅ Index opslaan voor de observer
     slide.innerHTML = `
       <div class="booking-card-flip-container" onclick="this.classList.toggle('is-flipped')">
         <div class="booking-card-flipper">
@@ -711,6 +684,7 @@ export function renderHomeBookingCarousel(allRows) {
   requestAnimationFrame(() => {
     scrollToIndex(startIndex, false);
     updateKnob(startIndex);
+    setActiveDot(startIndex); // Zorg dat de eerste kaart direct actief is
   });
 
   // ------------------------------------------------------------
@@ -720,18 +694,27 @@ export function renderHomeBookingCarousel(allRows) {
   if (nextBtn) nextBtn.onclick = () => scrollToIndex(Math.min(rows.length - 1, getClosestIndex() + 1));
 
   // ------------------------------------------------------------
-  // 6) update pager on swipe/scroll
+  // 6) Intersection Observer voor precisie-highlighting
   // ------------------------------------------------------------
-  let raf = null;
-  // ✅ scroll-snap staat op .booking-carousel (niet op track)
-  carousel.addEventListener("scroll", () => {
-    if (raf) cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      const idx = getClosestIndex();
-      setActiveDot(idx);
-      updateKnob(idx);
+  if (carouselObserver) carouselObserver.disconnect();
+
+  const observerOptions = {
+    root: carousel,
+    rootMargin: "0px -48% 0px -48%", // Focus gebied: een hele smalle verticale strip in het midden
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const slideIndex = parseInt(entry.target.dataset.index);
+        setActiveDot(slideIndex);
+        updateKnob(slideIndex);
+      }
     });
-  }, { passive: true });
+  }, observerOptions);
+
+  [...track.children].forEach(slide => observer.observe(slide));
 
   // ------------------------------------------------------------
   // 7) Draggable pager knob — pointer capture op de knob zelf
@@ -767,8 +750,8 @@ export function renderHomeBookingCarousel(allRows) {
       updateKnob(idx);           // knob positie live bijwerken
       setActiveDot(idx);
 
-      // ✅ Scroll carousel live tijdens drag (geen snap animatie)
-      carousel.scrollTo({ left: carousel.clientWidth * idx, behavior: "instant" });
+      // ✅ Scroll carousel live tijdens drag
+      carousel.scrollTo({ left: getXForIndex(idx), behavior: "instant" });
     }, { passive: false });
 
     const stopDrag = (e) => {
@@ -842,11 +825,31 @@ export function renderHomeRevenueChart() {
   // Gebruik een unieke key zodat later andere pagina’s ook chart keys kunnen hebben
   if (state.charts?.homeRevenueBar) state.charts.homeRevenueBar.destroy();
 
+  // ✅ Seizoenskleuren mapping
+  const SEASON_COLORS = {
+    winter: "#3b82f6",
+    spring: "#10b981",
+    summer: "#f59e0b",
+    autumn: "#ef4444"
+  };
+
+  const barColors = monthIndices.map(m => {
+    if (CONFIG.SEASON_MAP.winter.includes(m)) return SEASON_COLORS.winter;
+    if (CONFIG.SEASON_MAP.spring.includes(m)) return SEASON_COLORS.spring;
+    if (CONFIG.SEASON_MAP.summer.includes(m)) return SEASON_COLORS.summer;
+    if (CONFIG.SEASON_MAP.autumn.includes(m)) return SEASON_COLORS.autumn;
+    return "#3b82f6";
+  });
+
   state.charts.homeRevenueBar = new Chart(ctx, {
     type: "bar",
     data: {
       labels,
-      datasets: [{ data: values, backgroundColor: "#3b82f6", borderRadius: 6 }],
+      datasets: [{ 
+        data: values, 
+        backgroundColor: barColors, // ✅ Gebruik array voor seizoenskleuren
+        borderRadius: 6 
+      }],
     },
     options: {
       responsive: true,

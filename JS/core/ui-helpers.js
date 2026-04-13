@@ -1,5 +1,21 @@
-// ./JS/core/ui-helpers.js
 import { state } from "./app.js";
+
+export const CHART_COLORS = {
+  blue: "#3b82f6",
+  orange: "#f59e0b",
+  green: "#10b981",
+  red: "#ef4444",
+  purple: "#8b5cf6",
+  pink: "#ec4899",
+  cyan: "#06b6d4",
+  gray: "rgba(255, 255, 255, 0.1)",
+  text: "rgba(255, 255, 255, 0.5)",
+  border: "rgba(255, 255, 255, 0.05)",
+};
+
+export const CHART_PALETTE = [
+  "#3b82f6", "#f59e0b", "#10b981", "#8b5cf6", "#ec4899", "#06b6d4", "#f43f5e", "#14b8a6"
+];
 
 /* ============================================================
  * SCROLL PRESERVATION
@@ -111,4 +127,145 @@ function closeAllCustomSelects() {
         c.classList.remove("open");
         c.querySelector(".select-options")?.classList.remove("show");
       });
+}
+
+/* ============================================================
+ * FORMATTING HELPERS
+ * ============================================================ */
+
+/**
+ * Formats a number as Euro currency.
+ */
+export function euro(x) {
+  try {
+    return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(Number(x));
+  } catch {
+    const n = Number(x);
+    return Number.isFinite(n) ? `€${Math.round(n * 100) / 100}` : "—";
+  }
+}
+
+/**
+ * Formats a date as DD-MM-YYYY.
+ */
+export function fmtDateNL(d) {
+  if (!d || !(d instanceof Date)) return "—";
+  return `${pad2(d.getDate())}-${pad2(d.getMonth() + 1)}-${d.getFullYear()}`;
+}
+
+/**
+ * Utility: Pad a number to 2 digits.
+ */
+export function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+/**
+ * Utility: Clamp a number between a and b.
+ */
+export function clamp(n, a, b) {
+  return Math.max(a, Math.min(b, n));
+}
+
+/**
+ * Utility: Get the start of the day (00:00:00).
+ */
+export function startOfDay(d) {
+  if (!d) return null;
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  return x;
+}
+
+/**
+ * Utility: Add n days to a date.
+ */
+export function addDays(d, n) {
+  const x = new Date(d);
+  x.setDate(x.getDate() + n);
+  return x;
+}
+
+/**
+ * Utility: Get the difference in days between two dates.
+ */
+export function diffDays(a, b) {
+  const A = startOfDay(a).getTime();
+  const B = startOfDay(b).getTime();
+  return Math.max(0, Math.round((B - A) / 86400000));
+}
+
+/**
+ * Utility: Get the Monday of the week for a given date.
+ */
+export function startOfWeekMonday(d) {
+  const x = startOfDay(d);
+  const day = x.getDay();
+  const diff = (day === 0 ? -6 : 1) - day;
+  return addDays(x, diff);
+}
+
+/**
+ * Utility: Get the Sunday of the week for a given date.
+ */
+export function endOfWeekSunday(d) {
+  return addDays(startOfWeekMonday(d), 6);
+}
+
+/**
+ * Utility: Check if a booking intersects with a specific year.
+ */
+export function intersectsYear(b, year) {
+  return b.start < new Date(year + 1, 0, 1) && b.end > new Date(year, 0, 1);
+}
+
+/**
+ * Utility: Escapes HTML special characters.
+ */
+export function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+/**
+ * Utility: Get YYYY-MM-DD from a Date object (local time).
+ */
+export function toISODateLocal(d) {
+  const x = new Date(d);
+  return `${x.getFullYear()}-${pad2(x.getMonth() + 1)}-${pad2(x.getDate())}`;
+}
+
+/**
+ * Utility: Renders a simple HTML table.
+ */
+export function renderSimpleTable({ container, headers, rows, emptyMsg = "Geen data beschikbaar" }) {
+    if (!container) return;
+    if (!rows || rows.length === 0) {
+        container.innerHTML = `<p class="empty-msg">${emptyMsg}</p>`;
+        return;
+    }
+
+    let html = `
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        ${headers.map(h => `<th>${h}</th>`).join("")}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows.map(row => `
+                        <tr>
+                            ${row.map(cell => `<td>${cell ?? "—"}</td>`).join("")}
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>
+        </div>
+    `;
+    container.innerHTML = html;
 }

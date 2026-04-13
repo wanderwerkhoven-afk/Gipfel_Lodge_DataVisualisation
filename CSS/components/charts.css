@@ -11,8 +11,7 @@
   background-color: var(--panel);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 24px 14px;
-  /* Linker- en rechterpadding verminderd voor breder zicht */
+  padding: 30px 24px;
   margin: 20px 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
@@ -66,6 +65,11 @@
   color: var(--accent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
+
+.filter-btn.active[data-season="winter"] { background: #3b82f6; color: white; }
+.filter-btn.active[data-season="spring"] { background: #10b981; color: white; }
+.filter-btn.active[data-season="summer"] { background: #f59e0b; color: white; }
+.filter-btn.active[data-season="autumn"] { background: #ef4444; color: white; }
 
 .chart-container {
   position: relative;
@@ -131,6 +135,28 @@
 
   display: flex;
   align-items: stretch;
+
+  /* ✅ Custom Scrollbar Styling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg);
+}
+
+.chart-scroll::-webkit-scrollbar {
+  height: 6px; /* Lekker dun */
+}
+
+.chart-scroll::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 10px;
+}
+
+.chart-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.chart-scroll::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa; /* Iets lichter blauw bij hover */
 }
 
 .chart-scroll:active {
