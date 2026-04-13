@@ -15,7 +15,8 @@
 
 // ./JS/pages/homePage.js
 import { CONFIG, state } from "../core/app.js";
-import { getRowsForYear } from "../core/dataManager.js";
+import { getRowsForYear, getYears } from "../core/dataManager.js";
+import { withPreservedScroll, wireCustomYearSelect } from "../core/ui-helpers.js";
 
 export const HomePage = {
   id: "home",
@@ -183,10 +184,102 @@ export const HomePage = {
     </div>
   `,
   init: async () => {
-    const { renderHomePage } = await import("../ui.js");
-    renderHomePage(); 
+    await render();
   }
 };
+
+/**
+ * Main render function for the Home Page
+ */
+async function render() {
+  const kpiYear = state.kpiYear ?? "ALL";
+  renderHomeKPIsForYear(kpiYear);
+
+  renderHomeBookingCarousel(state.rawRows);
+  renderHomeRevenueChart();
+
+  const y = state.cumulativeYear ?? state.currentYear;
+  if (y != null) renderHomeCumulativeRevenueChartForYear(y);
+
+  // Bind home-specific buttons
+  bindSeasonButtons();
+  bindModeButtons();
+  
+  // Setup year selects for home
+  setupHomeYearSelects();
+}
+
+/**
+ * Setup year selects specifically for the Home page
+ */
+function setupHomeYearSelects() {
+  const years = getYears();
+  const availableYears = years.length > 0 ? years : [state.currentYear || new Date().getFullYear()];
+
+  wireCustomYearSelect({
+    containerId: "yearSelectContainerKpi",
+    displayId: "selectedYearDisplayKpi",
+    optionsId: "yearOptionsKpi",
+    hiddenId: "yearValueKpi",
+    years: ["ALL", ...availableYears],
+    get: () => state.kpiYear ?? "ALL",
+    set: (y) => (state.kpiYear = y),
+    onChange: () => withPreservedScroll(() => renderHomeKPIsForYear(state.kpiYear ?? "ALL")),
+  });
+
+  wireCustomYearSelect({
+    containerId: "yearSelectContainer",
+    displayId: "selectedYearDisplay",
+    optionsId: "yearOptions",
+    hiddenId: "yearValue",
+    years: availableYears,
+    get: () => state.currentYear,
+    set: (y) => (state.currentYear = y),
+    onChange: () => withPreservedScroll(render),
+  });
+
+  wireCustomYearSelect({
+    containerId: "cumulativeYearSelectContainer",
+    displayId: "cumulativeYearDisplay",
+    optionsId: "cumulativeYearOptions",
+    hiddenId: "cumulativeYearValue",
+    years: ["ALL", ...availableYears],
+    get: () => state.cumulativeYear ?? "ALL",
+    set: (y) => (state.cumulativeYear = y),
+    onChange: () => withPreservedScroll(() => renderHomeCumulativeRevenueChartForYear(state.cumulativeYear ?? "ALL")),
+  });
+}
+
+function bindSeasonButtons() {
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.onclick = () => {
+      document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.currentSeason = btn.dataset.season;
+      withPreservedScroll(renderHomeRevenueChart);
+    };
+  });
+}
+
+function bindModeButtons() {
+  const gross = document.getElementById("btnGross");
+  const net = document.getElementById("btnNet");
+  if (!gross || !net) return;
+
+  gross.onclick = () => {
+    gross.classList.add("active");
+    net.classList.remove("active");
+    state.currentMode = "gross";
+    withPreservedScroll(render);
+  };
+
+  net.onclick = () => {
+    net.classList.add("active");
+    gross.classList.remove("active");
+    state.currentMode = "net";
+    withPreservedScroll(render);
+  };
+}
 
 /* ============================================================
  * HOME KPI CARDS

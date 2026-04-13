@@ -1,6 +1,7 @@
 // ./JS/pages/occupancyPage.js
 import { state } from "../core/app.js";
-import { loadPricingYear } from "../core/dataManager.js";
+import { loadPricingYear, getYears } from "../core/dataManager.js";
+import { withPreservedScroll, wireCustomYearSelect } from "../core/ui-helpers.js";
 
 export const OccupancyPage = {
   id: "occupancy",
@@ -110,10 +111,40 @@ export const OccupancyPage = {
     </div>
   `,
   init: async () => {
-    // renderBezettingCharts is already available in this scope
-    renderBezettingCharts();
+    await renderBezettingCharts();
+    setupOccupancyYearSelects();
   }
 };
+
+/**
+ * Setup year selects specifically for the Occupancy page
+ */
+function setupOccupancyYearSelects() {
+  const years = getYears();
+  const availableYears = years.length > 0 ? years : [state.currentYear || new Date().getFullYear()];
+
+  wireCustomYearSelect({
+    containerId: "occYearSelectContainer",
+    displayId: "occSelectedYear",
+    optionsId: "occYearOptions",
+    hiddenId: "occYearValue",
+    years: ["ALL", ...availableYears],
+    get: () => state.occupancyYear ?? "ALL",
+    set: (y) => (state.occupancyYear = y),
+    onChange: () => withPreservedScroll(renderBezettingCharts),
+  });
+
+  wireCustomYearSelect({
+    containerId: "occTrendYearSelectContainer",
+    displayId: "occTrendYearDisplay",
+    optionsId: "occTrendYearOptions",
+    hiddenId: "occTrendYearValue",
+    years: ["ALL", ...availableYears],
+    get: () => state.occTrendYear ?? "ALL",
+    set: (y) => (state.occTrendYear = y),
+    onChange: () => withPreservedScroll(renderBezettingCharts),
+  });
+}
 
 /**
  * Entry: render occupancy page

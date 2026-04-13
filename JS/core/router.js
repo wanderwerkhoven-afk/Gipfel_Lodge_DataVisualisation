@@ -19,7 +19,19 @@ class Router {
 
     if (this.currentPage && this.currentPage.id === route.id) return;
 
+    this.cleanupCharts();
     await this.transitionTo(route);
+  }
+
+  cleanupCharts() {
+    if (state.charts) {
+      Object.keys(state.charts).forEach((key) => {
+        if (state.charts[key] && typeof state.charts[key].destroy === "function") {
+          state.charts[key].destroy();
+        }
+      });
+      state.charts = {};
+    }
   }
 
   async transitionTo(route) {
