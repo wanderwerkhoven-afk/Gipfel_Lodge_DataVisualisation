@@ -83,8 +83,8 @@ export const BehaviorPage = {
 
       <div class="dashboard-grid-2">
         <div class="chart-panel">
-          <h3 class="panel-title">Gezinsverdeling per Maand</h3>
-          <div class="chart-container">
+          <h3 class="panel-title">Gezinsverdeling Boekingen</h3>
+          <div class="chart-container-sq">
             <canvas id="chartGuestComposition"></canvas>
           </div>
         </div>
@@ -246,37 +246,59 @@ function renderGuestCompChart(rows) {
   const canvas = document.getElementById("chartGuestComposition");
   if (!canvas) return;
 
-  const monthly = Array(12).fill(0).map(() => ({ adults: 0, kids: 0, babies: 0 }));
+  // Categoriseer elke boeking in één van de drie typen
+  let adultsOnly = 0;
+  let withKids = 0;
+  let withBabies = 0;
+
   rows.forEach(r => {
-    const m = r.__aankomst.getMonth();
-    monthly[m].adults += (r.__adults || 0);
-    monthly[m].kids += (r.__kids || 0);
-    monthly[m].babies += (r.__babies || 0);
+    const kids   = r.__kids   || 0;
+    const babies = r.__babies || 0;
+    if (babies > 0)      withBabies++;
+    else if (kids > 0)   withKids++;
+    else                 adultsOnly++;
   });
 
-  const labels = ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
+  const total = adultsOnly + withKids + withBabies;
+  if (total === 0) return;
+
+  const pct = (n) => Math.round((n / total) * 100);
 
   if (state.charts.behGuestComp) state.charts.behGuestComp.destroy();
 
   state.charts.behGuestComp = new Chart(canvas, {
-    type: "bar",
+    type: "doughnut",
     data: {
-      labels,
-      datasets: [
-        { label: "Volwassenen", data: monthly.map(m => m.adults), backgroundColor: CHART_COLORS.blue, stack: "g" },
-        { label: "Kinderen", data: monthly.map(m => m.kids), backgroundColor: CHART_COLORS.orange, stack: "g" },
-        { label: "Babies", data: monthly.map(m => m.babies), backgroundColor: CHART_COLORS.green, stack: "g" }
-      ]
+      labels: [
+        `Alleen volwassenen (${pct(adultsOnly)}%)`,
+        `Met kinderen (${pct(withKids)}%)`,
+        `Met baby's (${pct(withBabies)}%)`
+      ],
+      datasets: [{
+        data: [adultsOnly, withKids, withBabies],
+        backgroundColor: [CHART_COLORS.blue, CHART_COLORS.orange, CHART_COLORS.green],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      scales: {
-        x: { stacked: true, grid: { display: false }, ticks: { color: CHART_COLORS.text } },
-        y: { stacked: true, grid: { color: CHART_COLORS.border }, ticks: { color: CHART_COLORS.text } }
-      },
+      cutout: "65%",
       plugins: {
-        legend: { position: "top", labels: { color: CHART_COLORS.text, usePointStyle: true } }
+        legend: {
+          position: "bottom",
+          labels: { color: CHART_COLORS.text, usePointStyle: true, padding: 16, font: { size: 13 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: (item) => {
+              const val = item.raw;
+              const perc = pct(val);
+              return ` ${val} boekingen (${perc}%)`;
+            }
+          }
+        }
       }
     }
   });

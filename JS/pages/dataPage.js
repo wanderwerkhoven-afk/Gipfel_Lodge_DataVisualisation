@@ -77,15 +77,35 @@ export function renderDataTable() {
 
   if (countEl) countEl.textContent = `${filtered.length} boekingen gevonden`;
 
-  const headers = ["Boeking", "Gast", "Aankomst", "Nachten", "Bruto", "Land", "Type"];
+  const headers = [
+    "Boeking", "Geboekt op", "Accommodatie", "Code",
+    "Gast", "Email", "Telefoon", "Land",
+    "Aankomst", "Vertrek", "Nachten",
+    "Volw.", "Kind.", "Baby's", "Totaal", "Hsd.",
+    "Bruto", "Netto", "Type", "Opmerking"
+  ];
+
   const rows = filtered.map(r => [
-    r.__bookingRaw,
-    r.__guest,
+    r.__bookingRaw        || "—",
+    fmtDateNL(r.__bookedAt),
+    r.__accomName         || "—",
+    r.__accomCode         || "—",
+    r.__guest             || "—",
+    r.__email             || "—",
+    r.__phone             || "—",
+    r.__countryCode       || "—",
     fmtDateNL(r.__aankomst),
-    r.__nights,
+    fmtDateNL(r.__vertrek),
+    r.__nights            ?? "—",
+    r.__adults            ?? "—",
+    r.__kids              ?? "—",
+    r.__babies            ?? "—",
+    r.__totalGuests       ?? "—",
+    r.__pets              ?? "—",
     euro(r.__gross),
-    r.__countryCode,
-    r.__owner ? "🏠 Eigenaar" : "🌍 Platform"
+    euro(r.__net),
+    r.__owner ? "🏠 Eigenaar" : "🌍 Platform",
+    r.__note              || "—"
   ]);
 
   renderSimpleTable({

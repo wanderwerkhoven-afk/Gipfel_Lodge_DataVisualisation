@@ -25,6 +25,24 @@
   }
 }
 
+/* 4-Column Dashboard Grid for Desktop */
+.dashboard-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .dashboard-grid-4 .grid-span-2 { grid-column: span 2; }
+  .dashboard-grid-4 .grid-span-3 { grid-column: span 3; }
+  .dashboard-grid-4 .grid-span-4 { grid-column: 1 / -1; }
+}
+
 .chart-container-sq {
   position: relative;
   height: 300px;
@@ -96,6 +114,28 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   margin-bottom: 30px;
+
+  /* ✅ Custom Scrollbar Styling (consistent with charts) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg);
+}
+
+.table-container::-webkit-scrollbar {
+  height: 8px; /* Slightly thicker than charts for better table control */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;
 }
 
 .data-table {

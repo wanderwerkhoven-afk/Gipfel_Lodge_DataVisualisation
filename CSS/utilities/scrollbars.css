@@ -1,0 +1,29 @@
+/* Global Premium Scrollbar Utility */
+
+/* For Firefox */
+html, * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg);
+}
+
+/* For Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 6px;   /* Consistent slim profile */
+  height: 6px;  
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;
+}
+
+/* Optional: remove custom styling for very small containers if needed, 
+   but for this app we want the premium look everywhere. */

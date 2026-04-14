@@ -62,22 +62,22 @@ export const RevenuePage = {
         </div>
       </section>
 
-      <div class="charts-masonry">
-        <div class="chart-panel">
+      <div class="dashboard-grid-4">
+        <div class="chart-panel grid-span-2">
           <h3 class="panel-title">Kanaal Mix</h3>
           <div class="chart-container-sq">
             <canvas id="chartRevenueChannel"></canvas>
           </div>
         </div>
 
-        <div class="chart-panel">
+        <div class="chart-panel grid-span-2">
           <h3 class="panel-title">Prijsontwikkeling (ADR)</h3>
           <div class="chart-container">
             <canvas id="chartADRTrend"></canvas>
           </div>
         </div>
 
-        <div class="chart-panel full-width">
+        <div class="chart-panel grid-span-4">
           <h3 class="panel-title">Maandelijkse Omzet (Bruto vs Netto)</h3>
           <div class="chart-container">
             <canvas id="chartMonthlyRevenueStack"></canvas>
