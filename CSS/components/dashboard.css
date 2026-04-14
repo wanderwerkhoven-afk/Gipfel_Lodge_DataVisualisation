@@ -115,27 +115,7 @@
   border-radius: 16px;
   margin-bottom: 30px;
 
-  /* ✅ Custom Scrollbar Styling (consistent with charts) */
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) var(--bg);
-}
-
-.table-container::-webkit-scrollbar {
-  height: 8px; /* Slightly thicker than charts for better table control */
-}
-
-.table-container::-webkit-scrollbar-track {
-  background: var(--bg);
-  border-radius: 10px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: #60a5fa;
+  /* ✅ Global Scrollbar Styling now handled by scrollbars.css */
 }
 
 .data-table {

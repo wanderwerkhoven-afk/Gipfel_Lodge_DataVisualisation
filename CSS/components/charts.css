@@ -136,27 +136,7 @@
   display: flex;
   align-items: stretch;
 
-  /* ✅ Custom Scrollbar Styling */
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) var(--bg);
-}
-
-.chart-scroll::-webkit-scrollbar {
-  height: 6px; /* Lekker dun */
-}
-
-.chart-scroll::-webkit-scrollbar-track {
-  background: var(--bg);
-  border-radius: 10px;
-}
-
-.chart-scroll::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
-}
-
-.chart-scroll::-webkit-scrollbar-thumb:hover {
-  background: #60a5fa; /* Iets lichter blauw bij hover */
+  /* ✅ Global Scrollbar Styling now handled by scrollbars.css */
 }
 
 .chart-scroll:active {

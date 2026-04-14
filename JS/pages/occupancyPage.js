@@ -1,20 +1,21 @@
 import { state } from "../core/app.js";
 import { loadPricingYear, getYears } from "../core/dataManager.js";
-import { 
-  withPreservedScroll, 
-  wireCustomYearSelect, 
-  euro, 
-  fmtDateNL, 
-  pad2, 
-  clamp, 
-  startOfDay, 
-  addDays, 
+import {
+  withPreservedScroll,
+  wireCustomYearSelect,
+  euro,
+  fmtDateNL,
+  pad2,
+  clamp,
+  startOfDay,
+  addDays,
   diffDays,
   startOfWeekMonday,
   endOfWeekSunday,
   intersectsYear,
   escapeHtml,
-  toISODateLocal
+  toISODateLocal,
+  CHART_COLORS
 } from "../core/ui-helpers.js";
 
 export const OccupancyPage = {
@@ -77,10 +78,10 @@ export const OccupancyPage = {
 
       <div class="divider-horizontal"></div>
 
-      <section class="content-section">
-        <div class="chart-panel" style="padding-left: 0;">
+      <div class="dashboard-grid-4">
+        <div class="chart-panel grid-span-4" style="padding-left: 0;">
           <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-left: 14px;">
-            <h3 class="panel-title" style="margin: 0;">Bezettingsanalyse</h3>
+            <h3 class="panel-title" style="margin: 0;">Bezettingsanalyse (Week)</h3>
             <div class="year-select-container">
               <div class="custom-select custom-select-trend" id="occTrendYearSelectContainer">
                 <div class="select-trigger">
@@ -121,12 +122,70 @@ export const OccupancyPage = {
             </div>
           </div>
         </div>
-      </section>
+
+        <div class="chart-panel grid-span-2">
+          <div class="panel-header">
+            <h3 class="panel-title">Bezettingsgraad per maand</h3>
+            <div class="year-select-container">
+              <div class="custom-select custom-select-trend" id="occMonthlyYearSelectContainer">
+                <div class="select-trigger">
+                  <span id="occMonthlyYearDisplay">—</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="select-options" id="occMonthlyYearOptions"></div>
+                <input type="hidden" id="occMonthlyYearValue" value="">
+              </div>
+            </div>
+          </div>
+
+          <div class="panel__body">
+            <div class="chart-container" style="height: 300px;">
+              <canvas id="chartOccupancyMonthly"></canvas>
+            </div>
+
+            <div class="color-scale-legend" style="margin-top: 30px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: var(--text-muted); font-weight: 500;">
+                <span>0% Bezetting</span>
+                <span>100% Bezetting</span>
+              </div>
+              <div id="occLegendBar" style="height: 30px; width: 100%; border-radius: 8px; background: linear-gradient(to right, hsl(0, 100%, 50%) 0%, hsl(0, 100%, 50%) 20%, hsl(60, 100%, 50%) 60%, hsl(120, 100%, 50%) 100%); cursor: crosshair; position: relative;">
+                <div id="occLegendMarker" style="position: absolute; top: 0; bottom: 0; width: 2px; background: white; display: none; pointer-events: none; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 5;">
+                   <div id="occLegendLabel" style="position: absolute; top: -35px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 10px rgba(0,0,0,0.3);"></div>
+                </div>
+              </div>
+              <div style="margin-top: 15px; font-size: 11px; color: var(--text-muted); opacity: 0.7; text-align: center;">
+                Lage bezetting (< 20%) behoeft extra marketing of prijsaanpassingen
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chart-panel grid-span-2">
+          <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="panel-title">Lengte van verblijf</h3>
+            <div class="toggle-group" id="losToggleGroup">
+              <button class="toggle-btn active" data-mode="count">Aantal</button>
+              <button class="toggle-btn" data-mode="percent">%</button>
+            </div>
+          </div>
+          <div class="panel__body">
+            <div class="chart-container" style="height: 300px;">
+              <canvas id="chartOccupancyLOS"></canvas>
+            </div>
+            <div class="occ-legend" style="margin-top: 20px; justify-content: center; gap: 20px;">
+              <div class="occ-legend__item"><span class="dot" style="background:#3b82f6"></span><span>Regulier</span></div>
+              <div class="occ-legend__item"><span class="dot" style="background:#f59e0b"></span><span>Populairst</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   `,
   init: async () => {
     await renderBezettingCharts();
     setupOccupancyYearSelects();
+    setupOccupancyLegendHover();
+    setupLOSToggles();
   }
 };
 
@@ -158,14 +217,28 @@ function setupOccupancyYearSelects() {
     set: (y) => (state.occTrendYear = y),
     onChange: () => withPreservedScroll(renderBezettingCharts),
   });
+
+  wireCustomYearSelect({
+    containerId: "occMonthlyYearSelectContainer",
+    displayId: "occMonthlyYearDisplay",
+    optionsId: "occMonthlyYearOptions",
+    hiddenId: "occMonthlyYearValue",
+    years: ["ALL", ...availableYears],
+    get: () => state.occMonthlyYear ?? "ALL",
+    set: (y) => (state.occMonthlyYear = y),
+    onChange: () => withPreservedScroll(renderBezettingCharts),
+  });
 }
 
 export async function renderBezettingCharts() {
   const rawData = state.rawRows || [];
   if (state.occupancyYear == null) state.occupancyYear = "ALL";
+  if (state.occTrendYear == null) state.occTrendYear = "ALL";
+  if (state.occMonthlyYear == null) state.occMonthlyYear = "ALL";
   if (state.occupancyMonth == null) state.occupancyMonth = new Date().getMonth();
   if (state.showPlatform == null) state.showPlatform = true;
   if (state.showOwner == null) state.showOwner = true;
+  if (state.losMode == null) state.losMode = "count";
 
   const allBookings = normalizeBookings(rawData);
 
@@ -205,6 +278,8 @@ export async function renderBezettingCharts() {
 
   renderCalendarCarousel(bookingsForView, yearsToRender);
   renderOccupancyTrendChart(allBookings);
+  renderMonthlyOccupancyChart(allBookings);
+  renderLengthOfStayChart(allBookings);
 }
 
 const pricingCache = new Map();
@@ -242,8 +317,8 @@ function normalizeBookings(rows) {
     nights: r.__nights,
     income: r.__gross,
     guest: r.__guest,
-    channel: (r.__bookingRaw || "").includes("|") 
-      ? r.__bookingRaw.split("|")[1].trim() 
+    channel: (r.__bookingRaw || "").includes("|")
+      ? r.__bookingRaw.split("|")[1].trim()
       : (r.__bookingRaw || ""),
     bookingLabel: (r.__bookingRaw || ""),
     type: r.__owner ? "owner" : "platform",
@@ -508,7 +583,15 @@ function renderOccupancyTrendChart(allBookings) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const targetYear = state.occTrendYear === "ALL" ? state.currentYear : Number(state.occTrendYear);
+  let startYear, endYear;
+  if (state.occTrendYear === "ALL") {
+    const years = allBookings.flatMap(b => [b.start.getFullYear(), b.end.getFullYear()]);
+    startYear = years.length > 0 ? Math.min(...years) : state.currentYear;
+    endYear = years.length > 0 ? Math.max(...years) : state.currentYear;
+  } else {
+    startYear = Number(state.occTrendYear);
+    endYear = startYear;
+  }
 
   // ISO Week Helper
   function getISOWeekInfo(date) {
@@ -537,18 +620,18 @@ function renderOccupancyTrendChart(allBookings) {
   const ownerNights = [];
   const freeNights = [];
 
-  // ✅ Chronologische iteratie: Start bij de Maandag van de week die Jan 1 bevat
-  let currentMonday = startOfWeekMonday(new Date(targetYear, 0, 1));
-  const yearEndLimit = new Date(targetYear + 1, 0, 1);
+  // ✅ Chronologische iteratie: Start bij de Maandag van de week die Jan 1 van het startjaar bevat
+  let currentMonday = startOfWeekMonday(new Date(startYear, 0, 1));
+  const dateLimit = new Date(endYear + 1, 0, 1);
 
-  while (currentMonday < yearEndLimit) {
+  while (currentMonday < dateLimit) {
     let p = 0; let o = 0;
 
     // Check 7 dagen van deze week
     for (let i = 0; i < 7; i++) {
       const d = addDays(currentMonday, i);
-      // Alleen tellen als de dag in het doeljaar valt
-      if (d.getFullYear() === targetYear) {
+      // Alleen tellen als de dag binnen ons bereik valt
+      if (d.getFullYear() >= startYear && d.getFullYear() <= endYear) {
         const type = dayTypeMap.get(toISODateLocal(d));
         if (type === "owner") o++;
         else if (type === "platform") p++;
@@ -626,6 +709,283 @@ function renderOccTrendStickyYAxisLabels(chart) {
       const span = document.createElement("span");
       span.textContent = t.label || String(t.value);
       wrap.appendChild(span);
+    }
+  });
+}
+
+/**
+ * Render the Monthly Occupancy Rate chart
+ */
+function renderMonthlyOccupancyChart(allBookings) {
+  const canvas = document.getElementById("chartOccupancyMonthly");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const months = ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
+  const yearsToProcess = [];
+  if (state.occMonthlyYear === "ALL") {
+    const foundYears = new Set(allBookings.flatMap(b => [b.start.getFullYear(), b.end.getFullYear()]));
+    if (foundYears.size > 0) yearsToProcess.push(...Array.from(foundYears).sort((a, b) => a - b));
+    else yearsToProcess.push(state.currentYear);
+  } else {
+    yearsToProcess.push(Number(state.occMonthlyYear));
+  }
+
+  // Calculate booked and total nights per month across all target years
+  const bookedNightsPerMonth = new Array(12).fill(0);
+  const totalNightsPerMonth = new Array(12).fill(0);
+
+  yearsToProcess.forEach(year => {
+    // Pre-calculate total nights in each month for this year
+    for (let m = 0; m < 12; m++) {
+      totalNightsPerMonth[m] += new Date(year, m + 1, 0).getDate();
+    }
+
+    // Filter bookings for this specific year
+    const dayTypeMap = new Map();
+    allBookings.forEach(b => {
+      let curr = new Date(b.start);
+      while (curr < b.end) {
+        if (curr.getFullYear() === year) {
+          const iso = toISODateLocal(curr);
+          dayTypeMap.set(iso, b.type === "owner" ? "owner" : "platform");
+        }
+        curr.setDate(curr.getDate() + 1);
+      }
+    });
+
+    for (let m = 0; m < 12; m++) {
+      const daysInMonth = new Date(year, m + 1, 0).getDate();
+      for (let d = 1; d <= daysInMonth; d++) {
+        const date = new Date(year, m, d);
+        const iso = toISODateLocal(date);
+        if (dayTypeMap.has(iso)) {
+          bookedNightsPerMonth[m]++;
+        }
+      }
+    }
+  });
+
+  const percentages = bookedNightsPerMonth.map((booked, i) => {
+    const total = totalNightsPerMonth[i];
+    return total > 0 ? Math.round((booked / total) * 100) : 0;
+  });
+
+  // Visually clamp bars to minimum 5% height
+  const displayPercentages = percentages.map(v => Math.max(5, v));
+
+  if (state.charts.occMonthly) state.charts.occMonthly.destroy();
+
+  state.charts.occMonthly = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: months,
+      datasets: [{
+        label: "Bezettingsgraad (%)",
+        data: displayPercentages,
+        actualPercentages: percentages,
+        backgroundColor: (ctx) => {
+          const mIdx = ctx.dataIndex;
+          const actualVal = ctx.dataset.actualPercentages ? ctx.dataset.actualPercentages[mIdx] : ctx.raw;
+          let hue;
+          if (actualVal < 20) {
+            hue = 0; // Pure Red
+          } else {
+            hue = Math.round(((actualVal - 20) / 80) * 120);
+          }
+          return `hsl(${hue}, 100%, 50%)`;
+        },
+        borderRadius: 8,
+        borderWidth: 0,
+        maxBarThickness: 48,
+        barPercentage: 0.85,
+        categoryPercentage: 0.9
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: "rgba(255,255,255,0.6)", font: { size: 12 } }
+        },
+        y: {
+          beginAtZero: true,
+          max: 100,
+          grid: { color: "rgba(255,255,255,0.05)" },
+          ticks: {
+            color: "rgba(255,255,255,0.6)",
+            callback: (v) => v + "%",
+            stepSize: 20
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (item) => {
+              const mIdx = item.dataIndex;
+              // Show true percentage in hover
+              const actual = item.dataset.actualPercentages[mIdx];
+              return `Bezetting: ${actual}% (${bookedNightsPerMonth[mIdx]}/${totalNightsPerMonth[mIdx]} nachten)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+/**
+ * Setup hover interaction for the occupancy legend color bar
+ */
+function setupOccupancyLegendHover() {
+  const bar = document.getElementById('occLegendBar');
+  const marker = document.getElementById('occLegendMarker');
+  const label = document.getElementById('occLegendLabel');
+  if (!bar || !marker || !label) return;
+
+  bar.addEventListener('mousemove', (e) => {
+    const rect = bar.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const p = Math.max(0, Math.min(100, Math.round((x / rect.width) * 100)));
+
+    marker.style.display = 'block';
+    marker.style.left = `${x}px`;
+    label.textContent = `${p}%`;
+  });
+
+  bar.addEventListener('mouseleave', () => {
+    marker.style.display = 'none';
+  });
+}
+
+/**
+ * Setup toggles for the LOS chart
+ */
+function setupLOSToggles() {
+  const container = document.getElementById("losToggleGroup");
+  if (!container) return;
+  
+  container.addEventListener("click", (e) => {
+    const btn = e.target.closest(".toggle-btn");
+    if (!btn) return;
+    
+    container.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    state.losMode = btn.dataset.mode;
+    
+    // Rerender specifically the LOS chart
+    const rawData = state.rawRows || [];
+    renderLengthOfStayChart(normalizeBookings(rawData));
+  });
+}
+
+/**
+ * Render the Length of Stay histogram
+ */
+function renderLengthOfStayChart(allBookings) {
+  const canvas = document.getElementById("chartOccupancyLOS");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const durationMap = {};
+  allBookings.forEach(b => {
+    const n = b.nights;
+    if (n > 0) durationMap[n] = (durationMap[n] || 0) + 1;
+  });
+
+  // Collect unique nights, sort ascending, take top N or reasonable range
+  const sortedNights = Object.keys(durationMap).map(Number).sort((a, b) => a - b).slice(0, 15);
+  const binLabels = sortedNights.map(n => n + "n");
+  const binCounts = sortedNights.map(n => durationMap[n]);
+  
+  // Calculate revenue per night count for tooltips
+  const binRevenue = sortedNights.map(n => {
+    return allBookings
+      .filter(b => b.nights === n)
+      .reduce((sum, b) => sum + (b.income || 0), 0);
+  });
+
+  const totalBookings = allBookings.length;
+  const percentages = binCounts.map(c => totalBookings > 0 ? (c / totalBookings) * 100 : 0);
+  const mostCommonIdx = binCounts.indexOf(Math.max(...binCounts));
+  const dataToDisplay = state.losMode === "percent" ? percentages : binCounts;
+
+  if (state.charts.occLOS) state.charts.occLOS.destroy();
+
+  state.charts.occLOS = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: binLabels,
+      datasets: [{
+        label: state.losMode === "percent" ? "Percentage (%)" : "Aantal boekingen",
+        data: dataToDisplay,
+        backgroundColor: (context) => {
+          const idx = context.dataIndex;
+          if (idx === mostCommonIdx && binCounts[idx] > 0) return "#f59e0b"; // Populairst highlight
+          return "#3b82f6"; // Alle andere bars blauw
+        },
+        borderRadius: 8,
+        maxBarThickness: 48,
+        barPercentage: 0.85,
+        categoryPercentage: 0.9
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { 
+          grid: { display: false },
+          ticks: { color: "rgba(255,255,255,0.6)", font: { size: 12 } },
+          title: { display: true, text: "Nachten", color: "rgba(255,255,255,0.4)", font: { size: 10 } }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: "rgba(255,255,255,0.05)" },
+          ticks: { 
+            color: "rgba(255,255,255,0.6)",
+            callback: (v) => state.losMode === "percent" ? v + "%" : v
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#1a1a1a",
+          titleColor: "#fff",
+          bodyColor: "rgba(255,255,255,0.8)",
+          borderColor: "rgba(255,255,255,0.1)",
+          borderWidth: 1,
+          padding: 12,
+          displayColors: false,
+          callbacks: {
+            title: (items) => {
+              const label = items[0].label;
+              return `${label} verblijf`;
+            },
+            label: (item) => {
+              const idx = item.dataIndex;
+              const count = binCounts[idx];
+              const pct = percentages[idx].toFixed(1);
+              const avgRev = count > 0 ? (binRevenue[idx] / count) : 0;
+              
+              const lines = [
+                `Aantal: ${count} boekingen`,
+                `Aandeel: ${pct}%`
+              ];
+              if (avgRev > 0) lines.push(`Gem. Omzet: ${euro(avgRev)}`);
+              return lines;
+            }
+          }
+        }
+      }
     }
   });
 }
