@@ -50,7 +50,7 @@ export function handleExcelUpload(file, onLoaded) {
 
 export function getYears(rows = state.rawRows) {
   return [...new Set(rows.map(r => r.__aankomst.getFullYear()))]
-    .sort((a, b) => b - a);
+    .sort((a, b) => a - b);
 }
 
 export function getRowsForYear(year, rows = state.rawRows) {

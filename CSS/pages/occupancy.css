@@ -518,3 +518,10 @@
   background: rgba(255, 255, 255, 0.05);
   color: #fff;
 }
+/* Mobile Responsive Fixes */
+@media (max-width: 768px) {
+  .chart-panel {
+    padding: 20px 15px;
+    margin: 10px 0;
+  }
+}

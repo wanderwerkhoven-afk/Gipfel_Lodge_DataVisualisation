@@ -72,14 +72,12 @@ export const OccupancyPage = {
             <span>Eigen gebruik</span>
           </div>
         </div>
-
-        <div id="occTooltip" class="occ-tooltip" style="display:none;"></div>
       </div>
 
       <div class="divider-horizontal"></div>
 
-      <div class="dashboard-grid-4">
-        <div class="chart-panel grid-span-4" style="padding-left: 0;">
+      <section class="content-section">
+        <div class="chart-panel" style="padding-left: 0;">
           <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-left: 14px;">
             <h3 class="panel-title" style="margin: 0;">Bezettingsanalyse (Week)</h3>
             <div class="year-select-container">
@@ -123,7 +121,8 @@ export const OccupancyPage = {
           </div>
         </div>
 
-        <div class="chart-panel grid-span-2">
+        <div class="dashboard-grid-2">
+          <div class="chart-panel">
           <div class="panel-header">
             <h3 class="panel-title">Bezettingsgraad per maand</h3>
             <div class="year-select-container">
@@ -159,8 +158,8 @@ export const OccupancyPage = {
             </div>
           </div>
         </div>
-        
-        <div class="chart-panel grid-span-2">
+
+        <div class="chart-panel">
           <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h3 class="panel-title">Lengte van verblijf</h3>
             <div class="toggle-group" id="losToggleGroup">
@@ -177,8 +176,10 @@ export const OccupancyPage = {
               <div class="occ-legend__item"><span class="dot" style="background:#f59e0b"></span><span>Populairst</span></div>
             </div>
           </div>
+          </div>
         </div>
       </div>
+      </section>
     </div>
   `,
   init: async () => {
@@ -232,13 +233,18 @@ function setupOccupancyYearSelects() {
 
 export async function renderBezettingCharts() {
   const rawData = state.rawRows || [];
-  if (state.occupancyYear == null) state.occupancyYear = "ALL";
+  if (state.occupancyYear == null) state.occupancyYear = state.currentYear || new Date().getFullYear();
   if (state.occTrendYear == null) state.occTrendYear = "ALL";
   if (state.occMonthlyYear == null) state.occMonthlyYear = "ALL";
   if (state.occupancyMonth == null) state.occupancyMonth = new Date().getMonth();
   if (state.showPlatform == null) state.showPlatform = true;
   if (state.showOwner == null) state.showOwner = true;
   if (state.losMode == null) state.losMode = "count";
+
+  // Reset sticky tooltip state on every page render
+  isTooltipSticky = false;
+  const existingTooltip = document.getElementById("occTooltip");
+  if (existingTooltip) existingTooltip.style.display = "none";
 
   const allBookings = normalizeBookings(rawData);
 
@@ -335,8 +341,17 @@ let occCarouselBound = false;
 function renderCalendarCarousel(bookings, years) {
   const carousel = document.getElementById("occCalendarCarousel");
   const track = document.getElementById("occCalendarTrack");
-  const tooltip = document.getElementById("occTooltip");
   if (!carousel || !track) return;
+
+  // Inject tooltip into body so position:fixed works regardless of page transforms
+  let tooltip = document.getElementById("occTooltip");
+  if (!tooltip) {
+    tooltip = document.createElement("div");
+    tooltip.id = "occTooltip";
+    tooltip.className = "occ-tooltip";
+    tooltip.style.display = "none";
+    document.body.appendChild(tooltip);
+  }
 
   const showPlatform = !!state.showPlatform;
   const showOwner = !!state.showOwner;
