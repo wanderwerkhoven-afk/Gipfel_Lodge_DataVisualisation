@@ -23,8 +23,26 @@
 
 <body>
 
-  <main id="app-content">
-    <!-- Pages will be injected here by the router -->
+  <header class="top-bar">
+    <div class="header-flex">
+      <div class="header-titles">
+        <h1 id="global-title">Gipfel Home</h1>
+        <p id="global-subtitle" class="subtitle">Data overzichtelijk gemaakt</p>
+      </div>
+
+      <div class="topbar__controls">
+        <label class="action-btn" for="fileInputGlobal">
+          <i class="fa-solid fa-file-import"></i>
+          <input id="fileInputGlobal" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main id="app-viewport">
+    <div id="app-content-slider">
+      <!-- Sections will be injected here -->
+    </div>
   </main>
 
   <!-- ============================================================

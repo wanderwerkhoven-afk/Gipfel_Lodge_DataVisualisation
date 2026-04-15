@@ -12,21 +12,6 @@ export const BehaviorPage = {
   id: "behavior",
   title: "Gedrag",
   template: () => `
-    <header class="top-bar">
-      <div class="header-flex">
-        <div class="header-titles">
-          <h1>Gasten & Gedrag</h1>
-          <p class="subtitle">Analyse van patronen</p>
-        </div>
-        <div class="topbar__controls">
-          <label class="action-btn" for="fileInputOcc">
-            <i class="fa-solid fa-file-import"></i>
-            <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
-          </label>
-        </div>
-      </div>
-    </header>
-
     <div class="container slide-up">
       <!-- DASHBOARD HEADER -->
       <div class="kpi-header">

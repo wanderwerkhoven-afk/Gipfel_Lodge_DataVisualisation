@@ -22,22 +22,6 @@ export const HomePage = {
   id: "home",
   title: "Home",
   template: () => `
-    <header class="top-bar">
-      <div class="header-flex">
-        <div class="header-titles">
-          <h1>Gipfel Home</h1>
-          <p class="subtitle">Data overzichtelijk gemaakt</p>
-        </div>
-
-        <div class="topbar__controls">
-          <label class="action-btn" for="fileInputOcc">
-            <i class="fa-solid fa-file-import"></i>
-            <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
-          </label>
-        </div>
-      </div>
-    </header>
-
     <div class="container">
       <!-- ====== KPI-CARDS ====== -->
       <div class="kpi-header">

@@ -9,21 +9,6 @@ export const DataPage = {
   id: "data",
   title: "Data",
   template: () => `
-    <header class="top-bar">
-      <div class="header-flex">
-        <div class="header-titles">
-          <h1>Data & Beheer</h1>
-          <p class="subtitle">Importeer en doorzoek boekingen</p>
-        </div>
-        <div class="topbar__controls">
-          <label class="action-btn" for="fileInputOcc">
-            <i class="fa-solid fa-file-import"></i>
-            <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
-          </label>
-        </div>
-      </div>
-    </header>
-
     <div class="container slide-up">
 
       <section class="content-section">

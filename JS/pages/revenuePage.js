@@ -12,21 +12,6 @@ export const RevenuePage = {
   id: "revenue",
   title: "Omzet",
   template: () => `
-    <header class="top-bar">
-      <div class="header-flex">
-        <div class="header-titles">
-          <h1>Omzet & Prijs</h1>
-          <p class="subtitle">Financiële inzichten</p>
-        </div>
-        <div class="topbar__controls">
-          <label class="action-btn" for="fileInputOcc">
-            <i class="fa-solid fa-file-import"></i>
-            <input id="fileInputOcc" class="excel-upload" type="file" accept=".xlsx,.xls" hidden />
-          </label>
-        </div>
-      </div>
-    </header>
-
     <div class="container slide-up">
       <!-- DASHBOARD HEADER -->
       <div class="kpi-header">
