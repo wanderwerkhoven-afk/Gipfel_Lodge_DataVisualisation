@@ -1,5 +1,5 @@
 import { state } from "../core/app.js";
-import { getYears, getRowsForYear } from "../core/dataManager.js";
+import { getYears, getRowsForYear, ensurePricingLoadedForYear } from "../core/dataManager.js";
 import { 
   withPreservedScroll, 
   wireCustomYearSelect, 
@@ -89,6 +89,15 @@ export const RevenuePage = {
     </div>
   `,
   init: async () => {
+    // Zorg voor 2026 pricing bij opstart als er geen jaar is
+    const activeYear = state.revenueYear === "ALL" ? (state.currentYear || 2026) : Number(state.revenueYear || state.currentYear || 2026);
+    
+    try {
+        await ensurePricingLoadedForYear(activeYear);
+    } catch (e) {
+        console.warn("Pricing load failed in Revenue init:", e);
+    }
+
     setupRevenueYearSelect();
     renderRevenueCharts();
   }

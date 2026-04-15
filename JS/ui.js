@@ -1,6 +1,6 @@
 // ./JS/ui.js
 import { state, setState } from "./core/app.js";
-import { handleExcelUpload, saveToLocalStorage, loadFromLocalStorage } from "./core/dataManager.js";
+import { handleExcelUpload, saveToLocalStorage, loadFromLocalStorage, ensurePricingLoadedForYear } from "./core/dataManager.js";
 import { initGlobalUI, withPreservedScroll, ensureScrollState } from "./core/ui-helpers.js";
 
 // Import Page Modules
@@ -47,7 +47,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 2. Render alle secties in de DOM (templates injecteren)
   renderAllSections();
 
-  // 3. Initialize Global UI & Events
+  // 3. Preload pricing (zonder te wachten op boot)
+  const defaultYear = state.currentYear || 2026;
+  ensurePricingLoadedForYear(defaultYear).catch(e => console.warn("Initial pricing load failed:", e));
+
+  // 4. Initialize Global UI & Events
   initGlobalUI();
   bindGlobalEvents();
   bindNavEvents();

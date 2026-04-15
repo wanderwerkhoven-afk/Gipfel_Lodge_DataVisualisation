@@ -1,5 +1,5 @@
 import { state } from "../core/app.js";
-import { loadPricingYear, getYears } from "../core/dataManager.js";
+import { loadPricingYear, getYears, ensurePricingLoadedForYear } from "../core/dataManager.js";
 import {
   withPreservedScroll,
   wireCustomYearSelect,
@@ -167,6 +167,14 @@ export const OccupancyPage = {
     </div>
   `,
   init: async () => {
+    // Voorladen van pricing zodat tooltips direct werken
+    const activeYear = state.occupancyYear === "ALL" ? (state.currentYear || 2026) : Number(state.occupancyYear || state.currentYear || 2026);
+    try {
+        await ensurePricingLoadedForYear(activeYear);
+    } catch (e) {
+        console.warn("Pricing load failed in Occupancy init:", e);
+    }
+
     await renderBezettingCharts();
     setupOccupancyYearSelects();
     setupOccupancyLegendHover();
