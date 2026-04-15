@@ -54,7 +54,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. Global event bindings
   bindGlobalEvents();
+
+  // 5. Register Service Worker for offline capability
+  registerServiceWorker();
 });
+
+function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("./sw.js")
+        .then((reg) => {
+          console.log("🚀 Service Worker geregistreerd voor offline gebruik.");
+          
+          // Optioneel: checken op updates
+          reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === "installed") {
+                if (navigator.serviceWorker.controller) {
+                  console.log("Nieuwe versie beschikbaar, herlaad de pagina.");
+                  // Je zou hier een melding kunnen tonen aan de gebruiker
+                } else {
+                  console.log("App is nu offline beschikbaar!");
+                }
+              }
+            };
+          };
+        })
+        .catch((err) => console.warn("SW registration failed:", err));
+    });
+  }
+}
 
 function bindGlobalEvents() {
     // Gebruik event delegation op document zodat dynamisch ingevoegde upload-inputs

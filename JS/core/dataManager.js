@@ -24,6 +24,43 @@ export function handleExcelUpload(file, onLoaded) {
     const sheet = wb.Sheets[wb.SheetNames[0]];
     const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
+    // Check if this is a PRICING file instead of occupancy
+    const firstRowKeys = rows.length > 0 ? Object.keys(rows[0]) : [];
+    const isPricing = firstRowKeys.some(k => k.toLowerCase().includes("dagprijs") || k.toLowerCase().includes("periode"));
+    
+    if (isPricing) {
+      if (!state.pricingByDate) state.pricingByDate = {};
+      rows.forEach(r => {
+        let dateVal = r.Datum || r.Dag;
+        if (!dateVal) return;
+        
+        let jsDate;
+        if (typeof dateVal === "number") {
+          jsDate = new Date(Math.round((dateVal - 25569) * 86400 * 1000));
+        } else {
+          jsDate = new Date(dateVal);
+        }
+        if (isNaN(jsDate.getTime())) return;
+        
+        const iso = jsDate.toISOString().split("T")[0];
+        const dagprijsKey = Object.keys(r).find(k => k.toLowerCase().includes("dagprijs"));
+        const weekprijsKey = Object.keys(r).find(k => k.toLowerCase().includes("weekprijs"));
+        const minNachtKey = Object.keys(r).find(k => k.toLowerCase().includes("min. nacht"));
+        
+        state.pricingByDate[iso] = {
+          dagprijs: Number(r[dagprijsKey]) || 0,
+          weekprijs: Number(r[weekprijsKey]) || 0,
+          minNachten: r[minNachtKey] || 0,
+          periode: r.Periode || ""
+        };
+      });
+      
+      state.pricingYearLoaded = "UPLOADED";
+      console.log("💰 Pricing Excel ingeladen. Dagen gevonden:", Object.keys(state.pricingByDate).length);
+      onLoaded?.({ type: "pricing", rows: state.rawRows });
+      return;
+    }
+
     const normalized = normalizeRows(rows);
     setState({ rawRows: normalized });
 
@@ -185,8 +222,20 @@ const STORAGE_KEY = "gipfel_lodge_data";
 
 export function saveToLocalStorage(rows) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
-    console.log("✅ Data opgeslagen in LocalStorage:", rows.length, "rijen.");
+    const rawRowsToSave = rows || state.rawRows;
+    const payload = {
+      version: 2,
+      rows: rawRowsToSave,
+      pricingByDate: state.pricingByDate || {},
+      pricingYearLoaded: state.pricingYearLoaded || null,
+      uiState: {
+        currentYear: state.currentYear,
+        kpiYear: state.kpiYear,
+        occupancyYear: state.occupancyYear,
+      }
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    console.log("✅ Data + Pricing opgeslagen in LocalStorage.");
   } catch (err) {
     console.warn("LocalStorage save gefaald:", err);
   }
@@ -196,9 +245,25 @@ export function loadFromLocalStorage() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return null;
   try {
-    const data = JSON.parse(raw);
+    let data = JSON.parse(raw);
+    let rowsToProcess = data;
+    
+    // Check if it's the new complex wrapper format
+    if (data && typeof data === "object" && !Array.isArray(data) && data.version === 2) {
+      state.pricingByDate = data.pricingByDate || {};
+      state.pricingYearLoaded = data.pricingYearLoaded || null;
+      
+      if (data.uiState) {
+        if (data.uiState.currentYear) state.currentYear = data.uiState.currentYear;
+        if (data.uiState.kpiYear) state.kpiYear = data.uiState.kpiYear;
+        if (data.uiState.occupancyYear) state.occupancyYear = data.uiState.occupancyYear;
+      }
+
+      rowsToProcess = data.rows || [];
+    }
+
     // Restore dates for ALL date fields
-    return data.map(r => {
+    return rowsToProcess.map(r => {
       if (r.__aankomst) r.__aankomst = new Date(r.__aankomst);
       if (r.__vertrek) r.__vertrek = new Date(r.__vertrek);
       if (r.__bookedAt) r.__bookedAt = new Date(r.__bookedAt);
